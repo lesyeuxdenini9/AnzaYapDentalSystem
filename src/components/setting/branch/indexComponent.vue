@@ -1,0 +1,107 @@
+<template>
+    <div> 
+         <!-- Begin Page Content -->
+        <div class="container-fluid">
+                  <span class="pageheader"><i class="fa fa-map-marker-alt"></i> Branch List</span>
+                    <button class="float-right btn btn-primary" @click="showaddModal=true"><span class="fa fa-plus"></span> New</button>
+                    <hr/>
+
+                      <div class="row">
+                  <div class="col col-md-2">
+                      <button class="form-control" placeholder="Search">Search Filter</button>
+                  </div>
+                  </div>
+
+                    <table class="table table-bordered" ref="testdata" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr style="background:#083D55;color:white;">
+                                <th>#</th>
+                                <th>Branch</th>
+                                <th>Address</th>
+                                <th>Contact</th>
+                                <th>Email Address</th>
+                                <th>TIN</th>
+                                <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr v-for="(branch,index) in branches" :key="index">
+                                    <td>{{index+1}}</td>
+                                    <td>{{branch.branch}}</td>
+                                    <td>{{branch.address}}</td>
+                                    <td>{{branch.contact}}</td>
+                                    <td>{{branch.email}}</td>
+                                    <td>{{branch.tin}}</td>
+                                    <td>              
+                                        <button @click="edit(index)" style="margin-right:10px;color:green;" title="Update Informations"><span class="fa fa-pen"></span> </button>
+                                        <button @click="remove(index)" style="color:maroon;" title="Remove from the list"><span class="fa fa-times"></span> </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+
+                    </table>
+
+        </div>
+
+        <addModal :type="0" v-if="showaddModal" @closemodal="closemodal()"/>
+         <editModal :editInfo="editInfo" v-if="showeditModal" @closemodal="closemodal()"/>
+    </div>
+</template>
+
+<script>
+import addModal from "@/components/setting/branch/addModal"
+import editModal from "@/components/setting/branch/editModal"
+import { mapState } from "vuex"
+export default {
+    components: {
+        addModal,
+        editModal,
+    },
+    data: function(){
+        return {
+            showaddModal: false,
+            showeditModal: false,
+        }
+    },
+    computed: {
+        ...mapState({
+            branches: state=> state.branch.branches
+        })
+    },
+    methods: {
+        closemodal: function(){
+            this.showaddModal = false
+            this.showeditModal = false
+        },
+        remove: function(index){
+              this.$swal({
+                title: 'Remove from active List?',
+                text: "",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+              }).then((result) => {
+                if (result.value) {
+                    const branch = this.branches[index]
+                    branch.index = index
+                    this.$store.dispatch("branch/remove",branch)
+                }
+              })
+         
+        },
+        edit: function(index){
+            this.editInfo = this.branches[index]
+            this.editInfo.index = index
+            this.showeditModal = true
+        }
+    },
+    mounted(){
+           this.$store.dispatch("activenav","settingnav")  
+           this.$store.dispatch("branch/getList")
+    }
+
+}
+</script>

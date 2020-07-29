@@ -1,0 +1,181 @@
+<template>
+        <div class="modal" ref="bankModal" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><span class="fa fa-pen"></span> Edit Prescription No {{prescription.prescriptionNo}}</h5>
+                    <button type="button" class="close" @click="closethis()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                             <div class="alert alert-danger alert-dismissible fade" ref="errormessage" role="alert">
+                            <span v-for="(error,index) in errormsg" :key="index">
+                                   <span v-for="(msg,index2) in error" :key="index2">{{msg}}<br v-if="msg.length > 1"/></span>
+                            </span>
+                           
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Date</label>
+                                    <input type="date" class="form-control" v-model="prescription.date"/>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-8" style="position:relative;">
+                                <img style="position:absolute;right:15px;width:60px;height:60px;" src="@/assets/rx.png"/>
+                            </div>
+
+                          <div class="col col-md-10">
+                                        <div class="form-group">
+                                       
+                                       <!-- <Select2 class="formselect" :placeholder="ph" v-model="myValue" :options="myOptions" :settings="{ multiple: true, settingOption: myValue }" @change="myChangeEvent($event)" @select="mySelectEvent($event)" /> -->
+                                        <Select2
+                                        :placeholder="ph"
+                                         v-model="myValue" 
+                                        :options="serviceOptions"
+                                        />
+                                         </div>
+                                </div>
+
+                                <div class="col col-md-2">
+                                    <button @click="add" style="width:100%;"> <span class="fa fa-plus"></span> Add</button>
+                                </div>
+                                
+
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:30%">Medicine</th>
+                                            <th>Qty</th>
+                                            <th>Dosage</th>
+                                            <th>Days</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(item,index) in prescription.Prescriptitems" :key="index">
+                                            <td>{{item.medicine}}</td>
+                                            <td><input type="number" class="form-control" v-model="item.qty"/></td>
+                                            <td><input type="text" class="form-control" v-model="item.dosage"/></td>
+                                            <td><input type="text" class="form-control" v-model="item.days"/></td>
+                                            <td><button @click="removeitem(index)"><span class="fa fa-times"></span> </button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+           
+                        
+                </div>
+
+                
+                <div class="modal-footer">
+                    <button class="btn btn-primary" @click="save"><span class="fa fa-check"></span> Update</button>
+                </div>
+                </div>
+            </div>
+        </div>  
+</template>
+
+<script>
+import Select2 from 'v-select2-component'
+import { mapState , mapActions } from 'vuex'
+import { formatDate } from "@/helper/helper"
+export default {
+        props: {
+            transactID: {
+                type: Number,
+                required: true,
+            },
+            editPrescriptionInfo: {
+                type: Object,
+                required: true
+            }
+        },
+        data: function(){
+            return {
+                errormsg: [],
+                ph: "Select Medicine",
+                items: [],
+                myValue: '',
+                date: '',
+                prescription: JSON.parse(JSON.stringify(this.editPrescriptionInfo))
+            }
+        },
+         methods: {
+             removeitem: function(index){
+                 this.prescription.Prescriptitems.splice(index,1)
+             },
+             ...mapActions('medicine',[
+                'getList',
+              ]),
+            closethis: function(){
+                this.$emit("closemodal")
+            },
+            save: function(){
+                    this.$store.dispatch("transaction/updatePrescription",{tid: this.transactID, prescription: this.prescription})
+                        .then((res)=>{
+                               if(res.data.errors){
+                                    this.errormsg = res.data.errors
+                                    this.$refs.errormessage.classList.add("show")
+                                }else{
+                                    this.closethis()
+                                }
+                        })
+                        .catch(err=>console.log(err))
+            },
+            add:function(){
+                let item = {
+                    id: this.medicines[this.myValue].id,
+                    qty: 0,
+                    medicine: this.medicines[this.myValue].medicine,
+                    amount: parseFloat(this.medicines[this.myValue].price),
+                    medicineId: this.medicines[this.myValue].id,
+                }
+
+                if(this.prescription.Prescriptitems.length == 0){
+                    this.prescription.Prescriptitems.push(item)
+                }else{
+                     let duplicate = 0
+                        for(let x = 0 ; x < this.prescription.Prescriptitems.length; x++){
+                                if(parseInt(this.prescription.Prescriptitems[x].medicineId) === parseInt(item.id) ){
+                                    duplicate = 1
+                                    break
+                                }  
+                            }
+
+                        if(duplicate==0)  this.prescription.Prescriptitems.push(item)
+                }
+
+                 this.myValue = ''
+
+             
+            }
+         },
+         computed: {
+                 serviceOptions: {
+                    get: function(){
+                        let x = -1
+                        return  this.medicines.map((med)=>{
+                            x++
+                            return {id: x , text: `${med.medicine}`} 
+                        
+                        })
+
+                    }
+                },
+                   ...mapState({
+                      medicines: state => state.medicine.medicines
+                    }),
+         },
+         mounted(){
+                this.getList()
+                this.date = formatDate(new Date())
+         },
+         components: {
+                 Select2,
+         }
+}
+</script>
