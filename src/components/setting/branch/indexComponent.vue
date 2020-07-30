@@ -6,9 +6,12 @@
                     <button class="float-right btn btn-primary" @click="showaddModal=true"><span class="fa fa-plus"></span> New</button>
                     <hr/>
 
-                      <div class="row">
-                  <div class="col col-md-2">
-                      <button class="form-control" placeholder="Search">Search Filter</button>
+                         <div class="row">
+                    <div class="col-md-4">
+                      <input v-model="search" type="text" class="form-control" placeholder="Fullname..."/>
+                  </div>
+                  <div class="col-md-2">
+                      <button @click="searchBranch()" class="form-control"><span class="fa fa-search"></span> Search</button>
                   </div>
                   </div>
 
@@ -62,6 +65,7 @@ export default {
         return {
             showaddModal: false,
             showeditModal: false,
+            search: '',
         }
     },
     computed: {
@@ -70,6 +74,13 @@ export default {
         })
     },
     methods: {
+        searchBranch: function(){
+            if(this.search == ""){
+                this.$store.dispatch("branch/getList")
+            }else{
+                this.$store.dispatch("branch/search",this.search)
+            }
+        },
         closemodal: function(){
             this.showaddModal = false
             this.showeditModal = false

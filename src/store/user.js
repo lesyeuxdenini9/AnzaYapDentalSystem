@@ -241,6 +241,29 @@ export default {
                     context.dispatch("refreshtoken",null,{root:true})
                 }               
             })
+        },
+        search: function(context,data){
+            Axios.post(`${context.rootState.apiUrl}/api/user/search`,data,context.rootState.headerconfig)
+            .then((res)=>{     
+                context.commit("branch/setUsers",{data: res.data.data,index: data.branchindex},{root: true})            
+            })
+            .catch((err)=>{
+                if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                    context.dispatch("refreshtoken",null,{root:true})
+                }               
+            })
+              
+        },
+        searchSuperadmin: function(context,data){
+            Axios.post(`${context.rootState.apiUrl}/api/user/search`,data,context.rootState.headerconfig)
+            .then((res)=>{     
+                context.commit("setuser",res.data.data)            
+            })
+            .catch((err)=>{
+                if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                    context.dispatch("refreshtoken",null,{root:true})
+                }               
+            })
         }
     },
     getters: {

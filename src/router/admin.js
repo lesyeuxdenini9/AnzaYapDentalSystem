@@ -37,10 +37,12 @@ import billingreportRecordComponent from "@/components/reports/records/billingCo
 import dailySaleComponent from "@/components/reports/sales/treatment/daily"
 import monthlySaleComponent from "@/components/reports/sales/treatment/monthly"
 import yearlySaleComponent from "@/components/reports/sales/treatment/yearly"
+import landingComponent from "@/components/LoginComponent"
 
 import { backendmiddleware } from "@/helper/auth"
 
 const routes = [
+	{path: `/`,component: landingComponent,name: `landingPage`},
 	{path: `/setpassword/:token`,component: setPasswordComponent,name: 'setPassword'},
 	{path: `/backend`,component: DashboardComponent, beforeEnter: backendmiddleware,name: 'dashboard'},
 	{path: `/backend/settings`,component: settingComponent,beforeEnter: backendmiddleware,name: 'settings'},

@@ -21,10 +21,10 @@
                     </ul>   
 
                   <div class="row">
-                  <div class="col col-md-2">
+                  <div class="col-md-2">
                       <button @click="showstockin()" class="form-control"><span class="fa fa-download"></span> Stocks In</button>
                   </div>
-                    <div class="col col-md-2">
+                    <div class="col-md-2">
                            <div class="input-group mb-3">
                                       <div class="input-group-prepend">
                                           <span class="input-group-text" id="basic-addon3">Stocks Status</span>
@@ -37,11 +37,21 @@
                                       </select>
                                   </div>
                   </div>
+
+                    
+              
+                    <div class="col-md-4">
+                      <input v-model="search" type="text" class="form-control" placeholder="Item or Code..."/>
+                  </div>
+                  <div class="col-md-2">
+                      <button @click="searchItem()" class="form-control"><span class="fa fa-search"></span> Search</button>
+                  </div>
+       
                   </div>
             <table class="table table-bordered" ref="testdata" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr style="background:#083D55;color:white;">
-                      <th>Medicine</th>
+                      <th>Item</th>
                       <th>Description</th>
                       <th>Code</th>
                       <th>Remaining Stock</th>
@@ -96,9 +106,30 @@ export default {
             activebranchIndex: 0,
             medicineLists: [],
             stockstatus: 'ALL',
+            search: '',
         }
     },
     methods: {
+        searchItem: function(){
+            let data = {
+              search: this.search,
+              branch: this.branches[this.activebranchIndex].id,
+              branchindex: this.activebranchIndex,
+              type: 0,
+            }
+
+            if(this.search == ""){
+                this.$store.dispatch("branch/getListMedicine",0).then(()=>{
+                    this.setMedicinelist()
+                })
+            }else{
+               this.$store.dispatch("medicine/search",data).then((res)=>{
+                 console.log(res)
+                 this.setMedicinelist()
+               })
+            }
+
+        },
         setMedicinelist: function(){
           
             if(this.stockstatus == "ALL"){
@@ -162,6 +193,8 @@ export default {
                 if(med.stocks == 0) return med
               })
             }
+
+          
         },
 
         closemodal: function(){

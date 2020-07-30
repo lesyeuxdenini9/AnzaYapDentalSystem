@@ -184,7 +184,7 @@ export default {
     },
     mounted(){
         this.staff.bday = formatDate(this.staff.bday)
-        this.$store.dispatch("branch/getListUser",this.type)
+       // this.$store.dispatch("branch/getListUser",this.type)
     }
 }
 </script>

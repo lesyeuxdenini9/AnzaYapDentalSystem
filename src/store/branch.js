@@ -6,6 +6,21 @@ export default {
         branch: {},
     },
     actions: {
+        search: function(context,data){
+            return new Promise((resolve,reject)=>{
+                Axios.get(`${context.rootState.apiUrl}/api/branch/search/${data}`,context.rootState.headerconfig)
+                    .then((res)=>{     
+                        context.commit("setList",res.data.data) 
+                        resolve(res.data.data)       
+                    })
+                    .catch((err)=>{
+                        if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                            context.dispatch("refreshtoken",null,{root:true})
+                            reject(err)
+                        }               
+                    })
+                })
+        },
         getPublicList: function(context){
          
                 Axios.get(`${context.rootState.apiUrl}/api/branch/publicList`,context.rootState.headerconfig)
@@ -174,6 +189,18 @@ export default {
 
     },
     mutations: {
+        setDentists: function(state,{data,index}){
+            state.branches[index].Dentists = data
+        },
+        setItems: function(state,{data,index}){
+            state.branches[index].Medicines = data
+        },
+        setService: function(state,{data,index}){
+            state.branches[index].Services = data
+        },
+        setUsers:  function(state,{data,index}){
+            state.branches[index].Users = data
+        },
         setList: function(state,data){
             state.branches = data
         },

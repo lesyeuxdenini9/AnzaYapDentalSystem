@@ -75,6 +75,7 @@
                                     <tr>
                                         <th style="width:10%">#</th>
                                         <th>Treatment</th>
+                                        <th>Description</th>
                                         <th>Price</th>
                                     </tr>
                                 </thead>
@@ -82,12 +83,13 @@
                                 <tbody>
                                     <tr v-for="(treatment,index) in reservationInfo.Treatments" :key="index">
                                         <td>{{index+1}}</td>
-                                        <td>{{treatment.service}}</td>
+                                        <td>{{treatment.Service.service}}</td>
+                                        <td>{{treatment.Service.description}}</td>
                                         <td>{{treatment.amount}}</td>
                                     </tr>
 
                                         <tr>
-                                            <td colspan="2" style="text-align:right;font-weight:bold;">Total Amount</td>
+                                            <td colspan="3" style="text-align:right;font-weight:bold;">Total Amount</td>
                                             <td style="background:white;">{{totalamount}}</td>
                                         </tr>
                                 
@@ -223,13 +225,35 @@ export default {
         proceed: function(){
             let proceed = 0
             if(this.reservationInfo.type == 0){
-                if(confirm("Create new Transaction ?")){
-                     proceed = 1
-                }
+      
+                     this.$swal({
+                        title: 'Create new Transaction ?',
+                        text: "",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes!'
+                    }).then((result) => {
+                        if (result.value) {
+                             proceed = 1
+                        }
+                    })
             }else{
-                if(confirm(`Proceed to Transaction No:  ${this.reservationInfo.Transaction.transactionNo}?`)){
-                    proceed = 1
-                }
+          
+                     this.$swal({
+                        title: `Proceed to Transaction No:  ${this.reservationInfo.Transaction.transactionNo}?`,
+                        text: "",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes!'
+                    }).then((result) => {
+                        if (result.value) {
+                             proceed = 1
+                        }
+                    })
             }
 
             if(proceed == 1){
@@ -237,6 +261,7 @@ export default {
                         .then(()=>{
                             this.closethis()
                             this.$emit("init")
+                            this.$swal("Transaction Successful","","success")
                         })
                         .catch(err=>console.log(err))    
             }

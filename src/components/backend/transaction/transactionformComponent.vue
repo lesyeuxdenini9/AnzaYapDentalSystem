@@ -86,7 +86,7 @@
                                               <table class="table table-condensed table-bordered">
                                         <thead>
                                             <tr>
-                                                <th style="width:20%;">Treatment<button  v-if="transactionInfo.status!=2 && transactionInfo.Billings.length ==0"  @click="addnewTreatment()" class="btn btn-sm btn-primary float-right"><span class="fa fa-plus"></span> Add Treatment</button></th>
+                                                <th style="width:20%;">Treatment</th>
                                                 <th>Action Taken</th>
                                             </tr>
                                  

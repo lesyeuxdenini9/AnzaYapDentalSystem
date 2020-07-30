@@ -56,8 +56,34 @@ const formatHour = (hour)=>{
 }
 
 
+
 const format12Hour = (hour)=>{
     let formattedhour = formatHour(hour)
+    let rawhour = formattedhour.split(":")
+    let finalhour
+    if(rawhour[0] == 12){
+        return `${formattedhour} pm`
+    }
+    else if(rawhour[0] > 12){
+            finalhour = rawhour[0] - 12
+            return `${finalhour}:${rawhour[1]} pm`
+    }else if(parseInt(rawhour[0])==0){
+        finalhour = 12
+        return `${finalhour}:${rawhour[1]} am`
+    }else{
+        return `${formattedhour} am`
+    }
+
+}
+
+const format12HourNewServer = (hour)=>{
+    if(hour == null) return "00:00"
+    const hournew = new Date(hour)
+    // const hourdata = new Date(hournew-(60*1000*480) )
+    const hourdata = hournew
+    const _hour = `0${hourdata.getHours()}`
+    const _minute = `0${hourdata.getMinutes()}`
+    let formattedhour = `${_hour.slice(-2)}:${_minute.slice(-2)}`
     let rawhour = formattedhour.split(":")
     let finalhour
     if(rawhour[0] == 12){
@@ -118,4 +144,4 @@ const maskspace = (mask,varString)=>{
 }
 
 
-module.exports = { calculateAge, formatBdayDate , formatDate, roundToDecimal , formatHour , format12Hour, limitText , formatraw12Hour , maskspace}
+module.exports = { calculateAge, formatBdayDate , formatDate, roundToDecimal , formatHour , format12Hour, limitText , formatraw12Hour , maskspace , format12HourNewServer}

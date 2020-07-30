@@ -2,7 +2,7 @@
     <div> 
          <!-- Begin Page Content -->
         <div class="container-fluid" style="position:relative;">
-                  <span class="pageheader"><i class="fa fa-calendar"></i> Reservation</span>
+                  <span class="pageheader"><i class="fa fa-calendar"></i> Appointment</span>
                        <ul class="legends">
                     <li><button disabled style="height:20px;width:20px;background: #36B9CC"></button> Pending</li>
                     <li><button disabled style="height:20px;width:20px;background: #1CC88A"></button> Approved</li>
@@ -76,7 +76,7 @@
                           <div class="col col-md-3">
                               <div class="input-group mb-3">
                                       <div class="input-group-prepend">
-                                          <span class="input-group-text" id="basic-addon3">Reservation No</span>
+                                          <span class="input-group-text" id="basic-addon3">Appointment No</span>
                                       </div>
                                       <input type="text" class="form-control" v-model="search.reservationNo"/>
                             </div>
@@ -99,7 +99,7 @@
                           <table class="table table-condensed table-striped">
                             <thead>
                               <tr style="background:silver;">
-                                <th style="width:10%;">ReservationNo</th>
+                                <th style="width:10%;">AppointmentNo</th>
                                 <th style="width:10%;">Date</th>
                                 <th>Type</th>
                                 <th style="width:5%x;">Start</th>
@@ -212,7 +212,7 @@ export default {
         eventRemove: this.removeEvent,
         selectConstraint: {
             start: new Date().setDate(new Date().getDate()+7), // just add days if needed for restriction
-           // end: new Date().setDate(new Date().getDate()+15), // comment if no restriction of date onwards
+        //    end: new Date().setDate(new Date().getDate()+9), // comment if no restriction of date onwards
         },
         hiddenDays: [],
         customButtons: {
@@ -267,48 +267,56 @@ export default {
      },
     assignPossibleDates: function(start,end){
       // if after a week and so on is allowed
-      const timeDiff  = (end - start);
-      const days      = timeDiff / (1000 * 60 * 60 * 24)
-      for(let x = 0 ; x <= days ; x++){
-        let day
-        if(x == 0){
-          day = start
-        }else{
-          day = start.setDate(start.getDate()+1)
-        }
-        let compareday = new Date(day)
-        if(compareday >= this.calendarOptions.selectConstraint.start) {
-          this.getReservationEvents.push(  {
-                 start: formatDate(compareday),
-                  end: formatDate(compareday),
+      // const timeDiff  = (end - start);
+      // const days      = timeDiff / (1000 * 60 * 60 * 24)
+      // for(let x = 0 ; x <= days ; x++){
+      //   let day
+      //   if(x == 0){
+      //     day = start
+      //   }else{
+      //     day = start.setDate(start.getDate()+1)
+      //   }
+      //   let compareday = new Date(day)
+      //   if(compareday >= this.calendarOptions.selectConstraint.start) {
+      //     this.getReservationEvents.push(  {
+      //            start: formatDate(compareday),
+      //             end: formatDate(compareday),
+      //             overlap: false,
+      //             display: 'background',
+      //             color: '#DEF5DA',
+      //             customRender: false,
+      //             extendedProps: {
+      //               status: 10,
+      //               dentist: '',
+      //               branch: '',
+      //             }
+      //       })
+      //   }
+      // }  
+
+      console.log(start)
+      console.log(end)
+
+
+          // if one week is only allowed
+          console.log(this.ActiveReservation)
+
+        if(this.ActiveReservation.length == 0){
+            this.getReservationEvents.push(  {
+                  start: formatDate(new Date().setDate(new Date().getDate()+8)),
+                  end: formatDate(new Date().setDate(new Date().getDate()+9)),
                   overlap: false,
                   display: 'background',
                   color: '#DEF5DA',
                   customRender: false,
                   extendedProps: {
                     status: 10,
-                    dentist: '',
+               dentist: '',
                     branch: '',
                   }
             })
         }
-      }  
-
-
-          // // if one week is only allowed
-          // this.getReservationEvents.push(  {
-          //         start: formatDate(new Date().setDate(new Date().getDate()+8)),
-          //         end: formatDate(new Date().setDate(new Date().getDate()+15)),
-          //         overlap: false,
-          //         display: 'background',
-          //         color: '#DEF5DA',
-          //         customRender: false,
-          //         extendedProps: {
-          //           status: 10,
-              //  dentist: '',
-              //       branch: '',
-          //         }
-          //   })
+        
     },
     rendernewDates: async function(info){
       console.log(info)
@@ -461,6 +469,8 @@ export default {
           this.search.end = this.$helper.formatDate(calendarApi.view.activeEnd)
           await this.getPatientReservations({start: calendarApi.view.activeStart,end: calendarApi.view.activeEnd,branchid: this.branches[this.ActiveBranchIndex].id, reservationNo: this.search.reservationNo})
         //  this.calendarOptions.events = this.getReservationEvents
+
+        this.calendarOptions.selectConstraint.end = this.ActiveReservation.length == 0 ?  new Date().setDate(new Date().getDate()+9) :  new Date().setDate(new Date().getDate()+8)
     },
     manualTableSearch: async function(){
         await this.getPatientReservations({start: this.search.start,end: this.search.end,branchid: this.branches[this.ActiveBranchIndex].id, reservationNo: this.search.reservationNo})
@@ -489,6 +499,14 @@ export default {
     ...mapGetters('reservation',[
       'getReservationEvents'
     ]),
+    ActiveReservation:{
+      get: function(){
+          let activeReservation = this.getReservationEvents.filter((reservation)=>{
+              if(reservation.extendedProps.status == 1) return reservation
+          })
+          return activeReservation
+      }
+    }
     // InactiveSchedules: {
     //   get: function(){
     //     let inactivesched = []
@@ -510,6 +528,7 @@ export default {
     this.$mysocket.on('updatePatientNotification',async ()=>{
       await this.getPatientReservations({start: calendarApi.view.activeStart,end: calendarApi.view.activeEnd,branchid: this.branches[this.ActiveBranchIndex].id, reservationNo: this.search.reservationNo})
         this.calendarOptions.events = this.getReservationEvents
+         this.calendarOptions.selectConstraint.end = this.ActiveReservation.length == 0 ?  new Date().setDate(new Date().getDate()+9) :  new Date().setDate(new Date().getDate()+8)
     })
 
   },

@@ -5,6 +5,17 @@ export default {
         dentists: [],
     },
     actions: {
+        search: function(context,data){
+            Axios.post(`${context.rootState.apiUrl}/api/dentist/search`,data,context.rootState.headerconfig)
+            .then((res)=>{     
+                    context.commit('branch/setDentists',{data: res.data.data,index: data.branchindex},{root: true})          
+            })
+            .catch((err)=>{
+                if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                    context.dispatch("refreshtoken",null,{root:true})
+                }               
+            })
+        },
         getList: function(context){
             Axios.get(`${context.rootState.apiUrl}/api/dentist/list`,context.rootState.headerconfig)
             .then((res)=>{     

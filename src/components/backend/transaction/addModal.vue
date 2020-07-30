@@ -86,6 +86,24 @@
                             </div>
 
 
+                            
+                            <div class="row">
+                                <div class="col col-md-6">
+                                    <div class="form-group">
+                                        <label>Start Time</label>
+                                       <input type="time" class="form-control" v-model="transaction.Start"/>
+                                    </div>
+                                </div>
+
+                                <div class="col col-md-6">
+                                    <div class="form-group">
+                                        <label>Estimated End Time</label>
+                                        <input type="time" class="form-control" v-model="transaction.End"/>
+                                    </div>
+                                </div>
+                            </div>
+
+
                 </div>
 
                 <div class="modal-footer">
@@ -114,6 +132,8 @@ export default {
                  patient: this.$route.params.idno,
                  date: '',
                  servicelist: [],
+                 Start: '',
+                 End: '',
              },
             myValue: '',
             myOptions: ['op1', 'op2', 'op3'], // or [{id: key, text: value}, {id: key, text: value}],

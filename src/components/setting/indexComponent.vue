@@ -6,9 +6,8 @@
 
                              <!-- Content Row -->
           <div class="row">
-
                 <!-- Earnings (Monthly) Card Example -->
-            <div @click="changesetting('superadminlist')" class="col-xl-3 col-md-6 mb-4 setting">
+            <div v-if="userinfo.usertype == 3" @click="changesetting('superadminlist')" class="col-xl-3 col-md-6 mb-4 setting">
               <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -32,7 +31,7 @@
 
 
                 <!-- Earnings (Monthly) Card Example -->
-            <div @click="changesetting('adminlist')" class="col-xl-3 col-md-6 mb-4 setting">
+            <div v-if="userinfo.usertype == 3 || userinfo.usertype == 0" @click="changesetting('adminlist')" class="col-xl-3 col-md-6 mb-4 setting">
               <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -56,7 +55,7 @@
 
 
             <!-- Earnings (Monthly) Card Example -->
-            <div @click="changesetting('stafflist')" class="col-xl-3 col-md-6 mb-4 setting">
+            <div v-if="userinfo.usertype == 3 || userinfo.usertype == 0" @click="changesetting('stafflist')" class="col-xl-3 col-md-6 mb-4 setting">
               <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -76,7 +75,7 @@
          
             
             <!-- Pending Requests Card Example -->
-            <div @click="changesetting('servicelist')" class="col-xl-3 col-md-6 mb-4 setting">
+            <div v-if="userinfo.usertype == 3 || userinfo.usertype == 0" @click="changesetting('servicelist')" class="col-xl-3 col-md-6 mb-4 setting">
               <div class="card border-left-warning shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -94,7 +93,7 @@
 
 
                         <!-- Earnings (Monthly) Card Example -->
-            <div @click="changesetting('dentistlist')" class="col-xl-3 col-md-6 mb-4 setting">
+            <div v-if="userinfo.usertype == 3 || userinfo.usertype == 0" @click="changesetting('dentistlist')" class="col-xl-3 col-md-6 mb-4 setting">
               <div class="card border-left-primary shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -112,7 +111,7 @@
 
 
                          <!-- Earnings (Monthly) Card Example -->
-            <div @click="changesetting('medicinelist')" class="col-xl-3 col-md-6 mb-4 setting">
+            <div v-if="userinfo.usertype == 3 || userinfo.usertype == 0" @click="changesetting('medicinelist')" class="col-xl-3 col-md-6 mb-4 setting">
               <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -130,7 +129,7 @@
 
 
                                  <!-- Earnings (Monthly) Card Example -->
-            <div @click="changesetting('branchlist')" class="col-xl-3 col-md-6 mb-4 setting">
+            <div v-if="userinfo.usertype == 3" @click="changesetting('branchlist')" class="col-xl-3 col-md-6 mb-4 setting">
               <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -213,7 +212,7 @@
             </div>
 
 
-               <div @click="showChangeSchedModal=true" class="col-xl-3 col-md-6 mb-4 setting">
+               <div v-if="userinfo.usertype == 3 || userinfo.usertype == 0" @click="showChangeSchedModal=true" class="col-xl-3 col-md-6 mb-4 setting">
               <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -327,6 +326,9 @@ export default {
       }
     },
     computed: {
+         userinfo: function(){
+            return JSON.parse(this.$store.state.userinfo)
+        },
         ...mapState({
           schedules: state=> state.schedules,
           branches: state=> state.branch.branches,

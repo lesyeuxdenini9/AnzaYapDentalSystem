@@ -6,7 +6,7 @@
       <router-link :to="{name: 'dashboard'}" class="sidebar-brand d-flex align-items-center justify-content-center" style="background:#083D55;">
         <div class="sidebar-brand-icon rotate-n-0">
           <!-- <i class="fas fa-laugh-wink"></i> -->
-           <img src="@/assets/dentallogo.png" style="height:40px;width:50px;"/>
+           <img src="@/assets/logoraw.jpg" style="height:40px;width:50px;border-radius:10px;"/>
         </div>
           <div class="sidebar-brand-text mx-3">Dental Clinic</div>
       </router-link>
@@ -27,7 +27,7 @@
        <li class="nav-item" id="reservationnav">
         <router-link class="nav-link" :to="{name: 'patientReservation'}">
           <i class="fas fa-fw fa-calendar"></i>
-          <span> Reservation(s)</span></router-link>
+          <span> Appointment(s)</span></router-link>
       </li>
 
           <!-- Nav Item - Dashboard -->

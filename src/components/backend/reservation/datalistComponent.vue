@@ -2,7 +2,7 @@
     <div> 
          <!-- Begin Page Content -->
         <div class="container-fluid">
-                  <span class="pageheader"><i class="fa fa-file-alt"></i> Reservation List</span>
+                  <span class="pageheader"><i class="fa fa-file-alt"></i> Appointment List</span>
                     <hr/>
 
                     
@@ -45,7 +45,7 @@
                                <div class="col col-md-3">
                                     <div class="input-group mb-3">
                                       <div class="input-group-prepend">
-                                          <span class="input-group-text" id="basic-addon3">Reservation No</span>
+                                          <span class="input-group-text" id="basic-addon3">Appointment No</span>
                                       </div>
                                       <input type="text" class="form-control" v-model="search.reservationNo"/>
                             </div>
@@ -67,8 +67,8 @@
                             <thead>
                                 <tr style="background:#343A40;color:white;">
                                     <th>#</th>
-                                    <th>Reservation No</th>
-                                    <th>Reservation Date</th>
+                                    <th>Appointment No</th>
+                                    <th>Appointment Date</th>
                                     <th>Patient Name</th>
                                     <th>Start Time</th>
                                     <th>End Time</th>

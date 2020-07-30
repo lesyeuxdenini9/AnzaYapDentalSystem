@@ -7,7 +7,7 @@
       <router-link :to="{name: 'dashboard'}" class="sidebar-brand d-flex align-items-center justify-content-center" style="background:#083D55;">
         <div class="sidebar-brand-icon rotate-n-0">
           <!-- <i class="fas fa-laugh-wink"></i> -->
-          <img src="@/assets/dentallogo.png" style="height:40px;width:50px;"/>
+          <img src="@/assets/logoraw.jpg" style="height:40px;width:50px;border-radius:10px;"/>
         </div>
         <div class="sidebar-brand-text mx-3">Dental Clinic</div>
       </router-link>
@@ -46,7 +46,7 @@
 
               <li id="reservenav" class="dropdown nav-item"> <a class="nav-link" href="javascript:void(0)">
           <i class="fas fa-fw fa-file-alt"></i>
-          <span> Reservation</span><span class="badgenum" v-if="pendingReservation.length > 0">{{pendingReservation.length}}</span></a>
+          <span> Appointment(s)</span><span class="badgenum" v-if="pendingReservation.length > 0">{{pendingReservation.length}}</span></a>
         <div class="dropdown-content">
             <router-link class="dropdownItem" :to="{name: 'appointment'}"><span class="fa fa-file-alt"></span> Appointment(s)</router-link>
            <router-link class="dropdownItem" :to="{name: 'pendingReservation'}"><span class="fa fa-times-circle"></span> Pending</router-link>
@@ -72,7 +72,7 @@
           <span> Other Settings</span></router-link>
       </li>
 
-          <li id="reportnav" class="dropdown nav-item"> <a class="nav-link" href="javascript:void(0)">
+          <li  v-if="userinfo.usertype == 3 || userinfo.usertype == 0" id="reportnav" class="dropdown nav-item"> <a class="nav-link" href="javascript:void(0)">
           <i class="fas fa-fw fa-book"></i>
           <span> Reports</span></a>
         <div class="dropdown-content">
@@ -84,7 +84,7 @@
        </li>
 
             <!-- Nav Item - Dashboard -->
-      <li class="nav-item" id="backendfeedbacknav">
+      <li  v-if="userinfo.usertype == 3 || userinfo.usertype == 0" class="nav-item" id="backendfeedbacknav">
         <router-link class="nav-link" :to="{name: 'backendfeedback'}">
           <i class="fas fa-fw fa-star"></i>
           <span> Feedbacks/Comments</span></router-link>

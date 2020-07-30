@@ -21,9 +21,12 @@
                     </ul>   
 
 
-                  <div class="row">
-                  <div class="col col-md-2">
-                      <button class="form-control" placeholder="Search">Search Filter</button>
+                     <div class="row">
+                    <div class="col-md-4">
+                      <input v-model="search" type="text" class="form-control" placeholder="Fullname..."/>
+                  </div>
+                  <div class="col-md-2">
+                      <button @click="searchDentist()" class="form-control"><span class="fa fa-search"></span> Search</button>
                   </div>
                   </div>
             <table class="table table-bordered" ref="testdata" id="dataTable" width="100%" cellspacing="0">
@@ -81,6 +84,7 @@ export default {
             editInfo: {},
             showeditModal: false,
             activebranchIndex: 0,
+            search: '',
         }
     },
     methods: {
@@ -88,6 +92,20 @@ export default {
           'getList',
           'removeList',
         ]),
+        searchDentist: function(){
+          let data = {
+              search: this.search,
+              branch: this.branches[this.activebranchIndex].id,
+              branchindex: this.activebranchIndex,
+            }     
+
+            if(this.search == ""){
+               this.$store.dispatch("branch/getListDentist")
+            } else{
+              this.$store.dispatch("dentist/search",data)
+            } 
+
+        },
          refreshlist: function(index){
              this.$store.dispatch("branch/getListDentist")
                 .then(()=>{
@@ -102,6 +120,7 @@ export default {
             }
             navbranch[index].classList.add('active')
             this.activebranchIndex = index
+            this.$store.dispatch("branch/getListDentist")
         },
 
         closemodal: function(){

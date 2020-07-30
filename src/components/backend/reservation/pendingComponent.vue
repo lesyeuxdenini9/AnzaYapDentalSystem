@@ -2,7 +2,7 @@
     <div> 
          <!-- Begin Page Content -->
         <div class="container-fluid">
-                  <span class="pageheader"><i class="fa fa-file-alt"></i> Pending Reservation List</span>
+                  <span class="pageheader"><i class="fa fa-file-alt"></i> Pending Appointment List</span>
                     <hr/>
 
                 <div class="card">
@@ -10,7 +10,7 @@
                         <table class="table table-condensed table-striped">
                             <thead>
                                 <tr>
-                                    <th>Reservation No</th>
+                                    <th>Appointment No</th>
                                     <th>Branch</th>
                                     <th>Date</th>
                                     <th>Time</th>

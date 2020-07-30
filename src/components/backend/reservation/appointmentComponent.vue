@@ -28,7 +28,7 @@
                             </ul>   
                             </div>
                             <div class="col col-md-2">
-                                <button @click="walkinReserve()" class="form-control btn btn-primary"><span class="fa fa-plus"></span> Create Walk In Reservation</button>
+                                <button @click="walkinReserve()" class="form-control btn btn-primary"><span class="fa fa-plus"></span> Walk In</button>
                             </div>
                           </div>
 
@@ -51,7 +51,7 @@
              
                                 <div class="col col-md-12" style="position:relative;">
                                             <div style="position:absolute;right:150px;top:-10px">
-                                                <button v-if="showEditReserve" @click="beginedit"><span class="fa fa-pen"></span> Edit</button> 
+                                                <button id="editbtn" v-if="showEditReserve" @click="beginedit"><span class="fa fa-pen"></span> Edit</button> 
                                                 <div v-if="showeditbtn">
                                                        <button  v-if="EventEditData.length > 0" @click="saveupdate()" style="margin-right:50px;margin-top:10px;"><span class="fa fa-check"></span> Save</button> 
                                                       <button @click="canceledit()"><span class="fa fa-times"></span> Cancel</button> 
@@ -230,8 +230,6 @@ export default {
          this.EventEditData.splice(indexevent,1)
       }
 
-      console.log(this.EventEditData)
-
     },
     beginedit: function(){
       this.showeditbtn = true
@@ -255,13 +253,24 @@ export default {
       .catch(err=>console.log(err))
    },
    canceledit: function(){
-     this.init().then(()=>{
-        this.showeditbtn = false
-      this.calendarOptions.editable = false
-      this.calendarOptions.slotEventOverlap = false
-      this.calendarOptions.eventOverlap = false
-     })
-     
+    //  this.init().then(()=>{
+    //   this.showeditbtn = false
+    //   this.calendarOptions.editable = false
+    //   this.calendarOptions.slotEventOverlap = false
+    //   this.calendarOptions.eventOverlap = false
+    //  })
+
+              let calendarApi = this.$refs.fullCalendar.getApi()
+              
+                this.$store.dispatch("reservation/getAppointments",{start: calendarApi.view.activeStart,end: calendarApi.view.activeEnd,branch: this.branches[this.activebranchIndex].id, dentist: this.filterDentist})
+                .then(()=>{
+                    // calendarApi.refetchEvents()
+                      this.calendarOptions.events = this.getApprovedAppointments
+                       this.showeditbtn = false
+                      this.calendarOptions.editable = false
+                      this.calendarOptions.slotEventOverlap = false
+                      this.calendarOptions.eventOverlap = false
+                })
       
    },
      changeFilterbranch: function(branch,index){
@@ -356,39 +365,46 @@ export default {
          this.$store.dispatch("reservation/getAppointments",{start: calendarApi.view.activeStart,end: calendarApi.view.activeEnd,branch: this.branches[this.activebranchIndex].id, dentist: this.filterDentist})
         .then(()=>{
           // calendarApi.refetchEvents()
+          // calendarApi.rerenderEvents()
            this.calendarOptions.events = this.getApprovedAppointments
         })
       }
     },
-    handleEvents: async function(events){
-      if(events.length == 0){
-         this.refetchEventsCalendar(events)
-         return
-      }else{
-           for(let x = 0 ; x < events.length; x++){
-             if(x == 0 ){
-                this.refetchEventsCalendar(events)
-                return
-             }
-           }
-      } 
-     
+    handleEvents: function(events){
+     //  this.refetchEventsCalendar(events)
+      // if(events.length == 0){
+      //    this.refetchEventsCalendar(events)
+      //    return
+      // }else{
+      //      for(let x = 0 ; x < events.length; x++){
+      //        if(x == 0 ){
+      //           this.refetchEventsCalendar(events)
+      //           return
+      //        }
+      //      }
+      // } 
+      this.refetchEventsCalendar(events)
+     console.log(events)
     },
     closemodal: function(){
       this.showActionReservationModal = false
       this.showwalkinmodal = false
     },
     getTimeschedule: function(){
-       let calendarApi = this.$refs.fullCalendar.getApi()
-        this.getSchedules(this.branches[this.activebranchIndex].id)
-            .then(()=>{
-                  this.calendarOptions.hiddenDays = this.InactiveSchedules // remove or comment this line if it is not necessary to hide off / no operation days
-                  let selectedDate = new Date(calendarApi.getDate())
-                  selectedDate = selectedDate.getDay()
-                  this.calendarOptions.slotMinTime = `${this.schedules[selectedDate].start}:00`
-                  this.calendarOptions.slotMaxTime = `${this.schedules[selectedDate].end}:00`
-            })
-            .catch(err=>console.log(err ))
+      return new Promise((resolve,reject)=>{
+           let calendarApi = this.$refs.fullCalendar.getApi()
+          this.getSchedules(this.branches[this.activebranchIndex].id)
+              .then(()=>{
+                    this.calendarOptions.hiddenDays = this.InactiveSchedules // remove or comment this line if it is not necessary to hide off / no operation days
+                    let selectedDate = new Date(calendarApi.getDate())
+                    selectedDate = selectedDate.getDay()
+                    this.calendarOptions.slotMinTime = `${this.schedules[selectedDate].start}:00`
+                    this.calendarOptions.slotMaxTime = `${this.schedules[selectedDate].end}:00`
+                    resolve()
+              })
+              .catch(err=>reject(err ))
+      })
+     
     },
     refreshEvents: function(){
         let calendarApi = this.$refs.fullCalendar.getApi()
@@ -398,11 +414,14 @@ export default {
       return new Promise((resolve,reject)=>{
           try{
                 let calendarApi = this.$refs.fullCalendar.getApi()
-                this.getTimeschedule()
+              
                 this.$store.dispatch("reservation/getAppointments",{start: calendarApi.view.activeStart,end: calendarApi.view.activeEnd,branch: this.branches[this.activebranchIndex].id, dentist: this.filterDentist})
                 .then(()=>{
-                  // calendarApi.refetchEvents()
-                  this.calendarOptions.events = this.getApprovedAppointments
+                    // calendarApi.refetchEvents()
+                   
+                    this.getTimeschedule().then(()=>{
+                       this.calendarOptions.events = this.getApprovedAppointments
+                    })
                 })
                 // console.log(this.getApprovedAppointments)
               // calendarApi.addEventSource(this.getApprovedAppointments)

@@ -296,11 +296,15 @@ export default {
                     return {
                         id: list.id,
                         title: `Reservation No: ${list.reservationNo}`,
-                        start: `${list.date} ${formatHour(list.starttime)}:00`,
-                        end: `${list.date} ${formatHour(list.endtime)}:00`,
+                        // start: `${list.date} ${formatHour(list.starttime)}:00`,
+                        // end: `${list.date} ${formatHour(list.endtime)}:00`,
+                        start: `${list.date} ${list.Start}:00`,
+                        end: `${list.date} ${list.End}:00`,
                         customRender: true,
                         extendedProps: {
                             status: list.status,
+                            Start: list.Start,
+                            End: list.End,
                         }
                     }
                 })
@@ -313,8 +317,10 @@ export default {
                     return {
                         id: list.id,
                         title: `Reservation No: ${list.reservationNo}`,
-                        start: `${list.date} ${formatHour(list.starttime)}:00`,
-                        end: `${list.date} ${formatHour(list.endtime)}:00`,
+                        // start: `${list.date} ${formatHour(list.starttime)}:00`,
+                        // end: `${list.date} ${formatHour(list.endtime)}:00`,
+                        start: `${list.date} ${list.Start}:00`,
+                        end: `${list.date} ${list.End}:00`,
                         customRender: true,
                         extendedProps: {
                                 status: list.status,
@@ -323,6 +329,8 @@ export default {
                                 patient: list.User,
                                 reservationInfo: list,
                                 branch: list.Branch.branch,
+                                Start: list.Start,
+                                End: list.End,
                         }
                     }
                 })
@@ -333,13 +341,17 @@ export default {
                     return {
                         id: list.id,
                         title: `Reservation No: ${list.reservationNo}`,
-                        start: `${list.date} ${formatHour(list.starttime)}:00`,
-                        end: `${list.date} ${formatHour(list.endtime)}:00`,
+                        // start: `${list.date} ${formatHour(list.starttime)}:00`,
+                        // end: `${list.date} ${formatHour(list.endtime)}:00`,
+                        start: `${list.date} ${list.Start}:00`,
+                        end: `${list.date} ${list.End}:00`,
                         customRender: true,
                         extendedProps: {
                                 status: list.status,
                                 dentist: list.Dentist.fullname,
                                 branch: list.Branch.branch,
+                                Start: list.Start,
+                                End: list.End,
                         }
                     }
                 })

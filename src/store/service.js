@@ -1,5 +1,9 @@
 import Axios from 'axios'
+import branch from './branch'
 export default {
+    modules: {
+        branch
+    },
     namespaced:true,
     state: {
         services: [],
@@ -58,6 +62,20 @@ export default {
                     }               
                 })
             })
+        },
+        search: function(context,data){
+        //context.commit("branch/setService",data,{root:true})
+
+                    Axios.post(`${context.rootState.apiUrl}/api/service/search`,data,context.rootState.headerconfig)
+                    .then((res)=>{     
+                        context.commit("branch/setService",{data: res.data.data,index: data.branchindex})            
+                    })
+                    .catch((err)=>{
+                        if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                            context.dispatch("refreshtoken",null,{root:true})
+                        }               
+                    })
+          
         }
     },
     getters: {

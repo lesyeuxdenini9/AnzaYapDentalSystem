@@ -22,8 +22,11 @@
 
 
                   <div class="row">
-                  <div class="col col-md-2">
-                      <button class="form-control" placeholder="Search">Search Filter</button>
+                    <div class="col-md-4">
+                      <input v-model="search" type="text" class="form-control" placeholder="Service..."/>
+                  </div>
+                  <div class="col-md-2">
+                      <button @click="searchService()" class="form-control"><span class="fa fa-search"></span> Search</button>
                   </div>
                   </div>
             <table class="table table-bordered" ref="testdata" id="dataTable" width="100%" cellspacing="0">
@@ -31,8 +34,8 @@
                     <tr style="background:#083D55;color:white;">
                       <th>Service</th>
                       <th>Description</th>
-                      <th>Regular Price</th>
-                      <th></th>
+                      <th style="width:10%;">Estimated Price</th>
+                      <th style="width:10%;"></th>
                     </tr>
                   </thead>
 
@@ -74,6 +77,7 @@ export default {
             editInfo: {},
             showeditModal: false,
             activebranchIndex: 0,
+            search: '',
         }
     },
     methods: {
@@ -95,6 +99,7 @@ export default {
             }
             navbranch[index].classList.add('active')
             this.activebranchIndex = index
+             this.$store.dispatch("branch/getListService")
         },
 
         closemodal: function(){
@@ -129,6 +134,19 @@ export default {
               })
          
         },
+        searchService: function(){
+          let data = {
+            search: this.search,
+            branch: this.branches[this.activebranchIndex].id,
+            branchindex: this.activebranchIndex
+          }     
+
+          if(this.search == ""){
+            this.$store.dispatch("branch/getListService")
+          } else{
+            this.$store.dispatch("service/search",data)
+          } 
+        }
     },
     computed: {
         ...mapState({

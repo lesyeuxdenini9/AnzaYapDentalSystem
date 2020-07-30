@@ -6,9 +6,13 @@
                     <button class="float-right btn btn-primary" @click="showaddModal=true"><span class="fa fa-plus"></span> New</button>
                     <hr/>
     
+                   
                   <div class="row">
-                  <div class="col col-md-2">
-                      <button class="form-control" placeholder="Search">Search Filter</button>
+                    <div class="col-md-4">
+                      <input v-model="search" type="text" class="form-control" placeholder="Fullname..."/>
+                  </div>
+                  <div class="col-md-2">
+                      <button @click="searchsuperAdmin()" class="form-control"><span class="fa fa-search"></span> Search</button>
                   </div>
                   </div>
 
@@ -77,6 +81,20 @@ export default {
         }
     },
     methods: {
+          searchsuperAdmin: function(){
+            let data = {
+                search: this.search,
+                branch: null,
+                type: 3,
+              }     
+
+              if(this.search == ""){
+                this.getUsers({usertype: 3})
+              } else{
+                this.$store.dispatch("user/searchSuperadmin",data)
+              } 
+
+        },
          bdayformat: function(date){
            return formatBdayDate(date)
          },

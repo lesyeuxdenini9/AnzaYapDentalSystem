@@ -376,7 +376,7 @@ export default {
                 let x = -1
                 return  this.branches[this.ActiveBranchIndex].Services.map((s)=>{
                       x++
-                    return {id: x , text: `${s.service} - Price: P ${s.regularPrice}`} 
+                    return {id: x , text: `${s.service} ( ${s.description} ) - Estimated Price: P ${s.regularPrice}`} 
                   
                 })
             }

@@ -98,7 +98,7 @@ export default {
         })
     },
     mounted(){
-        this.$store.dispatch("branch/getListService")
+        // this.$store.dispatch("branch/getListService")
     }
 }
 </script>

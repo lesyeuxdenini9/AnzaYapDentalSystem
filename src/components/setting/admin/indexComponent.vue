@@ -19,9 +19,13 @@
                              
                             </ul>   
             
+                  
                   <div class="row">
-                  <div class="col col-md-2">
-                      <button class="form-control" placeholder="Search">Search Filter</button>
+                    <div class="col-md-4">
+                      <input v-model="search" type="text" class="form-control" placeholder="Fullname..."/>
+                  </div>
+                  <div class="col-md-2">
+                      <button @click="searchAdmin()" class="form-control"><span class="fa fa-search"></span> Search</button>
                   </div>
                   </div>
             <table class="table table-bordered" ref="testdata" id="dataTable" width="100%" cellspacing="0">
@@ -143,6 +147,23 @@ export default {
             }
             navbranch[index].classList.add('active')
             this.activebranchIndex = index
+             this.$store.dispatch("branch/getListUser",0)
+        },
+
+        searchAdmin: function(){
+          let data = {
+              search: this.search,
+              branch: this.branches[this.activebranchIndex].id,
+              branchindex: this.activebranchIndex,
+              type: 0,
+            }     
+
+            if(this.search == ""){
+             this.$store.dispatch("branch/getListUser",0)
+            } else{
+              this.$store.dispatch("user/search",data)
+            } 
+
         },
     },
     computed: {

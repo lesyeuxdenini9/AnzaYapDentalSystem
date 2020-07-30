@@ -41,8 +41,8 @@
                       <div>
                         <div>
                           <div style="position:relative;">
-                          <img src="@/assets/dentallogo.png" style="height:100px;width:120px;"/>
-                              <span style="color:#F6C23E;position:absolute;bottom:10px;left:15%;">ANZA-<span style="color:#355CCC">YAP</span>
+                          <!-- <img src="@/assets/logo.jpg" style="height:100px;width:120px;"/> -->
+                              <span style="color:#F6C23E;position:absolute;bottom:10px;">ANZA-<span style="color:#355CCC">YAP</span>
                               <small style="font-size: 20pt;color:white;"> DENTAL CLINIC</small></span>
                             </div>
                         <span>Giving The Best Solutions...</span><br/>
@@ -88,7 +88,8 @@
 
           <div class="othercontent">
             <!-- <span class="contenticon fa fa-info-circle" aria-hidden="true" style=""/><br/> -->
-              <span class="contenttitle">About Us</span>
+              <span class="contenttitle">About Us</span><br/>
+              <img src="@/assets/logo.jpg" style="width: 60%;height:120px;border-radius: 20px;"/>
               <p class="text-center"> DR. LUNINGNING ANZA-YAP owns and manage the ANZA-YAP DENTAL CLINIC   DR. L. ANZA-YAP earned her degree of Doctor of Dental Medicine from the Manila Central University in 08 March 1986 and passed the Professional Regulation Commission’s Licensure Examination in 16 June 1987 (PRC ID No. 23169). At the onset of her professional practice, Dr. L. ANZA-YAP has been and continues to be an active member of the Philippine Dental Association (PDA) since 1987. Her specialization in Orthodontics lead to a sustaining membership with the International Association for Orthodontics, East Asia Regional Section, since 1990, and with its Honor Society as of 06 May 1993 as a Board-Candidate.
                 Her first clinic opened in 1988 within the Km. 13 East Service Road, thereby maximizing her practice with its general clientele. With growing awareness on the benefits of orthodental treatment, braces in particular, the second one was established at the FTI Sunshine Mall to cater for upscale market, as well as to serve the corporate accounts in the FTI Complex and the neighboring Veteran’s Center in 1996. To provide dental services for the growing population in the heart of Paranaque. the third clinic opened at SM City Bicutan in March 2003 and started rendering dental health services until March 2008.
               </p>
@@ -157,7 +158,7 @@
             <!-- <span class="contenticon fa fa-handshake" aria-hidden="true" style=""/><br/> -->
              <!-- <span class="contenticon fa fa-user-edit" aria-hidden="true" style=""/><br/> -->
               <span class="contenttitle">Appointment Process</span>
-              <p class="text-center">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+              <p class="text-center">Save time with online reservation and get notified for the next visit.</p>
 
             <div class="row">
                 <div class="col-md-12" style="position:relative;">
@@ -200,7 +201,7 @@
                   <div class="othercontent">
             <!-- <span class="contenticon fa fa-map-marker-alt" aria-hidden="true" style=""/><br/> -->
               <span class="contenttitle">Branches</span>
-              <p class="text-center">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+              <p class="text-center">Due to the continuing clamor for the quality dental health services at affordable prices at the nearest <br/> location of ANZA-YAP DENTAL CLINIC, Dr. ANZA-YAP would like to implement further expansion in other strategic location. <br/>To this, DR. ANZA-YAP would continue to manage and be the lead-person in providing outstanding dental health services.</p>
             <div class="branches">
                   <div class="branchdiv" v-for="(branch,index) in branches" :key="index">
                       <div  v-if="(index+1) & 1" class="row">

@@ -6,11 +6,11 @@ import FeedbackComponent from "@/components/patient/feedback/indexComponent"
 import TransactionComponent from "@/components/patient/records/TransactionComponent"
 import transactionformComponent from "@/components/patient/records/transactionForm"
 import viewBillComponent from "@/components/patient/records/viewBillComponent"
-
+import landingComponent from "@/components/LoginComponent"
 import { frontendmiddleware } from "@/helper/auth"
 
 const routes = [
-
+	{path: `/`,component: landingComponent,name: `landingPage`},
 	{path: `/patient`,component: DashboardComponent, beforeEnter: frontendmiddleware,name: 'patientdashboard'},
 	{path: `/patient/appointment`,component: AppointMentComponent, beforeEnter: frontendmiddleware,name: 'patientAppointment'},
 	{path: `/patient/reservation`,component: ReservationIndexComponent,beforeEnter: frontendmiddleware, name: `patientReservation`},

@@ -6,7 +6,7 @@
                     <hr/>
                     <div class="card">
                             <div class="card-header card-default" style="background:#343A40;color:white;"><span class="card-title" style="color:white !important;">Details</span>
-                              <button v-if="reservationInfo.status == 0" @click="showchangedateModal = true" class="float-right"><span class="fa fa-calendar"></span> Change Date</button>
+                              <button  @click="showchangedateModal = true" class="float-right"><span class="fa fa-calendar"></span> Change Date</button>
                             </div>
                         <div class="card-body">
                               <!-- {{reservationInfo}} -->
@@ -114,6 +114,7 @@
                                     <tr>
                                       <th>#</th>
                                       <th>Treatment</th>
+                                      <th>Description</th>
                                       <th>Price</th>
                                  
                                     </tr>
@@ -121,7 +122,8 @@
                                 <tbody>
                                     <tr v-for="(treatment,index) in reservationInfo.Treatments" :key="index">
                                       <td>{{index+1}}</td>
-                                      <td>{{treatment.service}}</td>
+                                      <td>{{treatment.Service.service}}</td>
+                                        <td>{{treatment.Service.description}}</td>
                                       <td>{{treatment.amount}}</td>
                          
                                     </tr>
