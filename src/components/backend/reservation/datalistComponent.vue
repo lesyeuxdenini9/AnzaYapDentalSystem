@@ -83,8 +83,8 @@
                                     <td>{{reserve.reservationNo}}</td>
                                     <td>{{reserve.date}}</td>
                                     <td>{{reserve.User.fullname}}</td>
-                                    <td>{{dHour(reserve.starttime)}}</td>
-                                    <td>{{dHour(reserve.endtime)}}</td>
+                                    <td>{{dHour(reserve.Start)}}</td>
+                                    <td>{{dHour(reserve.End)}}</td>
                                     <td>{{reserve.Dentist.fullname}}</td>
                                     <td>{{getStatus(reserve.status)}}</td>
                                     <td><a @click="viewDetails(index)" href="javascript:void(0)">View Details</a></td>
@@ -105,7 +105,7 @@
 
 <script>
 import detailsModal from "@/components/backend/reservation/detailsModal"
-import { formatDate ,format12Hour } from "@/helper/helper"
+import { formatDate } from "@/helper/helper"
 import { mapState } from "vuex"
 export default {
 
@@ -152,7 +152,7 @@ export default {
             return des
         },
         dHour: function(date){
-            return format12Hour(date)
+            return this.$helper.formatraw12Hour(date)
         },
         searchProceed: function(){
              this.search.branch = this.branches[this.activebranchIndex].id

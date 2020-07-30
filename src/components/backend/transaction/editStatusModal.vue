@@ -45,8 +45,8 @@
                                             <td>{{index+1}}</td>
                                             <td>{{reservation.reservationNo}}</td>
                                             <td>{{reservation.date}}</td>
-                                            <td>{{dHour(reservation.starttime)}}</td>
-                                            <td>{{dHour(reservation.endtime)}}</td>
+                                            <td>{{dHour(reservation.Start)}}</td>
+                                            <td>{{dHour(reservation.End)}}</td>
                                             <td><button @click="deleteReservation(reservation.id)" class="btn btn-danger"><span class="fa fa-trash"></span> Delete</button></td>
                                         </tr>
                                     </tbody>
@@ -66,7 +66,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import { format12Hour } from '@/helper/helper'
 import reservationModal from "@/components/backend/transaction/reservationModal"
 export default {
         props: {
@@ -88,7 +87,7 @@ export default {
         },
          methods: {
              dHour: function(date){
-                 return format12Hour(date)
+                 return this.$helper.formatraw12Hour(date)
              },
             closemodal: function(){
                  this.showReservationModal = false

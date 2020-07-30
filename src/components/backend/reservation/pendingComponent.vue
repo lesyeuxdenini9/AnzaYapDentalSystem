@@ -26,7 +26,7 @@
                                     <td>{{reservation.reservationNo}}</td>
                                     <td>{{reservation.Branch.branch}}</td>
                                     <td>{{dDate(reservation.date)}}</td>
-                                    <td>{{dHour(reservation.starttime)}}</td>
+                                    <td>{{dHour(reservation.Start)}}</td>
                                     <td>{{reservation.User.fullname}}</td>
                                     <td>{{reservation.Dentist.fullname}}</td>
                                     <td>
@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { formatBdayDate , formatHour } from '@/helper/helper'
+import { formatBdayDate  } from '@/helper/helper'
 import { mapState } from 'vuex'
 export default {
     methods: {
@@ -55,7 +55,7 @@ export default {
             return formatBdayDate(date)
         },
         dHour: function(date){
-            return formatHour(date)
+            return this.$helper.formatraw12Hour(date)
         },
         viewReservation: function(idno){
            this.$router.push({name: 'viewReservation',params: {idno: idno}})

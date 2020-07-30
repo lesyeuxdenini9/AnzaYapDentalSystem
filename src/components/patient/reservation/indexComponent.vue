@@ -119,8 +119,8 @@
                                   <span v-if="reserve.type == 0">New</span>
                                   <span v-else>Followup</span>
                                 </td>
-                                <td>{{formatDHour(reserve.starttime)}}</td>
-                                <td>{{formatDHour(reserve.endtime)}}</td>
+                                <td>{{DHour(reserve.Start)}}</td>
+                                <td>{{DHour(reserve.End)}}</td>
                                 <td>{{getStatus(reserve.status)}}</td>
                                 <td>{{reserve.Dentist.fullname}}</td>
                                 <td><ul>
@@ -407,6 +407,9 @@ export default {
       this.calendarOptions.slotMinTime = `${this.branches[this.ActiveBranchIndex].Schedules[selectedDate].start}:00`
       this.calendarOptions.slotMaxTime = `${this.branches[this.ActiveBranchIndex].Schedules[selectedDate].end}:00`
         
+    },
+    DHour: function(date){
+      return this.$helper.formatraw12Hour(date)
     },
     formatDHour: function(date){
       return format12Hour(date)

@@ -123,7 +123,7 @@
 
 <script>
 import { mapState , mapActions} from 'vuex'
-import { format12Hour,calculateAge, formatraw12Hour } from '@/helper/helper' 
+import { calculateAge, formatraw12Hour } from '@/helper/helper' 
 export default {
     computed: {
         ...mapState({
@@ -146,12 +146,12 @@ export default {
         },
         start: {
             get: function(){
-                return format12Hour(this.reservationInfo.starttime)
+                return this.$helper.formatraw12Hour(this.reservationInfo.Start)
             }
         },
         end: {
             get: function(){
-                return format12Hour(this.reservationInfo.endtime)
+                return this.$helper.formatraw12Hour(this.reservationInfo.End)
             }
         },
         status: {

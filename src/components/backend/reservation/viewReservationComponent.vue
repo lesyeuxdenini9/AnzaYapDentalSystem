@@ -26,7 +26,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon3">Start Time</span>
                                                 </div>
-                                                <input type="text" readonly style="background:white" class="form-control" :value="dDate(reservationInfo.starttime)"/>
+                                                <input type="text" readonly style="background:white" class="form-control" :value="dDate(reservationInfo.Start)"/>
                                       </div>
 
                                 </div>
@@ -36,7 +36,7 @@
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text" id="basic-addon3">End Time</span>
                                                 </div>
-                                                <input type="text" readonly style="background:white" class="form-control" :value="dDate(reservationInfo.endtime)"/>
+                                                <input type="text" readonly style="background:white" class="form-control" :value="dDate(reservationInfo.End)"/>
                                       </div>
 
                                 </div>
@@ -402,7 +402,7 @@ export default {
       this.showchangedateModal = false
     },
     dDate: function(date){
-      return formatHour(date)
+      return this.$helper.formatraw12Hour(date)
     },
     ...mapActions('reservation',[
         'getReservationInfo',

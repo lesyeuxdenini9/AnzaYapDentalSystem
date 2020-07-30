@@ -34,14 +34,14 @@
                                         <td><span class="itemtitle">EMAIl ADDRESS</span></td>
                                         <td>{{reservationInfo.User.email}}</td>
                                         <td><span class="itemtitle">START TIME</span></td>
-                                        <td>{{dHour(reservationInfo.starttime)}}</td>
+                                        <td>{{dHour(reservationInfo.Start)}}</td>
                                     </tr>
 
                                             <tr style="background:lightgray;">
                                         <td><span class="itemtitle">CONTACT NO</span></td>
                                         <td>{{reservationInfo.User.contact}}</td>
                                         <td><span class="itemtitle">END TIME</span></td>
-                                        <td>{{dHour(reservationInfo.endtime)}}</td>
+                                        <td>{{dHour(reservationInfo.End)}}</td>
                                     </tr>
 
                                      <tr>
@@ -129,7 +129,7 @@
 <script>
 import cancelModal from "@/components/backend/reservation/cancelModal"
 import notifModal from "@/components/backend/reservation/notifModal"
-import { format12Hour , calculateAge} from "@/helper/helper"
+import { calculateAge} from "@/helper/helper"
 import changeReserveModal from "@/components/backend/reservation/changeDateModal"
 export default {
     props: {
@@ -211,7 +211,7 @@ export default {
             this.closethis()
         },
         dHour: function(date){
-            return format12Hour(date)
+            return this.$helper.formatraw12Hour(date)
         },
         closethis: function(){
             this.$emit("closemodal")
