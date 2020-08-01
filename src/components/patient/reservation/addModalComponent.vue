@@ -281,16 +281,11 @@ export default {
                         this.errormsg = res.data.errors
                         this.$refs.errormessage.classList.add("show")
                     }else{
+                        this.$emit("init")
                         this.closethis()
                         this.$mysocket.emit('reservationCreated',res.data.data)
                         this.$mysocket.emit('notificationCreated')
-                        this.$emit("init")
-
-                         this.$swal.fire(
-                                    'Reservation has been created!',
-                                    '',
-                                    'success'
-                                  )
+                        this.$swal.fire('Reservation has been created!','','success')
                     }
             })
             .catch(err=>console.log(err))

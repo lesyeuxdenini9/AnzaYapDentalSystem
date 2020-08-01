@@ -64,12 +64,13 @@
 
                               <FullCalendar ref="fullCalendar" :options="calendarOptions" />
                  
-                            <h4 style="color:dimgray;">Opening: {{opening}} Closing: {{closing}}</h4>
+                            <h4 style="color:dimgray;" v-if="calendarOptions.slotMinTime == '00:00:00'">NO OPERATION / CLOSED</h4>
+                            <h4 style="color:dimgray;" v-else>Opening: {{opening}} Closing: {{closing}}</h4>
                   
                 </div>
 
                 <div class="modal-footer">
-                    <button class="btn btn-primary" @click="save"><span class="fa fa-check"></span> Change</button>
+                    <button :disabled="calendarOptions.slotMinTime == '00:00:00'" class="btn btn-primary" @click="save"><span class="fa fa-check"></span> Change</button>
                 </div>
                 </div>
             </div>

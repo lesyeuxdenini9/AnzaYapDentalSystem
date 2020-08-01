@@ -211,7 +211,7 @@ export default {
         */
         eventRemove: this.removeEvent,
         selectConstraint: {
-            start: new Date().setDate(new Date().getDate()+7), // just add days if needed for restriction
+          //  start: new Date().setDate(new Date().getDate()+7), // just add days if needed for restriction
         //    end: new Date().setDate(new Date().getDate()+9), // comment if no restriction of date onwards
         },
         hiddenDays: [],
@@ -238,7 +238,7 @@ export default {
       await this.getPatientReservations({start: calendarApi.view.activeStart,end: calendarApi.view.activeEnd,branchid: this.branches[this.ActiveBranchIndex].id, reservationNo: this.search.reservationNo})
        this.calendarOptions.events = this.getReservationEvents
     },
-    "filterBranch": function(newval){
+    "filterBranch": async function(newval){
             let branch = this.branches.filter((branch)=>{
                 if(branch.id == newval) return branch
             })
@@ -253,6 +253,12 @@ export default {
                  navbranch[x].classList.remove('active')
             }
             navbranch[index].classList.add('active')
+
+            let calendarApi = this.$refs.fullCalendar.getApi()
+            await this.getPatientReservations({start: calendarApi.view.activeStart,end: calendarApi.view.activeEnd,branchid: this.branches[this.ActiveBranchIndex].id, reservationNo: this.search.reservationNo})
+            this.calendarOptions.events = this.getReservationEvents
+  
+            this.resetScheduledDate()
     }
   },
   methods: {
@@ -264,47 +270,17 @@ export default {
             navbranch[index].classList.add('active')
             this.ActiveBranchIndex = index
             this.filterBranch = this.branches[this.ActiveBranchIndex].id
+            
      },
-    assignPossibleDates: function(start,end){
-      // if after a week and so on is allowed
-      // const timeDiff  = (end - start);
-      // const days      = timeDiff / (1000 * 60 * 60 * 24)
-      // for(let x = 0 ; x <= days ; x++){
-      //   let day
-      //   if(x == 0){
-      //     day = start
-      //   }else{
-      //     day = start.setDate(start.getDate()+1)
-      //   }
-      //   let compareday = new Date(day)
-      //   if(compareday >= this.calendarOptions.selectConstraint.start) {
-      //     this.getReservationEvents.push(  {
-      //            start: formatDate(compareday),
-      //             end: formatDate(compareday),
-      //             overlap: false,
-      //             display: 'background',
-      //             color: '#DEF5DA',
-      //             customRender: false,
-      //             extendedProps: {
-      //               status: 10,
-      //               dentist: '',
-      //               branch: '',
-      //             }
-      //       })
-      //   }
-      // }  
+    assignPossibleDates: function(){
 
-      console.log(start)
-      console.log(end)
-
-
-          // if one week is only allowed
-          console.log(this.ActiveReservation)
-
+        let scheduleddate =  new Date().setDate(new Date().getDate()+8)
+        let finalscheduledDate =  this.checkifnooperation(scheduleddate)
+   
         if(this.ActiveReservation.length == 0){
             this.getReservationEvents.push(  {
-                  start: formatDate(new Date().setDate(new Date().getDate()+8)),
-                  end: formatDate(new Date().setDate(new Date().getDate()+9)),
+                  start: formatDate(finalscheduledDate),
+                  end: formatDate(finalscheduledDate.setDate(finalscheduledDate.getDate()+1)),
                   overlap: false,
                   display: 'background',
                   color: '#DEF5DA',
@@ -316,12 +292,10 @@ export default {
                   }
             })
         }
-        
     },
     rendernewDates: async function(info){
-      console.log(info)
       await this.getPatientReservations({start: info.start,end: info.end,branchid: this.branches[this.ActiveBranchIndex].id, reservationNo: this.search.reservationNo})
-      this.assignPossibleDates(info.start,info.end)
+      this.assignPossibleDates()
       this.calendarOptions.events = this.getReservationEvents
     },
     eventRender: function(info){
@@ -448,32 +422,54 @@ export default {
 
       return des
     },
+    checkifnooperation: function(date){
+      let assigndate = new Date(date)
+      let index = assigndate.getDay()
+      let findindex = this.InactiveSchedules().indexOf(index)
+      if(findindex != -1){
+        assigndate = assigndate.setDate(assigndate.getDate()+1)
+        this.checkifnooperation(assigndate)
+      }
+      return new Date(assigndate)
+    },
     init: async function(){
           await this.$store.dispatch("branch/getListAllInfo")
           this.filterBranch = this.branches[this.ActiveBranchIndex].id
           let calendarApi = this.$refs.fullCalendar.getApi()
-          let datetoday = new Date()
-          let date_lweek =  new Date().setDate(datetoday.getDate()+14)
-          let date_fweek = new Date().setDate(datetoday.getDate()+8) 
-          date_lweek = new Date(date_lweek)
-          date_fweek = new Date(date_fweek)
+          // let datetoday = new Date()
+          // let date_lweek =  new Date().setDate(datetoday.getDate()+14)
+          // let date_fweek = new Date().setDate(datetoday.getDate()+8) 
+          // date_lweek = new Date(date_lweek)
+          // date_fweek = new Date(date_fweek)
 
-          this.startDate = date_fweek
-          this.endDate = date_lweek
+          // this.startDate = date_fweek
+          // this.endDate = date_lweek
 
           this.calendarOptions.hiddenDays = this.InactiveSchedules() // remove or comment this line if it is not necessary to hide off / no operation days
+
           let selectedDate = new Date(calendarApi.getDate())
           selectedDate = selectedDate.getDay()
           this.calendarOptions.slotMinTime = `${this.branches[this.ActiveBranchIndex].Schedules[selectedDate].start}:00`
           this.calendarOptions.slotMaxTime = `${this.branches[this.ActiveBranchIndex].Schedules[selectedDate].end}:00`
 
-          this.calendarOptions.selectConstraint.start = new Date(`${formatDate(new Date().setDate(new Date().getDate()+7))} 23:59:00`)
+        
           this.search.start = this.$helper.formatDate(calendarApi.view.activeStart)
           this.search.end = this.$helper.formatDate(calendarApi.view.activeEnd)
           await this.getPatientReservations({start: calendarApi.view.activeStart,end: calendarApi.view.activeEnd,branchid: this.branches[this.ActiveBranchIndex].id, reservationNo: this.search.reservationNo})
-        //  this.calendarOptions.events = this.getReservationEvents
+           this.calendarOptions.events = this.getReservationEvents
 
-        this.calendarOptions.selectConstraint.end = this.ActiveReservation.length == 0 ?  new Date().setDate(new Date().getDate()+9) :  new Date().setDate(new Date().getDate()+8)
+          this.resetScheduledDate()
+    
+    },
+    resetScheduledDate: function(){
+        let scheduleddate =  new Date().setDate(new Date().getDate()+8)
+        let finalscheduledDate =  this.checkifnooperation(scheduleddate)
+        this.calendarOptions.selectConstraint.start = new Date(`${formatDate(finalscheduledDate.setDate(finalscheduledDate.getDate()-1))} 23:59:00`)
+        this.calendarOptions.selectConstraint.end = this.ActiveReservation.length == 0 ?  new Date(finalscheduledDate.setDate(finalscheduledDate.getDate()+2)) :  new Date(finalscheduledDate.setDate(finalscheduledDate.getDate()+1)) 
+       // this.calendarOptions.selectConstraint.start = new Date(`${formatDate(new Date().setDate(new Date().getDate()+7))} 23:59:00`)
+       // this.calendarOptions.selectConstraint.end = this.ActiveReservation.length == 0 ?  new Date().setDate(new Date().getDate()+9) :  new Date().setDate(new Date().getDate()+8)
+       this.startDate = new Date(finalscheduledDate.setDate(finalscheduledDate.getDate()-1))
+       this.assignPossibleDates()
     },
     manualTableSearch: async function(){
         await this.getPatientReservations({start: this.search.start,end: this.search.end,branchid: this.branches[this.ActiveBranchIndex].id, reservationNo: this.search.reservationNo})
@@ -510,17 +506,6 @@ export default {
           return activeReservation
       }
     }
-    // InactiveSchedules: {
-    //   get: function(){
-    //     let inactivesched = []
-    //     this.schedules.filter((sched)=>{
-    //       if(sched.active == 0){
-    //        inactivesched.push(sched.index)
-    //       }
-    //     })
-    //     return inactivesched
-    //   }
-    // }
 
   },
   mounted(){
@@ -531,8 +516,13 @@ export default {
     this.$mysocket.on('updatePatientNotification',async ()=>{
       await this.getPatientReservations({start: calendarApi.view.activeStart,end: calendarApi.view.activeEnd,branchid: this.branches[this.ActiveBranchIndex].id, reservationNo: this.search.reservationNo})
         this.calendarOptions.events = this.getReservationEvents
-         this.calendarOptions.selectConstraint.end = this.ActiveReservation.length == 0 ?  new Date().setDate(new Date().getDate()+9) :  new Date().setDate(new Date().getDate()+8)
-    })
+      
+        let scheduleddate =  new Date().setDate(new Date().getDate()+8)
+        let finalscheduledDate =  this.checkifnooperation(scheduleddate)
+        this.calendarOptions.selectConstraint.start = new Date(`${formatDate(finalscheduledDate.setDate(finalscheduledDate.getDate()-1))} 23:59:00`)
+        this.calendarOptions.selectConstraint.end = this.ActiveReservation.length == 0 ?  new Date(finalscheduledDate.setDate(finalscheduledDate.getDate()+2)) :  new Date(finalscheduledDate.setDate(finalscheduledDate.getDate()+1)) 
+        this.assignPossibleDates()
+   })
 
   },
 

@@ -104,6 +104,8 @@ export default {
                                     this.$refs.errormessage.classList.add("show")
                                 }else{
                                     this.closethis()
+                                    this.$swal("Transaction has been updated","","success")
+                                    this.$mysocket.emit("updatedentistTransaction")
                                 }
                         })
                         .catch(err=>console.log(err))

@@ -95,8 +95,8 @@ export default {
                       this.errormsg = res.data.errors
                       this.$refs.errormessage.classList.add("show")
                 }else{
-                    alert("Check Reset link in your email")
-                    this.closethis()
+                    this.$swal(`${res.data.msg}`,'',res.data.type)             
+                    if(res.data.msg == "Check Reset link in your email") this.closethis()  
                 }
                 
                     

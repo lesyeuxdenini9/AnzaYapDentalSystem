@@ -25,7 +25,6 @@
 </template>
 
 <script>
-import { formatHour } from "@/helper/helper"
 export default {
     props: {
         denyInfo: {
@@ -47,7 +46,19 @@ export default {
         },
 
         proceed: function(){
-            this.$store.dispatch("reservation/denyReservation",{branchid: this.denyInfo.branchid,branch: this.denyInfo.branch,date: this.denyInfo.date,start: formatHour(this.denyInfo.start),end: formatHour(this.denyInfo.end),patient: this.denyInfo.patient,dentistname: this.denyInfo.dentistname,treatments: this.denyInfo.treatments,id: this.denyInfo.id,remarks: this.remarks,reserveNo: this.denyInfo.no,userID: this.denyInfo.userId})
+            this.$store.dispatch("reservation/denyReservation",{
+                branchid: this.denyInfo.branchid,
+                branch: this.denyInfo.branch,
+                date: this.denyInfo.date,
+                start: this.denyInfo.start,
+                end: this.denyInfo.end,
+                patient: this.denyInfo.patient,
+                dentistname: this.denyInfo.dentistname,
+                treatments: this.denyInfo.treatments,
+                id: this.denyInfo.id,
+                remarks: this.remarks,
+                reserveNo: this.denyInfo.no,
+                userID: this.denyInfo.userId})
                 .then(()=>{
                     this.$mysocket.emit('updatePatientNotification',{privateID: `patient_${this.denyInfo.userId}`})
                     this.$store.dispatch("reservation/getPending")

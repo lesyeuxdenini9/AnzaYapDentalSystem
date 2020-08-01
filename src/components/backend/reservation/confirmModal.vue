@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { formatHour , formatraw12Hour , formatBdayDate } from "@/helper/helper"
+import { formatraw12Hour , formatBdayDate } from "@/helper/helper"
 export default {
     props: {
         confirmInfo: {
@@ -76,7 +76,7 @@ export default {
     computed: {
         start: {
             get: function(){
-                return formatHour(this.confirmInfo.start)
+                return this.confirmInfo.start
             },
             set: function(newval){
                 this.start = newval
@@ -84,7 +84,7 @@ export default {
         },
         end: {
             get: function(){
-                return formatHour(this.confirmInfo.end)
+                return this.confirmInfo.end
             },
             set: function(newval){
                 this.end = newval
@@ -113,7 +113,22 @@ export default {
         },
 
         proceed: function(){
-            this.$store.dispatch("reservation/approvedReservation",{branchid: this.confirmInfo.branchid,branch: this.confirmInfo.branch,minTime: this.confirmInfo.minTime,maxTime: this.confirmInfo.maxTime, patient: this.confirmInfo.patient,dentistname: this.confirmInfo.dentistname,treatments: this.confirmInfo.treatments, dentist:this.confirmInfo.dentist,date: this.confirmInfo.date,id: this.confirmInfo.id,remarks: this.remarks,reserveNo: this.confirmInfo.no,userID: this.confirmInfo.userId,start: this.starttime,end:this.endtime})
+            this.$store.dispatch("reservation/approvedReservation",{
+                branchid: this.confirmInfo.branchid,
+                branch: this.confirmInfo.branch,
+                minTime: this.confirmInfo.minTime,
+                maxTime: this.confirmInfo.maxTime,
+                patient: this.confirmInfo.patient,
+                dentistname: this.confirmInfo.dentistname,
+                treatments: this.confirmInfo.treatments, 
+                dentist:this.confirmInfo.dentist,
+                date: this.confirmInfo.date,
+                id: this.confirmInfo.id,
+                remarks: this.remarks,
+                reserveNo: this.confirmInfo.no,
+                userID: this.confirmInfo.userId,
+                start: this.starttime,
+                end:this.endtime})
                 .then((res)=>{
                     if(res.data.errors){
                         this.errormsg = res.data.errors

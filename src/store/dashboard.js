@@ -3,8 +3,23 @@ export default {
     namespaced: true,
     state: {
         data: {},
+        dentistTransactions: [],
     },
     actions: {
+        dentistTransaction: function(context,branchid){
+            return new Promise((resolve,reject)=>{
+                Axios.get(`${context.rootState.apiUrl}/api/dashboard/dentistTransaction/${branchid}`,context.rootState.headerconfig)
+                .then((res)=>{
+                    resolve(res.data.data)
+                })
+                .catch((err)=>{
+                    if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                        context.dispatch("refreshtoken",null,{root:true})
+                    }     
+                    reject(err)          
+                })
+            })
+        },
         getData: function(context,branch){
             return new Promise((resolve,reject)=>{
                 Axios.get(`${context.rootState.apiUrl}/api/dashboard/getData/${branch}`,context.rootState.headerconfig)
@@ -30,6 +45,9 @@ export default {
     mutations: {
         setData: function(state,data){
             state.data = data
+        },
+        setDentistTransaction: function(state,data){
+            state.dentistTransactions = data
         }
     }
 }

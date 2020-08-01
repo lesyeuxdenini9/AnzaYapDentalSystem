@@ -223,53 +223,33 @@ export default {
         },
 
         proceed: function(){
-            let proceed = 0
-            if(this.reservationInfo.type == 0){
-      
-                     this.$swal({
-                        title: 'Create new Transaction ?',
-                        text: "",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes!'
-                    }).then((result) => {
-                        if (result.value) {
-                             proceed = 1
-                        }
-                    })
-            }else{
-          
-                     this.$swal({
-                        title: `Proceed to Transaction No:  ${this.reservationInfo.Transaction.transactionNo}?`,
-                        text: "",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes!'
-                    }).then((result) => {
-                        if (result.value) {
-                             proceed = 1
-                        }
-                    })
-            }
+            // let proceed = 0
 
-            if(proceed == 1){
-                   this.$store.dispatch("reservation/proceedTransaction",this.reservationInfo)
-                        .then(()=>{
-                            this.closethis()
-                            this.$emit("init")
-                            this.$swal("Transaction Successful","","success")
-                        })
-                        .catch(err=>console.log(err))    
-            }
+            let titledes = this.reservationInfo.type == 0 ? 'Create new Transaction ?' :  `Proceed to Transaction No:  ${this.reservationInfo.Transaction.transactionNo}?`
+                 this.$swal({
+                        title: titledes,
+                        text: "",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes!'
+                    }).then((result) => {
+                        if (result.value) {
+                            this.$store.dispatch("reservation/proceedTransaction",this.reservationInfo)
+                                    .then(()=>{
+                                        this.closethis()
+                                        this.$emit("init")
+                                        this.$swal("Transaction Successful","","success")
+                                    })
+                                    .catch(err=>console.log(err))  
+                        }
+                    })
+
          
         }
   
     },
-
     mounted(){
             this.reservationchangedata = {
                 dentistId: this.reservationInfo.dentistId,

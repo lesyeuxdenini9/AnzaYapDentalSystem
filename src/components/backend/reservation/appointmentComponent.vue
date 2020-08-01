@@ -8,7 +8,7 @@
                   <ul class="legends">
                     <li><button disabled style="height:20px;width:20px;background: #1CC88A"></button> Waiting</li>
                     <li><button disabled style="height:20px;width:20px;background: dimgray"></button> Cancelled</li>
-                    <li><button disabled style="height:20px;width:20px;background: #385ECE"></button> On-Going</li>
+                    <li><button disabled style="height:20px;width:20px;background: #385ECE"></button> Confirmed</li>
                   </ul>
                     <hr/>
                           <div class="row">
@@ -62,7 +62,66 @@
 
                         </div>
                     </div>
-                  
+
+                      <br/>
+                      
+                      <div class="card">
+                        <div class="card-header"><span class="card-title">On-Going Transactions - {{this.branches[this.activebranchIndex].branch}}</span></div>
+                        <div class="card-body">
+                              <table class="table table-condensed table-striped">
+                                <thead>
+                                    <tr>
+
+                                      <th>DENTIST</th>
+                                      <th>TRANSACTION NO</th>
+                                      <th>PATIENT</th>
+                                      <th>START TIME</th>
+                                      <th>ESTIMATED END TIME</th>
+                                      <th></th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                  <tr v-for="(dentist,index) in dentistTransactions" :key="index">
+                                    <td>{{dentist.fullname}}</td>
+                                    <td>
+                                      <span v-if="dentist.Transactions.length == 0"> - </span>
+                                      <ul v-else style="margin:0;padding:0;">
+                                        <li v-for="transaction in dentist.Transactions" :key="transaction.id">{{transaction.transactionNo}}</li>
+                                      </ul>
+                                    </td>
+                                      <td>
+                                      <span v-if="dentist.Transactions.length == 0"> - </span>
+                                         <ul v-else style="margin:0;padding:0;">
+                                        <li v-for="transaction in dentist.Transactions" :key="transaction.id">{{transaction.User.fullname}}</li>
+                                      </ul>
+                                    </td>
+                                     <td>
+                                      <span v-if="dentist.Transactions.length == 0"> - </span>
+                                      <ul v-else style="margin:0;padding:0;">
+                                        <li v-for="transaction in dentist.Transactions" :key="transaction.id">{{dHour(transaction.Start)}}</li>
+                                      </ul>
+                                    </td>
+                                       <td>
+                                      <span v-if="dentist.Transactions.length == 0"> - </span>
+                                      <ul v-else style="margin:0;padding:0;">
+                                        <li v-for="transaction in dentist.Transactions" :key="transaction.id">{{dHour(transaction.End)}}</li>
+                                      </ul>
+                                    </td>
+
+                                    <td>
+                                      <span v-if="dentist.Transactions.length == 0"> - </span>
+                                      <ul v-else style="margin:0;padding:0;">
+                                        <li v-for="transaction in dentist.Transactions" :key="transaction.id"><router-link :to="{name: 'transactioninfo',params: {idno: transaction.id}}">View Transaction</router-link></li>
+                                      </ul>
+                                    </td>
+                                  </tr> 
+                                </tbody>
+                              </table>
+                        </div>
+                      </div>
+                
 
         </div>
 
@@ -93,6 +152,7 @@ export default {
   },
   data: function() {
     return {
+      dentistTransactions: [],
       filterDentist: 0,
       walkinReservation: {},
       showwalkinmodal: false,
@@ -295,6 +355,16 @@ export default {
 
             if(findindex.length == 0) this.filterDentist = 0
 
+            this.$store.dispatch("dashboard/dentistTransaction",this.branches[this.activebranchIndex].id).then((data)=>{
+             console.log(data)
+             this.dentistTransactions = data
+           })
+
+          
+
+        },
+        dHour: function(date){
+          return this.$helper.formatraw12Hour(date)
         },
     formatDHour: function(date){
       return format12Hour(date)
@@ -425,6 +495,11 @@ export default {
                 })
                 // console.log(this.getApprovedAppointments)
               // calendarApi.addEventSource(this.getApprovedAppointments)
+
+                this.$store.dispatch("dashboard/dentistTransaction",this.branches[this.activebranchIndex].id).then((data)=>{
+                      console.log(data)
+                      this.dentistTransactions = data
+                  })  
               resolve()
           }catch(err){
             reject(err)
@@ -460,7 +535,16 @@ export default {
       .then(async ()=>{
           this.changeFilterbranch(this.branches[this.activebranchIndex].id,0)
           await this.init()
+          
       }).catch(err=>console.log(err))
+
+
+     this.$mysocket.on('dentistTransaction',()=>{
+           this.$store.dispatch("dashboard/dentistTransaction",this.branches[this.activebranchIndex].id).then((data)=>{
+             console.log(data)
+               this.dentistTransactions = data
+           })
+      })
     
   }
 }

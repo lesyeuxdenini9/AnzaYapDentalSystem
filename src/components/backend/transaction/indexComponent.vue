@@ -3,7 +3,7 @@
          <!-- Begin Page Content -->
         <div class="container-fluid">
                   <span class="pageheader"><i class="fa fa-info"></i> {{"Transaction No:"+transactionInfo.transactionNo}}
-                   <router-link :to="{name: 'patientinfo',params: {idno: transactionInfo.User.id}}"><button class="float-right"><span class="fa fa-times"></span></button></router-link>
+                   <button class="float-right" @click="goback()"><span class="fa fa-times"></span></button>
                   </span>
                     <hr/>
 
@@ -291,6 +291,9 @@ export default {
           } 
       },
       methods: {
+          goback: function(){
+              this.$router.go(-1)
+          },
           viewTransactionForm: function(){
               this.$router.push({name: 'transactionform',params: {idno: this.$route.params.idno}})
           },

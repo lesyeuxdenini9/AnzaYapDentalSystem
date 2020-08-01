@@ -79,7 +79,7 @@
           
      <div id="contactHome">
           <ul>
-            <li><a href="javascript:void(0)" target="_blank"><img src="@/assets/fb.png"></a></li>
+            <li><a href="https://www.facebook.com/Anza-Yap-Dental-Clinic-112558770549555/" target="_blank"><img src="@/assets/fb.png"></a></li>
             <li><a href="javascript:void(0)" target="_blank"><img src="@/assets/insta.png"></a></li>
             <li><a href="javascript:void(0)" target="_blank"><img src="@/assets/twitter.png"></a></li>
           </ul>
