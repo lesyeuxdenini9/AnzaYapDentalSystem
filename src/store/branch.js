@@ -125,9 +125,9 @@ export default {
                 })
         },
 
-        getInfo: function(context,idno){
+        getInfo: function(context,{idno, type}){
             return new Promise((resolve,reject)=>{
-                Axios.get(`${context.rootState.apiUrl}/api/branch/getInfo/${idno}`,context.rootState.headerconfig)
+                Axios.get(`${context.rootState.apiUrl}/api/branch/getInfo/${idno}/${type}`,context.rootState.headerconfig)
                     .then((res)=>{     
                         context.commit("setBranch",res.data.data) 
                         resolve(res.data.data)       

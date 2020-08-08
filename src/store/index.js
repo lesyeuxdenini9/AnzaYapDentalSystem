@@ -117,8 +117,7 @@ export default new Vuex.Store({
                     localStorage.removeItem('isadmin')
                     localStorage.removeItem('isstaff')
                     localStorage.removeItem('issuperadmin')
-                    context.commit('changeislogin',{status: false})       
-                    context.commit('changeislogin',{status: false})     
+                    context.commit('changeislogin',{status: false})        
                 })
    
            

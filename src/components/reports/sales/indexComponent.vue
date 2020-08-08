@@ -64,11 +64,11 @@
 
                   <hr/>
 
-                      <!-- <span class="reporttitle"><span class="fa fa-medkit"></span> Pharmacy Earnings</span>
+                      <span class="reporttitle"><span class="fa fa-medkit"></span> Pharmacy Earnings</span>
                   <div class="row"> 
                                
                         
-                                <div @click="changesale('record_transactionlist')" class="col-xl-3 col-md-6 mb-4 reports">
+                                <div @click="changesale('pharmacy_daily')" class="col-xl-3 col-md-6 mb-4 reports">
                                 <div class="card border-left-primary shadow h-100 py-2">
                                     <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -86,7 +86,7 @@
 
 
                              
-                                <div @click="changesale('record_transactionlist')" class="col-xl-3 col-md-6 mb-4 reports">
+                                <div @click="changesale('pharmacy_monthly')" class="col-xl-3 col-md-6 mb-4 reports">
                                 <div class="card border-left-primary shadow h-100 py-2">
                                     <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -103,7 +103,7 @@
                                 </div>
 
                                         
-                                <div @click="changesale('record_transactionlist')" class="col-xl-3 col-md-6 mb-4 reports">
+                                <div @click="changesale('pharmacy_yearly')" class="col-xl-3 col-md-6 mb-4 reports">
                                 <div class="card border-left-primary shadow h-100 py-2">
                                     <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -122,7 +122,7 @@
 
                   </div>
 
-                  <hr/> -->
+                  <hr/>
 
         </div>
   

@@ -245,7 +245,7 @@
                     <editActionModal :branchid="transactionInfo.branchId" :toothType="transactionInfo.toothType"  :topT="topTeeth" :botT="BottomTeeth" :transactID="transactID" :editActionInfo="editActionInfo" v-if="showeditActionModal" @closemodal="closemodal"/>
                     <editStatusModal :transactionInfo="transactionInfo" :editstatus="editstatus" v-if="showeditStatusModal" @closemodal="closemodal"/>
                     <createPrescriptionModal :branchid="transactionInfo.branchId" :transactID="transactID" v-if="showaddPrescriptionModal" @closemodal="closemodal"/>
-                    <editPrescriptionModal :editPrescriptionInfo="editPrescriptionInfo" :transactID="transactID" v-if="showeditPrescriptionModal" @closemodal="closemodal"/>
+                    <editPrescriptionModal :branchid="transactionInfo.branchId" :editPrescriptionInfo="editPrescriptionInfo" :transactID="transactID" v-if="showeditPrescriptionModal" @closemodal="closemodal"/>
         
                     <addNewTreatmentModal :branchId="transactionInfo.branchId" :transactID="transactID" v-if="showAddNewTreatmentModal" @closemodal="closemodal"/>
 
@@ -308,14 +308,38 @@ export default {
               this.showeditPrescriptionModal = true
           },
           removePrescription: function(id){
-              if(confirm("Are you sure you want to remove this?")){
-                 this.$store.dispatch("transaction/removePrescription",{tid: this.$route.params.idno, id: id})
-              }
+    
+               this.$swal({
+                title: 'Are you sure you want to remove this?',
+                text: "",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes!'
+              }).then((result) => {
+                if (result.value) {
+                  this.$store.dispatch("transaction/removePrescription",{tid: this.$route.params.idno, id: id})
+                }
+              })
           },
           removeTreatment: function(id){
-              if(confirm("Are you sure you want to remove this?")){
+    
+                this.$swal({
+                title: 'Are you sure you want to remove this?',
+                text: "",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes!'
+              }).then((result) => {
+                if (result.value) {
                  this.$store.dispatch("transaction/removeTreatment",{tid: this.$route.params.idno, id: id})
-              }
+                }
+              })
+
+              
           },
           formatDate: function(date){
               return formatBdayDate(date)

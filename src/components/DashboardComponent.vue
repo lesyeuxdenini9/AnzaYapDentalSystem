@@ -104,6 +104,7 @@
             <div class="card">
               <div class="card-header" style="text-align:center;"><span style="font-size:20pt;" class="card-title">EARNINGS LAST 7 DAYS</span></div>
               <div class="card-body">
+              
                  <line-chart :download="true"  :curve="false" :data="weekSalesData"></line-chart>
               </div>
             </div>
@@ -117,9 +118,19 @@
                 <div class="card">
               <div class="card-header" style="text-align:center;background:orange;"><span style="font-size:20pt;color:white !important;" class="card-title">ITEM LOW STOCKS</span></div>
               <div class="card-body">
+                  <span>Dental Clinic Items</span>
                   <table class="table table-condensed table-striped">
                     <tbody>
                       <tr v-for="(med,index) in medicinesLow" :key="index">
+                          <td style="font-size:12pt;font-weight:normal;">{{med.medicine}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <hr/>
+                  <span>Pharmacy Medicines</span>
+                  <table class="table table-condensed table-striped">
+                    <tbody>
+                      <tr v-for="(med,index) in pharmacyLow" :key="index">
                           <td style="font-size:12pt;font-weight:normal;">{{med.medicine}}</td>
                       </tr>
                     </tbody>
@@ -132,9 +143,19 @@
                 <div class="card">
               <div class="card-header" style="text-align:center;background:maroon;"><span style="font-size:20pt;color:white !important;" class="card-title">ITEM OUT OF STOCKS</span></div>
               <div class="card-body">
+                      <span>Dental Clinic Items</span>
                   <table class="table table-condensed table-striped">
                     <tbody>
                       <tr v-for="(med,index) in medicinesZero" :key="index">
+                          <td style="font-size:12pt;font-weight:normal;">{{med.medicine}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <hr/>
+                  <span>Pharmacy Medicines</span>
+                  <table class="table table-condensed table-striped">
+                    <tbody>
+                      <tr v-for="(med,index) in pharmacyZero" :key="index">
                           <td style="font-size:12pt;font-weight:normal;">{{med.medicine}}</td>
                       </tr>
                     </tbody>
@@ -169,6 +190,8 @@ export default {
         },
         medicinesLow: [],
         medicinesZero: [],
+        pharmacyLow: [],
+        pharmacyZero: [],
       }
     },
     computed: {
@@ -179,6 +202,24 @@ export default {
 
     },
     methods: {
+         initializeStockItems: function(){
+
+            this.medicinesLow = this.branches[this.activebranchIndex].Medicines.filter((med)=>{
+                if(med.stocks > 0 && med.stocks <= med.limitMin && med.type == 0) return med
+            })
+
+            this.medicinesZero = this.branches[this.activebranchIndex].Medicines.filter((med)=>{
+                  if(med.stocks == 0 && med.type == 0) return med
+            })
+
+            this.pharmacyLow = this.branches[this.activebranchIndex].Medicines.filter((med)=>{
+                if(med.stocks > 0 && med.stocks <= med.limitMin && med.type == 1) return med
+            })
+
+              this.pharmacyZero = this.branches[this.activebranchIndex].Medicines.filter((med)=>{
+                  if(med.stocks == 0 && med.type == 1) return med
+            })
+         },
          changeFilterbranch: function(index){
             const navbranch = document.getElementsByClassName('navbranch')
             for(let x = 0 ; x < navbranch.length ; x++){
@@ -192,32 +233,19 @@ export default {
             })
          }).catch(err=>console.log(err))
 
-         this.medicinesLow = this.branches[this.activebranchIndex].Medicines.filter((med)=>{
-            if(med.stocks > 0 && med.stocks <= med.limitMin) return med
-         })
-
-           this.medicinesZero = this.branches[this.activebranchIndex].Medicines.filter((med)=>{
-               if(med.stocks == 0) return med
-         })
-
+          this.initializeStockItems()
         },  
     },
     mounted(){
        this.$store.dispatch("activenav","dashboardnav")
-       this.$store.dispatch("branch/getListMedicine").then(()=>{
+       this.$store.dispatch("branch/getListMedicine","All").then(()=>{
          this.$store.dispatch("dashboard/getData",this.branches[this.activebranchIndex].id).then(()=>{
              this.data.weeksales.forEach((sale)=>{
                   this.weekSalesData.push([`${sale.day} (${sale.date})`, sale.sale])
             })
          }).catch(err=>console.log(err))
 
-             this.medicinesLow = this.branches[this.activebranchIndex].Medicines.filter((med)=>{
-            if(med.stocks > 0 && med.stocks <= med.limitMin) return med
-         })
-
-           this.medicinesZero = this.branches[this.activebranchIndex].Medicines.filter((med)=>{
-               if(med.stocks == 0) return med
-         })
+          this.initializeStockItems()
 
        }).catch(err=>console.log(err))
        

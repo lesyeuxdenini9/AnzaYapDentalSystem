@@ -64,13 +64,14 @@
 
                               <FullCalendar ref="fullCalendar" :options="calendarOptions" />
                  
-                            <h4 style="color:dimgray;" v-if="calendarOptions.slotMinTime == '00:00:00'">NO OPERATION / CLOSED</h4>
+                            <h4 style="color:dimgray;" v-if="dateactive == 0">NO OPERATION / CLOSED</h4>
                             <h4 style="color:dimgray;" v-else>Opening: {{opening}} Closing: {{closing}}</h4>
+
                   
                 </div>
 
                 <div class="modal-footer">
-                    <button :disabled="calendarOptions.slotMinTime == '00:00:00'" class="btn btn-primary" @click="save"><span class="fa fa-check"></span> Change</button>
+                    <button :disabled="dateactive == 0" class="btn btn-primary" @click="save"><span class="fa fa-check"></span> Change</button>
                 </div>
                 </div>
             </div>
@@ -107,6 +108,7 @@ export default {
             this.filterData.minTime = `${this.branch.Schedules[selectedDate].start}`
             this.filterData.maxTime = `${this.branch.Schedules[selectedDate].end}`
             this.filterData.branch = this.branch.id
+            this.dateactive = this.branch.Schedules[selectedDate].active
 
 
              await this.getApprovedListDay(this.filterData)
@@ -115,6 +117,7 @@ export default {
     },
     data: function(){
         return {
+            dateactive: 0,
             activeIndexBranch: 0,
              errormsg: [],
              filterData: {
@@ -234,7 +237,7 @@ export default {
             this.$emit("closemodal")
         },
         init: async function(){
-              this.$store.dispatch("branch/getInfo",this.transaction.branchId).then(async ()=>{
+              this.$store.dispatch("branch/getInfo",{idno: this.transaction.branchId , type: 0}).then(async ()=>{
                   this.filterData.date = this.transaction.date
                 let calendarApi = this.$refs.fullCalendar.getApi()
                let scheduledate = new Date(this.filterData.date)
@@ -246,6 +249,7 @@ export default {
                 this.filterData.minTime = `${this.branch.Schedules[selectedDate].start}`
                 this.filterData.maxTime = `${this.branch.Schedules[selectedDate].end}`
                 this.filterData.branch = this.branch.id
+                this.dateactive = this.branch.Schedules[selectedDate].active
                 await this.getApprovedListDay(this.filterData)
                 this.calendarOptions.events = this.getActiveEvents
               })

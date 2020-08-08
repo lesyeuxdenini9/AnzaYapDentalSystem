@@ -38,7 +38,7 @@
                                         <div class="col-md-6">
                                              <div class="input-group mb-3">
                                       <div class="input-group-prepend">
-                                          <span class="input-group-text" id="basic-addon3">Cash Payment Amount</span>
+                                          <span class="input-group-text" id="basic-addon3">Cash Amount Received</span>
                                       </div>
                                             <input type="number" class="form-control billingitem" v-model="payment.cashpayment"/>
                                                 

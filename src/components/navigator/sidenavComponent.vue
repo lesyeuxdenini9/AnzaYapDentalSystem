@@ -54,12 +54,12 @@
             
         </div>
        </li>
-<!-- 
+
         <li class="nav-item" id="pharmacynav">
         <router-link class="nav-link" :to="{name: 'pharmacySale'}">
-          <i class="fas fa-fw fa fa-medkit"></i>
+          <i class="fas fa-fw fas fa-file-prescription"></i>
           <span> Pharmacy</span></router-link>
-      </li> -->
+      </li>
 
 
 

@@ -2,14 +2,24 @@
     <div> 
          <!-- Begin Page Content -->
         <div class="container-fluid" style="position:relative;">
-                  <span class="pageheader"><i class="fa fa-handshake"></i> Appointment List
+              <div class="row">
+                  <div class="col-md-6">
+                     <span class="pageheader"><i class="fa fa-handshake"></i> Appointment List
                   </span>
-
-                  <ul class="legends">
+                  </div>
+                  <div class="col-md-6">
+                      <ul class="legends">
                     <li><button disabled style="height:20px;width:20px;background: #1CC88A"></button> Waiting</li>
                     <li><button disabled style="height:20px;width:20px;background: dimgray"></button> Cancelled</li>
                     <li><button disabled style="height:20px;width:20px;background: #385ECE"></button> Confirmed</li>
                   </ul>
+
+                  </div>
+
+              </div>
+                 
+
+                
                     <hr/>
                           <div class="row">
                             <div class="col col-md-10">
@@ -233,9 +243,9 @@ export default {
     walkinReserve: function(){
       this.showwalkinmodal = true
       this.walkinReservation = {
-              dentistId: "",
+              dentistId: 0,
               branchId: this.branches[this.activebranchIndex].id,
-              userId: "",
+              userId: 0,
               date: new Date(),
           }
     },

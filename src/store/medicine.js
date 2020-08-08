@@ -16,6 +16,7 @@ export default {
                 Axios.post(`${context.rootState.apiUrl}/api/medicine/search`,data,context.rootState.headerconfig)
                 .then((res)=>{     
                         resolve(res.data.data)
+                        context.commit("setmedicine",res.data.data)
                         context.commit('branch/setItems',{data: res.data.data,index: data.branchindex})          
                 })
                 .catch((err)=>{

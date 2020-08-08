@@ -146,6 +146,17 @@
                                                     <td colspan="2" style="padding-top:0;padding-bottom:0;text-align:right;font-weight:bold;font-size:16pt;">Grand Total Amount: </td>
                                                     <td colspan="2" style="padding-top:0;padding-bottom:0;font-weight:bold;font-size:16pt;background:#F8F7DA;">{{totalAmount - billinfo.Transaction.discount}}</td>
                                                 </tr>
+                                                   <tr>
+                                                    <td colspan="4"></td>
+                                                </tr>
+                                                  <tr>
+                                                    <td colspan="2" style="padding-top:0;padding-bottom:0;text-align:right;font-weight:bold;font-size:16pt;">Amount Received: </td>
+                                                    <td colspan="2" style="padding-top:0;padding-bottom:0;font-weight:bold;font-size:16pt;background:#F8F7DA;">{{billinfo.payment+billinfo.change}}</td>
+                                                </tr>
+                                                  <tr>
+                                                    <td colspan="2" style="padding-top:0;padding-bottom:0;text-align:right;font-weight:bold;font-size:16pt;">Change: </td>
+                                                    <td colspan="2" style="padding-top:0;padding-bottom:0;font-weight:bold;font-size:16pt;background:#F8F7DA;">{{billinfo.change}}</td>
+                                                </tr>
                                          
 
                                         </table>

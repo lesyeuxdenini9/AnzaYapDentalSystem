@@ -6,6 +6,7 @@ export default {
         transactionInfo: {},
         prescriptInfo: {},
         billinfo: {},
+        pharmacyTransactions: [],
     },
     actions: {
         updateActualTreatmentAmount: function(context,data){
@@ -358,6 +359,17 @@ export default {
                     reject(err)          
                 })
             })
+        },
+        getPastListPharmacy: function(context,data){
+            Axios.post(`${context.rootState.apiUrl}/api/transaction/getPastListPharmacy`,data,context.rootState.headerconfig)
+            .then((res)=>{     
+                context.commit("setpharmacyTransactions",res.data.data)
+            })
+            .catch((err)=>{
+                if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                    context.dispatch("refreshtoken",null,{root:true})
+                }               
+            })
         }
     },
     getters: {
@@ -391,6 +403,9 @@ export default {
         },
         setBillInfo: function(state,data){
             state.billinfo = data
+        },
+        setpharmacyTransactions: function(state,data){
+            state.pharmacyTransactions = data
         }
     }
 }

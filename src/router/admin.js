@@ -34,10 +34,15 @@ import medicalCertificateComponent from "@/components/backend/transaction/medica
 import transactionformComponent from "@/components/backend/transaction/transactionformComponent"
 import transactionreportRecordComponent from "@/components/reports/records/transactionComponent"
 import billingreportRecordComponent from "@/components/reports/records/billingComponent"
+import pharmacyPurchaseComponent from "@/components/reports/records/pharmacyPurchaseComponent"
 import dailySaleComponent from "@/components/reports/sales/treatment/daily"
 import monthlySaleComponent from "@/components/reports/sales/treatment/monthly"
 import yearlySaleComponent from "@/components/reports/sales/treatment/yearly"
 import landingComponent from "@/components/LoginComponent"
+
+import pharmacydailyComponent from "@/components/reports/sales/pharmacy/daily"
+import pharmacymonthlyComponent from "@/components/reports/sales/pharmacy/monthly"
+import pharmacyyearlyComponent from "@/components/reports/sales/pharmacy/yearly"
 
 import { backendmiddleware } from "@/helper/auth"
 
@@ -51,8 +56,8 @@ const routes = [
 	{path: `/backend/superadminlist`,component: superadminComponent,beforeEnter: backendmiddleware,name : 'superadminlist'},
 	{path: `/backend/servicelist`,component: serviceComponent,beforeEnter: backendmiddleware, name: 'servicelist'},
 	{path: `/backend/dentistlist`,component: dentistComponent,beforeEnter: backendmiddleware, name: 'dentistlist'},
-	{path: `/backend/medicinelist`,component: medicineComponent,beforeEnter: backendmiddleware,name: 'medicinelist'},
-	{path: `/backend/medicinelist/stocksin/:branch`,component: stocksComponent, beforeEnter: backendmiddleware, name: 'stocksin'},
+	{path: `/backend/medicinelist/:type`,component: medicineComponent,beforeEnter: backendmiddleware,name: 'medicinelist'},
+	{path: `/backend/medicinelist/stocksin/:branch/:type`,component: stocksComponent, beforeEnter: backendmiddleware, name: 'stocksin'},
 	{path: `/backend/medicinelist/item/:idno`,component: viewItemComponent,beforeEnter: backendmiddleware, name: 'viewItemDetails'},
 
 	{path: `/backend/patient/list`,component: listPatientComponent,beforeEnter: backendmiddleware,name: `listPatient`},
@@ -82,11 +87,16 @@ const routes = [
 	{path: `/backend/feedbacks`,component: backendFeedbackComponent,beforeEnter: backendmiddleware,name: `backendfeedback`},
 	{path: `/backend/reports/records/transaction`,component: transactionreportRecordComponent,beforeEnter: backendmiddleware, name: `record_transactionlist`},
 	{path: `/backend/reports/records/billing`,component: billingreportRecordComponent,beforeEnter: backendmiddleware, name: `record_billinglist`},
+	{path: `/backend/reports/records/pharmacy/purchase`,component: pharmacyPurchaseComponent,beforeEnter: backendmiddleware,name: `record_pharmacyPurchaselist`},
 
 
 	{path: `/backend/reports/sales/daily`,component: dailySaleComponent,beforeEnter: backendmiddleware,name: `sale_daily`},
 	{path: `/backend/reports/sales/monthly`,component: monthlySaleComponent,beforeEnter: backendmiddleware,name: `sale_monthly`},
 	{path: `/backend/reports/sales/yearly`,component: yearlySaleComponent,beforeEnter: backendmiddleware,name: `sale_yearly`},
+
+	{path: `/backend/reports/pharmacy/daily`,component: pharmacydailyComponent,beforeEnter: backendmiddleware,name: `pharmacy_daily`},
+	{path: `/backend/reports/pharmacy/monthly`,component: pharmacymonthlyComponent,beforeEnter: backendmiddleware,name: `pharmacy_monthly`},
+	{path: `/backend/reports/pharmacy/yearly`,component: pharmacyyearlyComponent,beforeEnter: backendmiddleware,name: `pharmacy_yearly`},
 
 
 	

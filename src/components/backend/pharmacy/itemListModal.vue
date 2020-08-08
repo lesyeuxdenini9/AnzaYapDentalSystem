@@ -18,30 +18,46 @@
                                       </div>
 
                         <div>
-                            <table class="table-scroll small-first-col">
-                                <thead>
-                                    <tr style="background:dimgray;color:white;">
-                                        <th>Code</th>
-                                        <th>Product Name</th>
-                                        <th>Product Description</th>  
-                                        <th>Price</th>
-                                        <th>Remaining Stocks</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
 
-                                <tbody class="body-half-screen">
-                                    <tr @dblclick="addtoCart(med)" style="cursor:pointer;" v-for="(med,index) in medicines" :key="index">
-                                        <td>{{med.code}}</td>
-                                        <td>{{med.medicine}}</td>
-                                        <td>{{med.description}}</td>
-                                        <td>{{med.price}}</td>
-                                        <td>{{med.stocks}}</td>
-                                        <td style="text-align:right;"><button @click="addtoCart(med)"><span class="fa fa-plus"></span> Add to Cart</button></td>
-                                    </tr>  
-                                </tbody>
 
-                            </table>
+                               <div class="row">
+                                   <div class="col col-md-12">
+                                             <div class="card"  style="height:450px;">
+                                                <div class="card-header" style="background:#343A40;padding:0;">
+                                                    <table class="table table-condensed" style="margin:0;padding:0;">
+                                                        <thead>
+                                                            <tr style="color:white;">
+                                                                <th style="width: 10%">Code</th>
+                                                                <th style="width: 20%">Product</th>
+                                                                <th style="width: 25%">Description</th>
+                                                                <th style="width: 10%">Price</th>
+                                                                <th style="width: 10%">Stocks</th>
+                                                                <th style="width: 10%">Uom</th>
+                                                                <th style="width: 10%"></th>
+                                                            </tr>
+                                                        </thead>
+                                                    </table>
+                                                </div>
+                                                <div class="card-body" style="overflow-y:auto !important;padding: 0;overflow-x:hidden">
+                                                    <table class="table table-bordered" style="padding: 0;margin: 0;">
+                                                              <tr @dblclick="addtoCart(med)" style="cursor:pointer;" v-for="(med,index) in medicines" :key="index">
+                                                                <td style="width: 10%">{{med.code}}</td>
+                                                                <td style="width: 20%">{{med.medicine}}</td>
+                                                                <td style="width: 25%">{{med.description}}</td>
+                                                                <td style="width: 10%">{{med.price}}</td>
+                                                                <td style="width: 10%">{{med.stocks}}</td>
+                                                                <td style="width: 10%">{{med.uom}}</td>
+                                                                <td style="text-align:right;width:10%"><button @click="addtoCart(med)"><span class="fa fa-plus"></span> Add</button></td>
+                                                            </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                       
+                                          
+                                     
+                             </div>
 
                             <!-- {{medicines}} -->
                         </div>
@@ -59,14 +75,18 @@
 import { mapState } from "vuex"
 export default {
     props: {
-       
+       branch: {
+           type: Number,
+           required: true,
+       }
     },
     data: function(){
         return {
              errormsg: [],
-            doneTypingInterval: 500,
+            doneTypingInterval: 1000,
             typingTimer: '',
             search: '',
+            
         }
     },
     watch: {
@@ -74,11 +94,16 @@ export default {
             clearTimeout(this.typingTimer)
             if(newval.length > 0){
                 this.typingTimer = setTimeout(()=>{
-                    console.log("proceed")
+                       let data = {
+                            search:newval,
+                            branch: this.branch,
+                            type: 1,
+                        }
+                 this.$store.dispatch("medicine/search",data)
                     // proceed search here
                 },this.doneTypingInterval)
             }else{
-                 this.$store.dispatch("medicine/getList")
+                 this.$store.dispatch("medicine/getList",{branch: this.branch,type: 1})
             }
         }
     },
@@ -94,7 +119,7 @@ export default {
         },
         addtoCart: function(med){
             if(med.stocks == 0){
-                alert("No Stocks")
+                 this.$swal("No Stocks","","warning")
             }else{
                 this.$emit("addtoCart",med)
             }
@@ -104,66 +129,13 @@ export default {
     },
 
     mounted(){
-        this.$store.dispatch("medicine/getList")
+        this.$store.dispatch("medicine/getList",{branch: this.branch,type: 1})
     },
  
 }
 </script>
 
 <style scoped>
- .container{
-  padding: 1rem;
-  margin: 1rem;
-}
-.table-scroll{
-  /*width:100%; */
-  display: block;
-  empty-cells: show;
-  
-  /* Decoration */
-  border-spacing: 0;
-  border: 1px solid;
-}
-
-.table-scroll thead{
-  background-color: #f1f1f1;  
-  position:relative;
-  display: block;
-  width:100%;
-  overflow-y: scroll;
-}
-
-.table-scroll tbody{
-  /* Position */
-  display: block; position:relative;
-  width:100%; overflow-y:scroll;
-  /* Decoration */
-  border-top: 1px solid rgba(0,0,0,0.2);
-}
-
-
-.table-scroll tr{
-  width: 100%;
-  display:flex;
-  border: 0.2px solid gray;
-}
-
-.table-scroll td,.table-scroll th{
-  flex-basis:100%;
-  flex-grow:2;
-  display: block;
-  /* padding: 1rem; */
-  text-align:left;
-}
-
-.body-half-screen{
-  max-height: 50vh;
-}
-
-.small-col{flex-basis:10%;}
-
-.table-scroll tbody tr:nth-child(2n){
-  background-color: rgba(130,130,170,0.1);
-}
+ 
 
 </style>

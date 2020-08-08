@@ -5,6 +5,7 @@ export default {
         transactions: [],
         billings: [],
         sales: [],
+        purchases: [],
     },
     actions: {
         sales_yearly: function(context,data){
@@ -53,6 +54,51 @@ export default {
             })
      
         },
+        pharmacy_daily: function(context,data){
+            return new Promise((resolve,reject)=>{
+                Axios.post(`${context.rootState.apiUrl}/api/reports/pharmacy_daily`,data,context.rootState.headerconfig)
+                .then((res)=>{     
+                        context.commit("setSales",res.data)
+                        resolve(res.data)
+                })
+                .catch((err)=>{
+                    if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                        context.dispatch("refreshtoken",null,{root:true})
+                    }               
+                    reject(err)
+                })
+            })
+        },
+        pharmacy_monthly: function(context,data){
+            return new Promise((resolve,reject)=>{
+                Axios.post(`${context.rootState.apiUrl}/api/reports/pharmacy_monthly`,data,context.rootState.headerconfig)
+                .then((res)=>{     
+                        context.commit("setSales",res.data)
+                        resolve(res.data)
+                })
+                .catch((err)=>{
+                    if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                        context.dispatch("refreshtoken",null,{root:true})
+                    }               
+                    reject(err)
+                })
+            })
+        },
+        pharmacy_yearly: function(context,data){
+            return new Promise((resolve,reject)=>{
+                Axios.post(`${context.rootState.apiUrl}/api/reports/pharmacy_yearly`,data,context.rootState.headerconfig)
+                .then((res)=>{     
+                        context.commit("setSales",res.data)
+                        resolve(res.data)
+                })
+                .catch((err)=>{
+                    if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                        context.dispatch("refreshtoken",null,{root:true})
+                    }               
+                    reject(err)
+                })
+            })
+        },
         getRecords: function(context,data){
             Axios.post(`${context.rootState.apiUrl}/api/transaction/getRecords`,data,context.rootState.headerconfig)
             .then((res)=>{     
@@ -74,6 +120,17 @@ export default {
                 context.dispatch("refreshtoken",null,{root:true})
             }               
         })
+      },
+      pharmacyPurchaseRecords: function(context,data){
+        Axios.post(`${context.rootState.apiUrl}/api/reports/pharmacyPurchaseRecords`,data,context.rootState.headerconfig)
+        .then((res)=>{     
+                context.commit("setPharmacyPurchase",res.data.data)
+        })
+        .catch((err)=>{
+            if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                context.dispatch("refreshtoken",null,{root:true})
+            }               
+        })
       }
     },
     getters: {
@@ -88,6 +145,9 @@ export default {
         },
         setSales: function(state,data){
             state.sales = data
+        },
+        setPharmacyPurchase: function(state,data){
+            state.purchases = data
         }
     }
 }

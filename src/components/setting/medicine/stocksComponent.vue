@@ -2,7 +2,7 @@
     <div> 
          <!-- Begin Page Content -->
         <div class="container-fluid">
-                  <span class="pageheader"><i class="fa fa-download"></i> {{branch.branch}} Stocks In</span>
+                  <span class="pageheader"><i class="fa fa-download"></i> {{branch.branch}} {{typedes}} Stocks In</span>
                   <button @click="showaddstockModal = true" class="btn btn-primary float-right"><span class="fa fa-plus"></span> Add Stocks</button>
                     <hr/>
 
@@ -93,7 +93,7 @@
 
         </div>
 
-        <addstockModal :branch="branch" v-if="showaddstockModal" @closemodal="closemodal" @init="init"/>
+        <addstockModal :type="search.isPharmacy" :branch="branch" v-if="showaddstockModal" @closemodal="closemodal" @init="init"/>
   
     </div>
 </template>
@@ -121,6 +121,7 @@ export default {
                 myValue: [],
                 ph: "Select Item name From Inventory",
                 showaddstockModal: false,
+                typedes: '',
             }
         },
         computed: {
@@ -151,12 +152,14 @@ export default {
         },
         mounted(){
                this.$store.dispatch("activenav","settingnav")  
-            this.$store.dispatch('branch/getInfo',this.$route.params.branch)
+            this.$store.dispatch('branch/getInfo', {idno: this.$route.params.branch, type: this.$route.params.type.split("=")[1]})
                 .then(()=>{
                     const datenow = new Date()
                     this.search.start =  formatDate(new Date(datenow.getFullYear(), datenow.getMonth(), 1))
                     this.search.end =  formatDate(new Date(datenow.getFullYear(), datenow.getMonth()+1, 0))
                     this.search.branch = this.$route.params.branch
+                    this.search.isPharmacy = this.$route.params.type.split("=")[1]
+                    this.typedes = this.search.isPharmacy == 0 ? "Dental Clinic Item" : "Pharmacy Medicine"
                     this.init()
                 })
                 .catch(err=>console.log(err))

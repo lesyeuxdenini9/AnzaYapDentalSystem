@@ -2,7 +2,7 @@
     <div> 
          <!-- Begin Page Content -->
         <div class="container-fluid">
-                  <span class="pageheader"><i class="fa fa-calendar"></i> Yearly</span>
+                  <span class="pageheader"><i class="fa fa-calendar"></i> Yearly - Treatment</span>
                     <button type="button" @click="back()" class="noprint float-right"><span class="fa fa-times"></span></button>
                     <hr/>
 

@@ -2,7 +2,7 @@
     <div> 
          <!-- Begin Page Content -->
         <div class="container-fluid">
-                  <span class="pageheader"><i class="fa fa-medkit"></i> Medicine Inventory</span>
+                  <span class="pageheader"><i class="fa fa-medkit"></i> {{typedes}} Inventory</span>
                   <button class="float-right btn btn-primary" @click="showaddModal=true"><span class="fa fa-plus"></span> New</button>
                   <hr/>
 
@@ -86,7 +86,7 @@
   
         </div>
 
-        <addModal :activebranchIndex="activebranchIndex"  :type="0" v-if="showaddModal" @closemodal="closemodal()" @refreshlist="refreshlist"/>
+        <addModal  :activebranchIndex="activebranchIndex"  :type="type" v-if="showaddModal" @closemodal="closemodal()" @refreshlist="refreshlist"/>
         <editModal :activebranchIndex="activebranchIndex"  :editInfo="editInfo" v-if="showeditModal" @closemodal="closemodal()" @refreshlist="refreshlist"/>
     </div>
 </template>
@@ -107,6 +107,8 @@ export default {
             medicineLists: [],
             stockstatus: 'ALL',
             search: '',
+            type: 0,
+            typedes: '',
         }
     },
     methods: {
@@ -115,11 +117,11 @@ export default {
               search: this.search,
               branch: this.branches[this.activebranchIndex].id,
               branchindex: this.activebranchIndex,
-              type: 0,
+              type: this.type,
             }
 
             if(this.search == ""){
-                this.$store.dispatch("branch/getListMedicine",0).then(()=>{
+                this.$store.dispatch("branch/getListMedicine",this.type).then(()=>{
                     this.setMedicinelist()
                 })
             }else{
@@ -161,10 +163,10 @@ export default {
         ]),
         showstockin: function(){
           let branch = this.branches[this.activebranchIndex].id
-          this.$router.push({name: 'stocksin',params: {branch: branch}})
+          this.$router.push({name: 'stocksin',params: {branch: branch, type: `type=${this.type}`}})
         },
         refreshlist: function(index){
-             this.$store.dispatch("branch/getListMedicine",0)
+             this.$store.dispatch("branch/getListMedicine",this.type)
                 .then(()=>{
                     this.changeFilterbranch(index)
                 })
@@ -226,9 +228,11 @@ export default {
         })
     },
     mounted(){
+      this.type = this.$route.params.type
+      this.typedes = this.$route.params.type == 0 ? "Dental Clinic Item" : "Pharmacy Medicine"
        this.$store.dispatch("activenav","settingnav")  
       // this.getList()
-         this.$store.dispatch("branch/getListMedicine",0)
+         this.$store.dispatch("branch/getListMedicine",this.type)
           .then(()=>{
               this.changeFilterbranch(0)
           })

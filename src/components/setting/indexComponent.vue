@@ -111,12 +111,12 @@
 
 
                          <!-- Earnings (Monthly) Card Example -->
-            <div v-if="userinfo.usertype == 3 || userinfo.usertype == 0" @click="changesetting('medicinelist')" class="col-xl-3 col-md-6 mb-4 setting">
+            <div v-if="userinfo.usertype == 3 || userinfo.usertype == 0" @click="changesetting('medicinelist', {type: 0})" class="col-xl-3 col-md-6 mb-4 setting">
               <div class="card border-left-success shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-lg font-weight-bold text-success text-uppercase mb-1">Medicine(s)<br><small>Inventory</small></div>
+                      <div class="text-lg font-weight-bold text-success text-uppercase mb-1">Dental Clinic Item(s)<br><small>Inventory</small></div>
                       <!-- <div class="h5 mb-0 font-weight-bold text-gray-800">4</div> -->
                     </div>
                     <div class="col-auto">
@@ -129,16 +129,16 @@
 
 
                                  <!-- Earnings (Monthly) Card Example -->
-            <div v-if="userinfo.usertype == 3" @click="changesetting('branchlist')" class="col-xl-3 col-md-6 mb-4 setting">
+             <div v-if="userinfo.usertype == 3 || userinfo.usertype == 0" @click="changesetting('medicinelist',{type: 1})" class="col-xl-3 col-md-6 mb-4 setting">
               <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-lg font-weight-bold text-info text-uppercase mb-1">Branche(s)</div>
+                      <div class="text-lg font-weight-bold text-info text-uppercase mb-1">Pharmacy Medicine<br><small>Inventory</small></div>
                       <!-- <div class="h5 mb-0 font-weight-bold text-gray-800">4</div> -->
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-map-marker-alt fa-2x text-gray-500"></i>
+                      <i class="fas fa-file-prescription fa-2x text-gray-500"></i>
                     </div>
                   </div>
                 </div>
@@ -210,6 +210,24 @@
                 </div>
               </div>
             </div>
+
+                  <div v-if="userinfo.usertype == 3" @click="changesetting('branchlist')" class="col-xl-3 col-md-6 mb-4 setting">
+              <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-lg font-weight-bold text-success text-uppercase mb-1">Branche(s)</div>
+                      <!-- <div class="h5 mb-0 font-weight-bold text-gray-800">4</div> -->
+                    </div>
+                    <div class="col-auto">
+                      <i class="fas fa-map-marker-alt fa-2x text-gray-500"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
 
 
                <div v-if="userinfo.usertype == 3 || userinfo.usertype == 0" @click="showChangeSchedModal=true" class="col-xl-3 col-md-6 mb-4 setting">
@@ -366,8 +384,8 @@ export default {
             })
             .catch(err=>console.log(err))
       },
-      changesetting: function(routename){
-          this.$router.push({name: routename})
+      changesetting: function(routename,params={}){
+          this.$router.push({name: routename, params: params})
       },
       changepass: function(){
            this.$store.dispatch("user/changepass",this.user)

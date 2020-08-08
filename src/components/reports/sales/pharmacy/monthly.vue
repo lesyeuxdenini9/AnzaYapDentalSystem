@@ -2,7 +2,7 @@
     <div> 
          <!-- Begin Page Content -->
         <div class="container-fluid">
-                  <span class="pageheader"><i class="fa fa-calendar"></i> Monthly - Treatment</span>
+                  <span class="pageheader"><i class="fa fa-calendar"></i> Monthly - Pharmacy</span>
                     <button type="button" @click="back()" class="noprint float-right"><span class="fa fa-times"></span></button>
                     <hr/>
 
@@ -77,7 +77,7 @@
 
                                  <br/>
                                  <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;"/>
-                                   <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>EARNINGS FROM {{months[search.startmonth-1].des}} {{search.startyear}} TO {{months[search.endmonth-1].des}} {{search.endyear}}</span></div>
+                                   <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>SALES FROM {{months[search.startmonth-1].des}} {{search.startyear}} TO {{months[search.endmonth-1].des}} {{search.endyear}}</span></div>
                                       <column-chart :stacked="graphOptions.stacked" :legend="false" :download="true" :data="graphOptions.data"></column-chart>
                            
                            
@@ -87,7 +87,7 @@
                                                 <thead>
                                                     <tr style="background:#343A40;color:white;">
                                                         <th style="width:50%">Date</th>
-                                                        <th>Earnings</th>
+                                                        <th>Sales</th>
                                                     </tr>
                                                 </thead>
 
@@ -110,7 +110,7 @@
                               </div>
 
                                 <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;"/>
-                                 <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>TOP 5 MOST SERVICE DONE BASED ON TRANSACTION DATE FROM {{months[search.startmonth-1].des}} {{search.startyear}} TO {{months[search.endmonth-1].des}} {{search.endyear}}</span></div>
+                                 <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>TOP 10 MOST SOLD ITEMS FROM {{months[search.startmonth-1].des}} {{search.startyear}} TO {{months[search.endmonth-1].des}} {{search.endyear}}</span></div>
                                     <div class="row">
                                   <div class="col-md-12">
                                       <pie-chart :download="true" width="100%" height="500px" :data="pieOptionsMostAvail.data"></pie-chart>
@@ -120,14 +120,14 @@
                                             <table class="table table-condensed table-striped table-bordered">
                                                 <thead>
                                                    <tr style="background:#343A40;color:white;">
-                                                        <th style="width:50%">Service</th>
+                                                        <th style="width:50%">Medicine</th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>
 
                                                 <tbody>
                                                     <tr v-for="(sale,index) in sales.serviceMostavail" :key="index">
-                                                        <td>{{sale.service}}</td>
+                                                        <td>{{sale.item}}</td>
                                                         <td>{{sale.totalcount}} 
                                                             <!-- <span v-if="sale.totalcount == 1">time</span><span v-else>times</span> -->
                                                         </td>
@@ -200,7 +200,7 @@ export default {
          },
 
          searchProceed: function(){
-              this.$store.dispatch("report/sales_monthly",this.search)
+              this.$store.dispatch("report/pharmacy_monthly",this.search)
                 .then(()=>{
                     let data = []
                     this.sales.graph.forEach((sale)=>{
@@ -209,7 +209,7 @@ export default {
                     this.graphOptions.data = data
                     data = []
                      this.sales.serviceMostavail.forEach((sale)=>{
-                        data.push([sale.service, sale.totalcount])
+                        data.push([sale.item, sale.totalcount])
                     })
                     this.pieOptionsMostAvail.data = data
                 })

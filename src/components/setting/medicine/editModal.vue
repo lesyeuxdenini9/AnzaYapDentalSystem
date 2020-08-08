@@ -40,7 +40,7 @@
 
                             </div>
 
-                            <!-- <div class="row">
+                            <div class="row" v-if="medicine.type == 1">
                                     <div class="col-md-12">
                                         <label>Price</label>
                                         <input type="number" class="form-control" v-model="medicine.price"/>
@@ -51,7 +51,7 @@
                                         <input type="text" class="form-control" v-model="medicine.manufacturer"/>
                                     </div>
 
-                            </div> -->
+                            </div>
 
                             <div class="row">
                                     <div class="col-md-12">

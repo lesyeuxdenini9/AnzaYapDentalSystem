@@ -2,21 +2,34 @@
     <div> 
          <!-- Begin Page Content -->
         <div class="container-fluid" style="position:relative;">
-                  <span class="pageheader"><i class="fa fa-calendar"></i> Appointment</span>
-                       <ul class="legends">
-                    <li><button disabled style="height:20px;width:20px;background: #36B9CC"></button> Pending</li>
-                    <li><button disabled style="height:20px;width:20px;background: #1CC88A"></button> Approved</li>
-                    <li><button disabled style="height:20px;width:20px;background: maroon"></button> Denied</li>
-                     <li><button disabled style="height:20px;width:20px;background: dimgray"></button> Cancelled</li>
-                    <li><button disabled style="height:20px;width:20px;background: #385ECE"></button> Confirmed</li>
-                  </ul>
-
+                  <!-- <span class="pageheader"><i class="fa fa-calendar"></i> Appointment</span> -->
+                  
                   <!-- if 1 week limit starting after 1 week from date now -->
                   <!-- <span class="float-right" style="font-size:16pt;font-weight:bold;color:dimgray;">
                     Check dates from {{formatDdate(startDate)}} to {{formatDdate(endDate)}}</span> -->
 
-                    <span class="float-right" style="font-size:16pt;font-weight:bold;color:dimgray;">
+                    <div class="row">
+                        <div class="col-md-6">
+                               <ul class="legends">
+                                  <li><button disabled style="height:20px;width:20px;background: #36B9CC"></button> Pending</li>
+                                  <li><button disabled style="height:20px;width:20px;background: #1CC88A"></button> Approved</li>
+                                  <li><button disabled style="height:20px;width:20px;background: maroon"></button> Denied</li>
+                                  <li><button disabled style="height:20px;width:20px;background: dimgray"></button> Cancelled</li>
+                                  <li><button disabled style="height:20px;width:20px;background: #385ECE"></button> Confirmed</li>
+                                </ul>
+
+                        </div>
+                        <div class="col-md-6">
+                            <span class="float-right" style="font-size:16pt;font-weight:bold;color:dimgray;">
                     Check dates from {{formatDdate(startDate)}}</span>
+
+                        </div>
+                    </div>
+
+                  
+                    <div class="alert alert-danger" role="alert">
+                      Note: For Emergency or Rush Appointment Please Contact Branch Helpdesk Hotline Number 
+                    </div>
                   
                     <hr/>
                         <ul class="nav nav-tabs">
@@ -531,9 +544,9 @@ export default {
 
 <style lang="css" scoped>
   .legends {
-    position:absolute;
+    /* position:absolute;
     left:15%;
-    top:10px;
+    top:10px; */
     display:inline-block;
     list-style-type:none;
     margin:0;

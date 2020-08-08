@@ -2,7 +2,7 @@
     <div> 
          <!-- Begin Page Content -->
         <div class="container-fluid">
-                  <span class="pageheader"><i class="fa fa-file-alt"></i> Records Search - Transaction</span>
+                  <span class="pageheader"><i class="fa fa-file-alt"></i> Records Search - Pharmarcy Purchase Receipt</span>
                    <button type="button" @click="back()" class="noprint float-right"><span class="fa fa-times"></span></button>
                     <hr/>
 
@@ -45,9 +45,9 @@
                                <div class="col-md-3">
                                     <div class="input-group mb-3">
                                       <div class="input-group-prepend">
-                                          <span class="input-group-text" id="basic-addon3">Transaction No</span>
+                                          <span class="input-group-text" id="basic-addon3">Receipt Reference No</span>
                                       </div>
-                                      <input type="text" class="form-control" v-model="search.transactionNo"/>
+                                      <input type="text" class="form-control" v-model="search.refno"/>
                             </div>
                             </div>
 
@@ -61,26 +61,25 @@
                         <thead>
                             <tr>
                                 <th>Reference No</th>
-                                <th>Date</th>
-                                <th>Patient</th>
-                                <th>Dentist</th>
-                                <th>Status</th>
+                                <th>Date Time</th>
+                                <th>Staff</th>
+                                <th>SubTotal Amount</th>
+                                <th>Discount</th>
+                                <th>Total Amount</th>
                                 <th></th>
-                                <th></th>
-
                             </tr>
                         </thead>
 
                         <tbody>
-                            <tr v-for="(transaction,index) in this.transactions" :key="index">
-                                <td>{{transaction.transactionNo}}</td>
-                                <td>{{transaction.transactionDate}}</td>
-                                <td>{{transaction.User.fullname}}</td>
-                                <td>{{transaction.Dentist.fullname}}</td>
-                                <td>{{getStatus(transaction.status)}}</td>
-                                <td><a target="_blank" :href="`../../transaction/${transaction.id}/form`">Transaction Form</a></td>
-                                <td><a target="_blank" :href="`../../transaction/${transaction.id}`">Proceed</a></td>
-                            </tr>
+                           <tr v-for="(bill,index) in purchases" :key="index">
+                               <td>{{bill.billrefNo}}</td>
+                               <td>{{dDate(bill.createdAt)}}</td>
+                               <td>{{bill.modifiedBy}}</td>
+                               <td>{{subtotal(bill.Billitems)}}</td>
+                               <td>{{bill.discount}}</td>
+                               <td>{{subtotal(bill.Billitems) - bill.discount}}</td>
+                               <td><router-link :to="{name: 'invoiceInfo',params: {idno: bill.id}}">purchase receipt</router-link></td>
+                           </tr>
                         </tbody>
                     </table>
                     </div>
@@ -101,7 +100,7 @@ export default {
              search :{
                 start: "",
                 end: "",
-                transactionNo: "",
+                refno: "",
                 branch: "",
             },
         }
@@ -110,25 +109,13 @@ export default {
         back: function(){
             this.$router.go(-1)
         },
-         getStatus: function(status){
-             let des = ''
-             switch(status){
-                 case 0:
-                     des = "On-Going"
-                     break
-                 case 1:
-                     des = "For Followup"
-                     break
-                 case 2:
-                     des = "Done"
-                     break
-                 default:
-                     des = "Cancelled"
-                     break
-             }
-
-             return des
-         },
+        subtotal: function(items){
+            let amount = 0 
+            items.forEach((item)=>{
+                amount = amount + parseFloat(item.amount)
+            })
+            return amount
+        },
          changeFilterbranch: function(branch,index){
             const navbranch = document.getElementsByClassName('navbranch')
             for(let x = 0 ; x < navbranch.length ; x++){
@@ -137,23 +124,23 @@ export default {
             navbranch[index].classList.add('active')
             this.activebranchIndex = index
             this.search.branch = this.branches[this.activebranchIndex].id
-            // this.$store.dispatch("reservation/list",this.search)
-             console.log(this.search)
-             this.$store.dispatch("report/getRecords",this.search)
+             this.searchProceed()
          },
          dHour: function(date){
             return format12Hour(date)
         },
+        dDate: function(date){
+            return `${this.$helper.formatDate(date)} ${this.$helper.format12Hour(date)}`
+        },
          searchProceed: function(){
-             console.log(this.search)
-             this.$store.dispatch("report/getRecords",this.search)
+             this.$store.dispatch("report/pharmacyPurchaseRecords",this.search)
         },
 
     },
     computed: {
         ...mapState({
             branches: state=> state.branch.branches,
-            transactions: state=> state.report.transactions,
+            purchases: state=> state.report.purchases
         })
     },
     mounted(){
@@ -166,8 +153,7 @@ export default {
                 this.search.end =  formatDate(new Date(datenow.getFullYear(), datenow.getMonth()+1, 0))
                 this.search.branch = this.branches[this.activebranchIndex].id
 
-                console.log(this.search)
-                this.$store.dispatch("report/getRecords",this.search)
+               this.searchProceed()
     
             })
             .catch(err=>console.log(err))

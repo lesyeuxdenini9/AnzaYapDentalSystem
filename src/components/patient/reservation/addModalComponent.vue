@@ -75,6 +75,10 @@
                                     </tbody>
                             </table>
 
+                            <div v-if="reservation.type == 1" style="text-align: center;">
+                                <span v-if="followups.length == 0" style="color:dimgray;font-weight:bold;font-size: 16pt">NO ACTIVE FOLLOWUP TRANSACTIONS</span>
+                            </div>
+
                              <div class="input-group mb-3" v-if="reservation.type == '0'">
                                       <div class="input-group-prepend">
                                           <span class="input-group-text" id="basic-addon3">Dentist</span>
@@ -140,7 +144,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button class="btn btn-primary" @click="save"><span class="fa fa-check"></span> Create</button>
+                    <button :disabled="followups.length == 0 && reservation.type == 1" class="btn btn-primary" @click="save"><span class="fa fa-check"></span> Create</button>
                 </div>
                 </div>
             </div>

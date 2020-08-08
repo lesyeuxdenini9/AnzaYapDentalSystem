@@ -100,7 +100,8 @@
                               <ul class="nav nav-tabs">
             
                                       <li class="nav-item"><a @click="changeFilterstock('in',0)" class="active navfilterstock nav-link" href="javascript:void(0)">Stocks In</a></li>
-                                       <li class="nav-item"><a @click="changeFilterstock('out',1)" class="navfilterstock nav-link" href="javascript:void(0)">Stocks Out</a></li>
+                                      <li v-if="medicine.type == 0" class="nav-item"><a @click="changeFilterstock('out',1)" class="navfilterstock nav-link" href="javascript:void(0)">Stocks Out</a></li>
+                                      <li v-else class="nav-item"><a @click="changeFilterstock('out2',1)" class="navfilterstock nav-link" href="javascript:void(0)">Stocks Out</a></li>
                               </ul>
                               <br/>
 
@@ -154,7 +155,7 @@
 
                               </table>
 
-                              <table v-else class="table table-condensed table-striped">
+                              <table v-else-if="filterstock == 'out'" class="table table-condensed table-striped">
                                         <thead>
                                       <tr>
                                           <th>Transaction RefNo</th>
@@ -184,6 +185,26 @@
 
                               </table>
 
+                                <table v-else class="table table-condensed table-striped">
+                                        <thead>
+                                      <tr>
+                                          <th>Purchase RefNo</th>
+                                          <th>Date</th>
+                                          <th>Quantity</th>
+                                          <th>Unit of Measurement</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody>
+                                      <tr v-for="(stock,index) in medicine.Billitems" :key="index">
+                                          <td>{{stock.Billing.billrefNo}}</td>
+                                          <td>{{dDate(stock.Billing.createdAt)}}</td>
+                                          <td>{{stock.qty}}</td>
+                                          <td>{{stock.Medicine.uom}}</td>
+                                      </tr>
+                                  </tbody>
+
+                                </table>
+
                         </div>
 
                     </div>
@@ -194,7 +215,7 @@
 
                         {{medicine}}
 
-                    </pre> -->
+                    </pre>  -->
 
         </div>
   
@@ -257,7 +278,7 @@ export default {
                     this.$store.dispatch("medicine/removeList",{id: this.$route.params.idno})
                     .then(()=>{
                         this.$swal("Item has been removed","","success")
-                        this.$router.push({name: 'medicinelist'})
+                        this.$router.push({name: 'medicinelist', params: {type: this.medicine.type}})
                     })
                     .catch(err=>console.log(err))
                 }
@@ -281,7 +302,7 @@ export default {
     },
     mounted(){
         this.$store.dispatch("activenav","settingnav")
-         const datenow = new Date()
+        const datenow = new Date()
         this.search.start =  this.$helper.formatDate(new Date(datenow.getFullYear(), datenow.getMonth(), 1))
         this.search.end = this.$helper.formatDate(new Date(datenow.getFullYear(), datenow.getMonth()+1, 0))
         this.init()

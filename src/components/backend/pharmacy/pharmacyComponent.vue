@@ -4,9 +4,22 @@
         <div class="container-fluid">
                   <!-- <span class="pageheader"><i class="fa fa fa-medkit"></i> Pharmacy Sale(s)</span>
                     <hr/> -->
-
+                                 <ul class="nav nav-tabs">
+            
+                                <li class="nav-item" v-for="(branch,index) in branches" :key="index">
+                                    <a v-if="index==0" @click="changeFilterbranch(index)" class="active navbranch nav-link" href="javascript:void(0)">
+                                             {{branch.branch}}
+                                    </a>
+                                    <a v-else @click="changeFilterbranch(index)" class="navbranch nav-link" href="javascript:void(0)">
+                                             {{branch.branch}}
+                                    </a>
+                                    
+                                </li>
+                             
+                            </ul>  
                     <div class="card">
                         <div class="card-body" style="background:dimgray; padding: 0 10px;">
+                      
                             <div class="row">
                                 <div class="col col-md-4">
                                       <div class="input-group mb-3">
@@ -35,7 +48,7 @@
                     </div>
                              <div class="row">
                                    <div class="col col-md-12">
-                                             <div class="card"  style="height:513px;">
+                                             <div class="card"  style="height:450px;">
                                                 <div class="card-header" style="background:#343A40;padding:0;">
                                                     <table class="table table-condensed" style="margin:0;padding:0;">
                                                         <thead>
@@ -101,7 +114,7 @@
                                                 </div>
 
                                                 <div class="col col-md-4">
-                                                <button style="font-size:16pt;" class="form-control btn btn-primary">
+                                                <button @click="showlistModal = true" style="font-size:16pt;" class="form-control btn btn-primary">
                                                         <span class="fa fa-scroll"></span>
                                                         View Past Transactions
                                                     </button>
@@ -150,9 +163,9 @@
         </div>
 
 
-        <itemListModal v-if="showItemListModal" @closemodal="closemodal" @addtoCart="addtoCart"/>
-        <checkoutModal  v-if="showcheckoutModal" :totalAmount="totalAmount" :patient="patient" :items="items" @closemodal="closemodal"/>
-  
+        <itemListModal :branch="branches[activebranchIndex].id" v-if="showItemListModal" @closemodal="closemodal" @addtoCart="addtoCart"/>
+        <checkoutModal :branch="branches[activebranchIndex].id"  v-if="showcheckoutModal" :totalAmount="totalAmount" :patient="patient" :items="items" @closemodal="closemodal"/>
+        <listModal :branch="branches[activebranchIndex].id" v-if="showlistModal" @closemodal="closemodal"/>
     </div>
 </template>
 
@@ -160,13 +173,16 @@
 import { mapState } from 'vuex'
 import itemListModal from "@/components/backend/pharmacy/itemListModal"
 import checkoutModal from "@/components/backend/pharmacy/checkoutModal"
+import listModal from "@/components/backend/pharmacy/transactionlistModal"
 export default {
     components: {
         itemListModal,
         checkoutModal,
+        listModal,
     },
     data: function(){
         return {
+            activebranchIndex: 0,
             items: [],
             showItemListModal: false,
             totalAmount: 0,
@@ -179,6 +195,7 @@ export default {
             doneTypingInterval: 1000,
             typingTimer: '',
             showcheckoutModal: false,
+            showlistModal: false,
 
         }
     },
@@ -204,7 +221,8 @@ export default {
     },
     computed: {
         ...mapState({
-            prescriptInfo: state=> state.transaction.prescriptInfo
+            prescriptInfo: state=> state.transaction.prescriptInfo,
+            branches: state=> state.branch.branches
         })
     },
     methods: {
@@ -227,6 +245,7 @@ export default {
         closemodal: function(){
             this.showItemListModal = false
             this.showcheckoutModal = false
+            this.showlistModal = false
         },
         clearTable: function(){
             this.items = []
@@ -239,11 +258,13 @@ export default {
         },
         updateQtyAmount: function(index){
             if(this.items[index].quantity > this.items[index].stocks){
-                alert("Insufficient stocks")
+                this.$swal("Insufficient stocks","","warning")
                 this.refreshData(index)
                 this.items[index].quantity = 1
             }
-            
+
+            if(this.items[index].quantity < 1) this.items[index].quantity = 1
+           
             this.items[index].amountvalue = (parseFloat(this.items[index].quantity) * parseFloat(this.items[index].price))
             this.refreshData(index)
             this.totalAmount = this.calculateTotal()
@@ -271,10 +292,21 @@ export default {
             }
 
             this.totalAmount = this.calculateTotal()
-        }
+        },
+         changeFilterbranch: function(index){
+            const navbranch = document.getElementsByClassName('navbranch')
+            for(let x = 0 ; x < navbranch.length ; x++){
+                 navbranch[x].classList.remove('active')
+            }
+            navbranch[index].classList.add('active')
+            this.activebranchIndex = index
+            this.clearTable()
+
+        },
     },
     mounted(){
         this.$store.dispatch("activenav","pharmacynav")
+        this.$store.dispatch("branch/getList")
     }
 
 }

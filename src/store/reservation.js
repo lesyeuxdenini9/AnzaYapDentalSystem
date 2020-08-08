@@ -1,5 +1,5 @@
 import Axios from 'axios'
-import { formatHour,formatDate } from "@/helper/helper"
+import { formatDate } from "@/helper/helper"
 export default {
     namespaced: true,
     state:{
@@ -361,8 +361,10 @@ export default {
                 let reservetime = []
                 state.approvedTimes.forEach((time)=>{
 
-                    let starttime = parseInt(formatHour(time.starttime).split(":")[0])
-                    let endtime = parseInt(formatHour(time.endtime).split(":")[0])
+                    // let starttime = parseInt(formatHour(time.starttime).split(":")[0])
+                    // let endtime = parseInt(formatHour(time.endtime).split(":")[0])
+                    let starttime = parseInt(time.Start.split(":")[0])
+                    let endtime = parseInt(time.End.split(":")[0])
     
                     // for(starttime; starttime<endtime; starttime++){
                     //     reservetime.push({active: 0,index: starttime, value: `${starttime}:00`})

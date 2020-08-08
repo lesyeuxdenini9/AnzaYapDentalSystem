@@ -92,8 +92,6 @@
                                     </tbody>
                                 </table>
 
-
-
                 </div>
 
                 <div class="modal-footer">
@@ -114,6 +112,10 @@ export default {
         branch: {
             type:Object,
             required: true,
+        },
+        type: {
+            type: Number,
+            required: true,
         }
     },
     data: function(){
@@ -125,6 +127,7 @@ export default {
                  invoiceRef: '',
                  items: [],
                  branch: this.branch.id,
+                 isPharmacy: this.type,
              },
             ph: "Select Item From Inventory",
             myValue: '',

@@ -58,10 +58,10 @@
                             </div>
 
                             <div class="row">
-                                    <!-- <div class="col-md-12">
+                                    <div v-if="type==1" class="col-md-12">
                                         <label>Price</label>
                                         <input type="number" class="form-control" v-model="medicine.price"/>
-                                    </div> -->
+                                    </div>
 
                                       <div class="col-md-12">
                                         <label>Manufacturer</label>
@@ -93,6 +93,10 @@ export default {
         activebranchIndex: {
             type:Number,
             required: true,
+        },
+        type: {
+            type: Number,
+            required: true,
         }
     },
     data: function(){
@@ -107,6 +111,7 @@ export default {
                  price: 0,
                  manufacturer: '',
                  code: '',
+                 type: this.type,
              }
         }
     },

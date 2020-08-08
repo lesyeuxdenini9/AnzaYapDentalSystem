@@ -16,7 +16,8 @@
                             </span>
                            
                             </div>
-
+                            
+                            <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Date</label>
@@ -29,7 +30,10 @@
                                 <img style="position:absolute;right:15px;width:60px;height:60px;" src="@/assets/rx.png"/>
                             </div>
 
-                          <div class="col col-md-10">
+                            </div>
+
+                        <div class="row">
+                          <div class="col col-md-10"  style="display:none;">
                                         <div class="form-group">
                                        
                                        <!-- <Select2 class="formselect" :placeholder="ph" v-model="myValue" :options="myOptions" :settings="{ multiple: true, settingOption: myValue }" @change="myChangeEvent($event)" @select="mySelectEvent($event)" /> -->
@@ -41,9 +45,17 @@
                                          </div>
                                 </div>
 
-                                <div class="col col-md-2">
+                                <div class="col col-md-2"  style="display:none;">
                                     <button @click="add" style="width:100%;"> <span class="fa fa-plus"></span> Add</button>
                                 </div>
+
+                        </div>
+
+                              <div class="row">
+                                <div class="col-md-4">
+                                      <button @click="addnew()" style="width:100%;"><span class="fa fa-plus"></span> Add</button>
+                                </div>
+                            </div>
                                 
 
                                 <table class="table table-condensed">
@@ -53,15 +65,20 @@
                                             <th>Qty</th>
                                             <th>Dosage</th>
                                             <th>Days</th>
-                                            <th></th>
+                                              <th>Remarks</th>
+                                            <th style="width:5%;"></th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr v-for="(item,index) in prescription.Prescriptitems" :key="index">
-                                            <td>{{item.medicine}}</td>
+                                            <td>
+                                                <span v-if="item.medicineId > 0">{{item.medicine}}</span>
+                                                <input v-else v-model="item.medicine" class="form-control"/>
+                                            </td>
                                             <td><input type="number" class="form-control" v-model="item.qty"/></td>
                                             <td><input type="text" class="form-control" v-model="item.dosage"/></td>
                                             <td><input type="text" class="form-control" v-model="item.days"/></td>
+                                            <td><textarea class="form-control" v-model="item.remarks"></textarea></td>
                                             <td><button @click="removeitem(index)"><span class="fa fa-times"></span> </button></td>
                                         </tr>
                                     </tbody>
@@ -92,6 +109,10 @@ export default {
             editPrescriptionInfo: {
                 type: Object,
                 required: true
+            },
+            branchid: {
+                type: Number,
+                required: true,
             }
         },
         data: function(){
@@ -125,6 +146,19 @@ export default {
                                 }
                         })
                         .catch(err=>console.log(err))
+            },
+            addnew: function(){
+                 let item = {
+                    id: 0,
+                    qty: 0,
+                    medicine: '',
+                    amount: 0,
+                    dosage: '',
+                    days: '',
+                    remarks: '',
+                    medicineId: 0,
+                }
+               this.prescription.Prescriptitems.push(item)
             },
             add:function(){
                 let item = {
@@ -171,7 +205,7 @@ export default {
                     }),
          },
          mounted(){
-                this.getList()
+                this.getList({branch: this.branchid, type: 1})
                 this.date = formatDate(new Date())
          },
          components: {

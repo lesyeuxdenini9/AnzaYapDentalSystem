@@ -15,10 +15,26 @@
 
                            <div class="input-group mb-3">
                                       <div class="input-group-prepend">
-                                          <span class="input-group-text" id="basic-addon3">Total Amount</span>
+                                          <span class="input-group-text" id="basic-addon3">subtotal Amount</span>
                                       </div>
                                       <input type="text" class="form-control" v-model="totalAmount" readonly style="background:white;"/>
                                       </div>
+
+                                      
+                                         <div class="input-group mb-3">
+                                      <div class="input-group-prepend">
+                                          <span class="input-group-text" id="basic-addon3">Discount</span>
+                                      </div>
+                                      <input type="number" class="form-control" v-model="discount"/>
+                                      </div>
+
+                                             <div class="input-group mb-3">
+                                      <div class="input-group-prepend">
+                                          <span class="input-group-text" id="basic-addon3">Total Amount</span>
+                                      </div>
+                                      <input type="number" class="form-control" v-model="finalamount" readonly style="background:white;"/>
+                                      </div>
+
 
                                          <div class="input-group mb-3">
                                       <div class="input-group-prepend">
@@ -70,6 +86,10 @@ export default {
        totalAmount: {
            type: Number,
            required:true,
+       },
+       branch: {
+           type: Number,
+           required: true,
        }
     },
     data: function(){
@@ -77,11 +97,17 @@ export default {
              errormsg: [],
              change: 0,
              payment: 0,
+             discount: 0,
+             finalamount: 0,
         }
     },
     watch: {
+        discount: function(newval){
+            if(newval < 0) this.discount = 0
+            this.finalamount = this.totalAmount - newval
+        },
         payment:function(newval){
-            this.change = isNaN(parseFloat(newval) - parseFloat(this.totalAmount)) ? 0 : (parseFloat(newval) - parseFloat(this.totalAmount))
+            this.change = isNaN(parseFloat(newval) - parseFloat(this.finalamount)) ? 0 : (parseFloat(newval) - parseFloat(this.finalamount))
         }
     },
     computed: {
@@ -92,12 +118,14 @@ export default {
             let data = {
                 patient: this.patient,
                 items: this.items,
-                totalAmount: this.totalAmount,
-                payment: this.payment
+                totalAmount: this.finalamount,
+                payment: this.payment,
+                branch: this.branch,
+                discount: this.discount,
             }
 
             if(parseFloat(this.change) < 0 || parseFloat(this.payment) <= 0){
-                alert("Insufficient Payment")
+                this.$swal("Insufficient Payment","","warning")
             }else{
                 this.$store.dispatch("transaction/createBillPharmarcy",data)
                     .then((res)=>{
@@ -121,7 +149,7 @@ export default {
     },
 
     mounted(){
-      
+       this.finalamount = this.totalAmount - this.discount
     },
  
 }
