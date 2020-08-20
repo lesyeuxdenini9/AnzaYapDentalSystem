@@ -149,6 +149,7 @@ export default {
                 password_confirmation: '',
                 gender: 'Male',
                 history: '',
+                token: '',
             },
              errormsg: [],
         }

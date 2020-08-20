@@ -172,7 +172,13 @@
                                         </div>
                                     </div>
 
-                                     <div style="width: 100%;height:5px;background:dimgray;"/>
+                                    <div>
+                                         <barcode v-bind:value="transactionInfo.transactionNo" :width="4" :height="70" :lineColor="'dimgray'">
+                                            Show this if the rendering fails.
+                                        </barcode>
+                                    </div>
+
+                                     
 
                         </div>
                        </div>
@@ -189,7 +195,11 @@
 
 <script>
 import {mapState} from 'vuex'
+import VueBarcode from 'vue-barcode'
 export default {
+    components: {
+       'barcode': VueBarcode
+    },
     methods: {
         print: function(){
             window.print()
@@ -239,7 +249,10 @@ export default {
     },
     async mounted(){
     this.$store.dispatch("activenav","recordnav")
-    await this.$store.dispatch('transaction/getTransaction',this.$route.params.idno)
+    this.$store.dispatch('transaction/getTransaction',this.$route.params.idno)
+
+    
+        
 
     },
 }

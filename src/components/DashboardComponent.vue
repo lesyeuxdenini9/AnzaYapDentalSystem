@@ -28,7 +28,11 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Earnings (Annual)</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{data.yearsales}}</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                          <small style="font-weight:bold;">Pharmacy: {{data.pyearsales}}</small><br/>
+                         <small style="font-weight:bold;">Treatment: {{data.yearsales}}</small><br/>
+                         <small style="font-weight:bold;">Total: {{data.yearsales + data.pyearsales}}</small>   
+                      </div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -46,7 +50,11 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Earnings (Monthly)</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{data.monthsales}}</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                         <small style="font-weight:bold;">Pharmacy: {{data.pmonthsales}}</small><br/>
+                         <small style="font-weight:bold;">Treatment: {{data.monthsales}}</small><br/>
+                         <small style="font-weight:bold;">Total: {{data.monthsales + data.pmonthsales}}</small>   
+                      </div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -65,7 +73,11 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Earnings (Today)</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">{{data.todaysales}}</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                         <small style="font-weight:bold;">Pharmacy: {{data.ptodaysales}}</small><br/>
+                         <small style="font-weight:bold;">Treatment: {{data.todaysales}}</small><br/>
+                         <small style="font-weight:bold;">Total: {{data.todaysales + data.ptodaysales}}</small> 
+                        </div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-check fa-2x text-gray-300"></i>
@@ -104,7 +116,6 @@
             <div class="card">
               <div class="card-header" style="text-align:center;"><span style="font-size:20pt;" class="card-title">EARNINGS LAST 7 DAYS</span></div>
               <div class="card-body">
-              
                  <line-chart :download="true"  :curve="false" :data="weekSalesData"></line-chart>
               </div>
             </div>
@@ -164,6 +175,7 @@
             </div>
           </div>
 
+       
 
         <!-- <column-chart :stacked="stacked" :legend="true" :colors="['#b00', '#666']" :download="true" :data="seriesData"></column-chart>
         -->
@@ -228,8 +240,15 @@ export default {
             navbranch[index].classList.add('active')
             this.activebranchIndex = index
              this.$store.dispatch("dashboard/getData",this.branches[this.activebranchIndex].id).then(()=>{
+               this.weekSalesData = []
+             this.weekSalesData.push({name: 'Pharmacy', data: {}})
+             this.weekSalesData.push({name: 'Treatments', data: {}})
+             this.weekSalesData.push({name: 'Total', data: {}})
              this.data.weeksales.forEach((sale)=>{
-               this.weekSalesData.push([`${sale.day} (${sale.date})`, sale.sale])
+                  // this.weekSalesData.push([`${sale.day} (${sale.date})`, sale.treatment])
+                 this.weekSalesData[0].data[`${sale.day} (${sale.date})`] = sale.pharmacy
+                 this.weekSalesData[1].data[`${sale.day} (${sale.date})`] = sale.treatment
+                 this.weekSalesData[2].data[`${sale.day} (${sale.date})`] = parseFloat(sale.treatment) + parseFloat(sale.pharmacy)
             })
          }).catch(err=>console.log(err))
 
@@ -240,8 +259,15 @@ export default {
        this.$store.dispatch("activenav","dashboardnav")
        this.$store.dispatch("branch/getListMedicine","All").then(()=>{
          this.$store.dispatch("dashboard/getData",this.branches[this.activebranchIndex].id).then(()=>{
+             this.weekSalesData = []
+             this.weekSalesData.push({name: 'Pharmacy', data: {}})
+             this.weekSalesData.push({name: 'Treatments', data: {}})
+             this.weekSalesData.push({name: 'Total', data: {}})
              this.data.weeksales.forEach((sale)=>{
-                  this.weekSalesData.push([`${sale.day} (${sale.date})`, sale.sale])
+                  // this.weekSalesData.push([`${sale.day} (${sale.date})`, sale.treatment])
+                 this.weekSalesData[0].data[`${sale.day} (${sale.date})`] = sale.pharmacy
+                 this.weekSalesData[1].data[`${sale.day} (${sale.date})`] = sale.treatment
+                 this.weekSalesData[2].data[`${sale.day} (${sale.date})`] = parseFloat(sale.treatment) + parseFloat(sale.pharmacy)
             })
          }).catch(err=>console.log(err))
 

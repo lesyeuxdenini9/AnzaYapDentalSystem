@@ -224,6 +224,7 @@
                                                             <td>Qty</td>
                                                             <td>Dosage</td>
                                                             <td>Days</td>
+                                                            <td>Remarks</td>
                                                   
                                                         </tr>
                                                         <tr v-for="(item,index5) in prescript.Prescriptitems" :key="index5">
@@ -231,6 +232,7 @@
                                                             <td>{{item.qty}}</td>
                                                             <td>{{item.dosage}}</td>
                                                             <td>{{item.days}}</td>
+                                                            <td>{{item.remarks}}</td>
                                                         
                                                         </tr>
                                                     </table>

@@ -13,6 +13,7 @@ export default {
         appointments: [],
         reservationFollowups: [],
         list: [],
+        nextappointments: [],
     },
     actions: {
         getUserTransactionWalkIn: function(context,{status,branch,userid}){
@@ -287,6 +288,17 @@ export default {
                     }               
                 })
             })
+        },
+        getNextAppointment: function(context){
+            Axios.post(`${context.rootState.apiUrl}/api/reservation/getNextAppointment`,{},context.rootState.headerconfig)
+            .then((res)=>{     
+                context.commit("setNextAppointment",res.data.data)
+            })
+            .catch((err)=>{
+                if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                    context.dispatch("refreshtoken",null,{root:true})
+                }               
+            })
         }
     
     },
@@ -411,6 +423,9 @@ export default {
         },
         setList: function(state,data){
             state.list = data
+        },
+        setNextAppointment: function(state,data){
+            state.nextappointments = data
         }
     }
 }

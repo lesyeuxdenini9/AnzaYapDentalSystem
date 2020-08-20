@@ -1,7 +1,7 @@
 <template>
     <div style="padding: 10px 5%;position:relative;"  class="printdiv">
 
-     
+      
         
         <div style="text-align:center;position:relative;margin-bottom:50px;">
             <button type="button" @click="close()" class="noprint float-left"><span class="fa fa-times"></span>Close</button>
@@ -100,7 +100,9 @@
                  </tr>
              </table>
 
-              <table  class="border" style="margin:0px;width:25%">
+        <div class="row">
+            <div class="col-md-4">
+              <table  class="border" style="margin:0px;width:100%">
                 <tr style="background: #343A40;color:white;">
                     <td colspan="2">Clinic Schedules</td>
                 </tr>
@@ -113,9 +115,20 @@
                 </tr>
 
               </table>
+            </div>
+            <div class="col-md-8" style="text-align:center;">
+              
+                <barcode v-bind:value="reservationInfo.reservationNo"  :width="4" :height="70" :lineColor="'dimgray'">
+                    Show this if the rendering fails.
+                </barcode>
+              
+            </div>
+
+        </div>
+              
 
              <br/>
-             <div class="col col-md-4 noprint" v-if="reservationInfo.status == 0">
+             <div class="col-md-4 noprint" v-if="reservationInfo.status == 0">
              <button @click="deletereservation" class="btn btn-danger form-control float-left"><span class="fa fa-times"></span> Delete</button>
              </div>
     </div>
@@ -124,7 +137,11 @@
 <script>
 import { mapState , mapActions} from 'vuex'
 import { calculateAge, formatraw12Hour } from '@/helper/helper' 
+import VueBarcode from 'vue-barcode'
 export default {
+    components: {
+       'barcode': VueBarcode
+    },
     computed: {
         ...mapState({
             reservationInfo: state=> state.reservation.reservationInfo
@@ -216,7 +233,9 @@ export default {
          this.$store.dispatch("activenav","reservationnav")
          await this.$store.dispatch("reservation/getReservationInfo",this.$route.params.idno)
          await this.markasReadpatient(this.$route.params.idno)
-    }
+
+ 
+        }
 }
 </script>
 

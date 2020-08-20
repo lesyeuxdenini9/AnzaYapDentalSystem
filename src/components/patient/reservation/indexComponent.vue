@@ -28,7 +28,11 @@
 
                   
                     <div class="alert alert-danger" role="alert">
-                      Note: For Emergency or Rush Appointment Please Contact Branch Helpdesk Hotline Number 
+                     <ul>
+                       <li>For Emergency or Rush Appointment Please Contact Branch Helpdesk Hotline Number</li>
+                       <li>Failure to show after 15 minutes on scheduled time will cancel your reservation slot.</li>
+                      </ul>
+                      
                     </div>
                   
                     <hr/>
@@ -259,7 +263,7 @@ export default {
             let index = this.branches.indexOf(branch[0])
             this.ActiveBranchIndex = index
 
-            this.calendarOptions.hiddenDays = this.InactiveSchedules()
+           // this.calendarOptions.hiddenDays = this.InactiveSchedules()
 
             const navbranch = document.getElementsByClassName('navbranch')
             for(let x = 0 ; x < navbranch.length ; x++){
@@ -458,7 +462,7 @@ export default {
           // this.startDate = date_fweek
           // this.endDate = date_lweek
 
-          this.calendarOptions.hiddenDays = this.InactiveSchedules() // remove or comment this line if it is not necessary to hide off / no operation days
+         // this.calendarOptions.hiddenDays = this.InactiveSchedules() // remove or comment this line if it is not necessary to hide off / no operation days
 
           let selectedDate = new Date(calendarApi.getDate())
           selectedDate = selectedDate.getDay()
@@ -522,6 +526,7 @@ export default {
 
   },
   mounted(){
+    this.$store.dispatch("reservation/getNextAppointment")
     this.$store.dispatch("activenav","reservationnav")
     this.init()
     let calendarApi = this.$refs.fullCalendar.getApi()

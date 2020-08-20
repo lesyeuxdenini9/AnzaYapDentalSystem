@@ -201,10 +201,23 @@
                                          </table>
                                     </div>
                                 </div>
+
+
+                            
+                                  <div>
+                                         <barcode v-bind:value="billinfo.billrefNo" :width="4" :height="70" :lineColor="'dimgray'">
+                                            Show this if the rendering fails.
+                                        </barcode>
+                                    </div>
                          
                         </div>
                     </div>
+
+                    
+                    
         </div>
+
+        
   
     </div>
 </template>
@@ -212,7 +225,11 @@
 <script>
 import { mapState } from 'vuex'
 import { formatBdayDate , format12Hour} from "@/helper/helper"
+import VueBarcode from 'vue-barcode'
 export default {
+    components: {
+       'barcode': VueBarcode
+    },
     computed: {
         previousPayments: {
             get: function(){
@@ -280,6 +297,15 @@ export default {
     mounted(){
         this.$store.dispatch("activenav","recordnav")
         this.$store.dispatch("transaction/viewBill",this.$route.params.idno)
+
+         this.$JsBarcode("#bcode", this.billinfo.billrefNo, {
+            format: "CODE128",
+            lineColor: "dimgray",
+            width:3,
+            height:50,
+            displayValue: true
+            });
+
     }
 }
 </script>

@@ -51,7 +51,7 @@
                 <td>{{item.qty}}</td>
                 <td>{{item.dosage}}</td>
                 <td>{{item.days}}</td>
-                <td></td>
+                <td>{{item.remarks}}</td>
              </tr>
              
              <tr>

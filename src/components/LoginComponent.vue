@@ -8,12 +8,25 @@
 
 
   <div v-else id="maindisplay">
-    <div id="header">
+     
+    <div id="header" style="padding:0;margin:0;">
 
+
+      <div class="row" style="height: 100%;">
+        <div class="col-md-3">
+          <img src="@/assets/logo.jpg" style="position:absolute;top:-50px;left:0;height:100%;width:100%;"/>
+        </div>
+        <div class="col-md-9" style="background:white">
           <div class="float-right">
              <button class="btnindex btn btn-default" @click="showloginModal=true"><span class="fa fa-lock"></span> Login</button>
             <button class="btnindex btn btn-default" @click="showregisterModal=true"><span class="fa fa-user-circle"></span> Signup</button>
           </div>
+
+        </div>
+
+      </div>
+      
+          
 
     </div>
 
@@ -46,7 +59,10 @@
                               <small style="font-size: 20pt;color:white;"> DENTAL CLINIC</small></span>
                             </div>
                         <span>Giving The Best Solutions...</span><br/>
-                        <small>Lorem Ipsum is simply dummy text of the printing and typesetting industryLorem Ipsum is simply dummy text of the printing and typesetting industry</small>
+                          <small style='font-size: 12pt'> 
+                           For compliance of DOH requirement for dental clinic<br/><hr style="background:white;"/>
+                          *Hyphochlorus Machine *UV Light *Hepa Filter *HI VAC *Temperature Scanner *PPE *Autoclave Sterilizer
+                          </small>
                         </div>
                       </div>
                     </div>
@@ -56,7 +72,10 @@
                      <div>
                         <div>
                         <span>Making Our Customers Satisfied <span style="color:#87CEEB;" class="fa fa-thumbs-up"></span></span><br/>
-                        <small>Lorem Ipsum is simply dummy text of the printing and typesetting industryLorem Ipsum is simply dummy text of the printing and typesetting industry</small>
+                          <small style='font-size: 12pt'> 
+                           For compliance of DOH requirement for dental clinic<br/><hr style="background:white;"/>
+                          *Hyphochlorus Machine *UV Light *Hepa Filter *HI VAC *Temperature Scanner *PPE *Autoclave Sterilizer
+                          </small>
                         </div>
                      </div>
                     </div>
@@ -66,7 +85,10 @@
                       <div>
                         <div>
                       <span>Always Delivering Best Of Our Services <span style="color:#F6C23E;" class="fa fa-smile"></span></span><br/>
-                        <small>Lorem Ipsum is simply dummy text of the printing and typesetting industryLorem Ipsum is simply dummy text of the printing and typesetting industry</small>
+                              <small style='font-size: 12pt'> 
+                           For compliance of DOH requirement for dental clinic<br/><hr style="background:white;"/>
+                          *Hyphochlorus Machine *UV Light *Hepa Filter *HI VAC *Temperature Scanner *PPE *Autoclave Sterilizer
+                          </small>
                         </div>
                       </div>
                     </div>
@@ -89,7 +111,7 @@
           <div class="othercontent">
             <!-- <span class="contenticon fa fa-info-circle" aria-hidden="true" style=""/><br/> -->
               <span class="contenttitle">About Us</span><br/>
-              <img src="@/assets/logo.jpg" style="width: 60%;height:120px;border-radius: 20px;"/>
+              <!-- <img src="@/assets/logo.jpg" style="width: 60%;height:120px;border-radius: 20px;"/> -->
               <p class="text-center"> DR. LUNINGNING ANZA-YAP owns and manage the ANZA-YAP DENTAL CLINIC   DR. L. ANZA-YAP earned her degree of Doctor of Dental Medicine from the Manila Central University in 08 March 1986 and passed the Professional Regulation Commission’s Licensure Examination in 16 June 1987 (PRC ID No. 23169). At the onset of her professional practice, Dr. L. ANZA-YAP has been and continues to be an active member of the Philippine Dental Association (PDA) since 1987. Her specialization in Orthodontics lead to a sustaining membership with the International Association for Orthodontics, East Asia Regional Section, since 1990, and with its Honor Society as of 06 May 1993 as a Board-Candidate.
                 Her first clinic opened in 1988 within the Km. 13 East Service Road, thereby maximizing her practice with its general clientele. With growing awareness on the benefits of orthodental treatment, braces in particular, the second one was established at the FTI Sunshine Mall to cater for upscale market, as well as to serve the corporate accounts in the FTI Complex and the neighboring Veteran’s Center in 1996. To provide dental services for the growing population in the heart of Paranaque. the third clinic opened at SM City Bicutan in March 2003 and started rendering dental health services until March 2008.
               </p>
@@ -102,35 +124,35 @@
               <p class="text-center" style="font-size: 14pt;margin-top:20px;">To meet the specific services required for by the various procedures and treatments, the ANZA-YAP DENTAL CLINIC are equipped with the best dental facilities and equipment. Dental-chairs and accessories are of premium quality sourced mainly from Japan, Germany and the United States. Likewise, the clinic can accommodate the different market segments at very competitive prices due to its linkage with many dental laboratories and suppliers for a particular prosthetics within an affordable budget range. </p>
 
               <div class="row">
-                  <div class="col-md-2 servicelist">
+                  <div class="col-md-2 servicelist" @mouseover="setAnimation(0)">
                       <img src="@/assets/profile/service/esthetic.jpg">
                       <p>Esthetic Dentistry </p>
                       <span>Services such as restoration of badly broken down teeth, whitening of stained dentition and replacement of missing and lost teeth will ensure you a winning smile.</span>
                   </div>
 
 
-                     <div class="col-md-2 servicelist">
+                     <div class="col-md-2 servicelist" @mouseover="setAnimation(1)">
                         <img src="@/assets/profile/service/preventive.jpg">
                       <p>Preventive  Dentistry </p>
                       <span>ANZA-YAP Dental Clinic offers pediatric services such as fluoride applications, placement of pit and fissure sealants and stainless steel crowns among others.</span>
 
                   </div>
 
-                      <div class="col-md-2 servicelist">
+                      <div class="col-md-2 servicelist" @mouseover="setAnimation(2)">
                         <img src="@/assets/profile/service/Periodontics.jpg">
                       <p>Periodontics & Endodontics</p>
                        <span>ANZA-YAP Dental Clinic offers advanced approaches to treatment of gum diseases and pulp diseases.</span>
 
                   </div>
 
-                      <div class="col-md-2 servicelist">
+                      <div class="col-md-2 servicelist" @mouseover="setAnimation(3)">
                         <img src="@/assets/profile/service/oral.jpg">
                       <p>Oral Surgery </p>
                        <span>provides safe surgical procedures from simple to complicated cases such as gingivectomy (removal of excess gums), odontectomy (removal of impacted teeth) among others. </span>
 
                   </div>
 
-                      <div class="col-md-2 servicelist">
+                      <div class="col-md-2 servicelist" @mouseover="setAnimation(4)">
                         <img src="@/assets/profile/service/Orthodontics.jpg">
                       <p>Orthodontics</p>
                        <span>Clinic offers preventive, interceptive and corrective treatment to malocclusion that will improve esthetic and functional needs and that will address TMJ problems.</span>
@@ -138,7 +160,7 @@
                   </div>
 
                   
-                     <div class="col-md-2 servicelist">
+                     <div class="col-md-2 servicelist" @mouseover="setAnimation(5)">
                         <img src="@/assets/profile/service/xray.jpg">
                       <p>Dental Roentology </p>
                        <span>ANZA-YAP Dental Clinic provides peri-apical x-ray.</span>
@@ -234,39 +256,39 @@
                                    <div class="col-md-6" style="text-align:left !important;">
                                      <span><span style="font-weight: bold">Mon:</span> 
                                      <span v-if="branch.Schedules[1].active==1"> {{dhour(branch.Schedules[1].start)}} - {{dhour(branch.Schedules[1].end)}}</span>
-                                     <span v-else> No operation</span>
+                                     <span v-else> Close</span>
                                      </span><br/>
 
                                       <span><span style="font-weight: bold">Tue:</span> 
                                      <span v-if="branch.Schedules[2].active==1"> {{dhour(branch.Schedules[2].start)}} - {{dhour(branch.Schedules[2].end)}}</span>
-                                     <span v-else> No operation</span>
+                                     <span v-else> Close</span>
                                      </span><br/>
 
                                       <span><span style="font-weight: bold">Wed:</span> 
                                      <span v-if="branch.Schedules[3].active==1"> {{dhour(branch.Schedules[3].start)}} - {{dhour(branch.Schedules[3].end)}}</span>
-                                     <span v-else> No operation</span>
+                                     <span v-else> Close</span>
                                      </span><br/>
 
                                       <span><span style="font-weight: bold">Thu:</span> 
                                      <span v-if="branch.Schedules[4].active==1"> {{dhour(branch.Schedules[4].start)}} - {{dhour(branch.Schedules[4].end)}}</span>
-                                     <span v-else> No operation</span>
+                                     <span v-else> Close</span>
                                      </span><br/>
                                    
                                    </div>
                                  <div class="col-md-6" style="text-align:left !important;">   
                                        <span><span style="font-weight: bold">Fri:</span> 
                                      <span v-if="branch.Schedules[5].active==1"> {{dhour(branch.Schedules[5].start)}} - {{dhour(branch.Schedules[5].end)}}</span>
-                                     <span v-else> No operation</span>
+                                     <span v-else> Close</span>
                                      </span><br/>
 
                                       <span><span style="font-weight: bold">Sat:</span> 
                                      <span v-if="branch.Schedules[6].active==1"> {{dhour(branch.Schedules[6].start)}} - {{dhour(branch.Schedules[6].end)}}</span>
-                                     <span v-else> No operation</span>
+                                     <span v-else> Close</span>
                                      </span><br/>
 
                                       <span><span style="font-weight: bold">Sun:</span> 
                                      <span v-if="branch.Schedules[0].active==1"> {{dhour(branch.Schedules[0].start)}} - {{dhour(branch.Schedules[0].end)}}</span>
-                                     <span v-else> No operation</span>
+                                     <span v-else> Close</span>
                                      </span><br/>
                                    </div>
                        
@@ -285,39 +307,39 @@
                                    <div class="col-md-6" style="text-align:left !important;">
                                      <span><span style="font-weight: bold">Mon:</span> 
                                      <span v-if="branch.Schedules[1].active==1"> {{dhour(branch.Schedules[1].start)}} - {{dhour(branch.Schedules[1].end)}}</span>
-                                     <span v-else> No operation</span>
+                                     <span v-else> Close</span>
                                      </span><br/>
 
                                       <span><span style="font-weight: bold">Tue:</span> 
                                      <span v-if="branch.Schedules[2].active==1"> {{dhour(branch.Schedules[2].start)}} - {{dhour(branch.Schedules[2].end)}}</span>
-                                     <span v-else> No operation</span>
+                                     <span v-else> Close</span>
                                      </span><br/>
 
                                       <span><span style="font-weight: bold">Wed:</span> 
                                      <span v-if="branch.Schedules[3].active==1"> {{dhour(branch.Schedules[3].start)}} - {{dhour(branch.Schedules[3].end)}}</span>
-                                     <span v-else> No operation</span>
+                                     <span v-else> Close</span>
                                      </span><br/>
 
                                       <span><span style="font-weight: bold">Thu:</span> 
                                      <span v-if="branch.Schedules[4].active==1"> {{dhour(branch.Schedules[4].start)}} - {{dhour(branch.Schedules[4].end)}}</span>
-                                     <span v-else> No operation</span>
+                                     <span v-else> Close</span>
                                      </span><br/>
                                    
                                    </div>
                                  <div class="col-md-6" style="text-align:left !important;">   
                                        <span><span style="font-weight: bold">Fri:</span> 
                                      <span v-if="branch.Schedules[5].active==1"> {{dhour(branch.Schedules[5].start)}} - {{dhour(branch.Schedules[5].end)}}</span>
-                                     <span v-else> No operation</span>
+                                     <span v-else> Close</span>
                                      </span><br/>
 
                                       <span><span style="font-weight: bold">Sat:</span> 
                                      <span v-if="branch.Schedules[6].active==1"> {{dhour(branch.Schedules[6].start)}} - {{dhour(branch.Schedules[6].end)}}</span>
-                                     <span v-else> No operation</span>
+                                     <span v-else> Close</span>
                                      </span><br/>
 
                                       <span><span style="font-weight: bold">Sun:</span> 
                                      <span v-if="branch.Schedules[0].active==1"> {{dhour(branch.Schedules[0].start)}} - {{dhour(branch.Schedules[0].end)}}</span>
-                                     <span v-else> No operation</span>
+                                     <span v-else> Close</span>
                                      </span><br/>
                                    </div>
                        
@@ -395,6 +417,15 @@ export default {
         }
     },
     methods: {
+      setAnimation: function(index){
+          const element = document.getElementsByClassName('servicelist')[index];
+          element.classList.add('animate__animated', 'animate__flip');
+
+          element.addEventListener('animationend', () => {
+            // do something
+            element.classList.remove('animate__animated', 'animate__fadeIn');
+          });
+      },
       dhour: function(date){
         return this.$helper.formatraw12Hour(date)
       },
@@ -494,8 +525,8 @@ export default {
     }
 
     .btnindex {
-        border: 2px solid #355BCC;
-        color: #355BCC;
+        border: 2px solid #6C63FF;
+        color: #6C63FF;
         margin: 5px;
         border-radius: 15px;
     }
@@ -526,7 +557,7 @@ export default {
   bottom: 0;
   width: 100%;
   height: 5rem;      
-  background: #083D55;
+  background: #282262;
   text-align: center;
   padding-top: 5px;
 }

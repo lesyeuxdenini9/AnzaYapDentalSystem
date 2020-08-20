@@ -57,7 +57,7 @@ export default {
             this.$emit("closemodal")
         },
         save: function(){
-            this.$store.dispatch("user/changepic",{imgfile: this.imgfile,oldimg: this.oldimg}).then((res)=>{
+            this.$store.dispatch("user/changepic",{imgfile: this.imgfile,oldimg: this.oldimg, convert: 0}).then((res)=>{
                if(res.data.errors){
                    this.errormsg = res.data.errors
                    this.$refs.errormessage.classList.add("show")

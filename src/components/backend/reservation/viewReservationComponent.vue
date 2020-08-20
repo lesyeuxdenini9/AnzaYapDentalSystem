@@ -141,7 +141,7 @@
                                 </div>
                   
 
-                              <div class="float-right">
+                              <div class="float-right" v-if="reservationInfo.status == 0">
                                 <button v-if="reservationInfo.status != 1" @click="confirmReservation()" style="margin: 10px 30px;" class="btn btn-primary"><span class="fa fa-check"></span> Confirm</button>
                                  <!-- <button v-if="reservationInfo.status == 1" style="margin: 10px 30px;" class="btn btn-warning"><span class="fa fa-times"></span> Cancel</button> -->
                                 <button  v-if="reservationInfo.status != 2"  @click="deniedReservation()" class="btn btn-danger"><span class="fa fa-times"></span> Denied</button>

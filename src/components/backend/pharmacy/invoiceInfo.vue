@@ -99,6 +99,12 @@
                                       </tbody>
 
                                   </table>
+
+                                <div style="text-align:left">
+                                  <barcode v-bind:value="billinfo.billrefNo" :width="4" :height="70" :lineColor="'dimgray'">
+                                            Show this if the rendering fails.
+                                     </barcode>
+                                </div>
                         </div>
                       </div>
 
@@ -113,8 +119,11 @@
 
 <script>
 import { mapState } from 'vuex'
-
+import VueBarcode from 'vue-barcode'
 export default {
+           components: {
+       'barcode': VueBarcode
+    },
     methods: {
         dDate: function(date){
             return this.$helper.formatBdayDate(date)

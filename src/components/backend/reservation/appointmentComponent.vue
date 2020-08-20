@@ -532,7 +532,7 @@ export default {
         let inactivesched = []
         this.schedules.filter((sched)=>{
           if(sched.active == 0){
-           inactivesched.push(sched.index)
+          // inactivesched.push(sched.index)
           }
         })
         return inactivesched

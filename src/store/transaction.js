@@ -3,9 +3,27 @@ export default {
     namespaced: true,
     state: {
         usertransactions: [],
-        transactionInfo: {},
+        transactionInfo: {
+            Branch: {},
+            User: {},
+            Dentist: {},
+            Treatments: [],
+            Billings:[],
+        },
         prescriptInfo: {},
-        billinfo: {},
+        billinfo: {
+            User:{
+                address: '',
+                email: '',
+            },
+            Branch: {},
+            customerName: '',
+            Transaction: {
+                Treatments: [],
+                Billings: [],
+            },
+            Healthcard: {},
+        },
         pharmacyTransactions: [],
     },
     actions: {
