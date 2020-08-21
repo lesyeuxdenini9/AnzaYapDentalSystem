@@ -133,7 +133,7 @@
                     </div> -->
 
                      <div class="card">
-                            <div class="card-header card-default" style="background:#343A40;color:white;"><span>Records</span> <button style="color:white;" @click="showaddTransactModal = true" class="btn btn-default float-right"><span class="fa fa-plus"></span> New Transaction</button></div>
+                            <div class="card-header card-default" style="background:#343A40;color:white;"><span>Records</span> <button style="color:white;display:none;" @click="showaddTransactModal = true" class="btn btn-default float-right"><span class="fa fa-plus"></span> New Transaction</button></div>
                         <div class="card-body">
 
                             <div class="card">
