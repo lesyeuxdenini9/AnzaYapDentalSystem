@@ -103,7 +103,7 @@
                 </div>
 
                 <hr/>
-                    <div class="row">
+                    <div class="row" v-if="reservationInfo.status == 1">
                     <div class="col col-md-3  float-left">
                              <button class="btn btn-primary form-control" @click="proceed()"><span class="fa fa-check"></span> Proceed</button>
                     </div>
