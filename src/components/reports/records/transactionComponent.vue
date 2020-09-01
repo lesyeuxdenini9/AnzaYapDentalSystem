@@ -32,6 +32,7 @@
                                       <input type="date" class="form-control" v-model="search.start"/>
                             </div>
                             </div>
+                            
 
                                <div class="col-md-3">
                                  <div class="input-group mb-3">
@@ -39,6 +40,35 @@
                                           <span class="input-group-text" id="basic-addon3">End Date</span>
                                       </div>
                                       <input type="date" class="form-control" v-model="search.end"/>
+                            </div>
+                            </div>
+
+                            
+                            <div class="col col-md-3">
+                                    <div class="input-group mb-3">
+                                      <div class="input-group-prepend">
+                                          <span class="input-group-text" id="basic-addon3">Dentist</span>
+                                      </div>
+                                     <select class="form-control" v-model="search.dentist">
+                                         <option value="All">All</option>
+                                         <option v-for="(dentist,index) in branches[activebranchIndex].Dentists" :key="index" :value="dentist.id">{{dentist.fullname}}</option>
+                                     </select>
+                            </div>
+                            </div>
+
+
+                            <div class="col col-md-3">
+                                    <div class="input-group mb-3">
+                                      <div class="input-group-prepend">
+                                          <span class="input-group-text" id="basic-addon3">Status</span>
+                                      </div>
+                                      <select class="form-control" v-model="search.status">
+                                         <option value="All">All</option>
+                                         <option value="0">On-Going</option>
+                                         <option value="1">For Followup</option>
+                                         <option value="2">Done</option>
+                                         <option value="3">Cancelled</option>
+                                     </select>
                             </div>
                             </div>
 
@@ -103,6 +133,8 @@ export default {
                 end: "",
                 transactionNo: "",
                 branch: "",
+                dentist: "All",
+                status: "All",
             },
         }
     },
@@ -158,7 +190,7 @@ export default {
     },
     mounted(){
         this.$store.dispatch("activenav","reportnav")
-           this.$store.dispatch("branch/getList")
+           this.$store.dispatch("branch/getListDentist")
             .then(()=>{
                 
                 const datenow = new Date()

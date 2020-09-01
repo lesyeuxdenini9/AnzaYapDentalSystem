@@ -78,7 +78,7 @@
                                     <td  style="width:10%;">{{stock.invoiceRefno}}</td>
                                     <td style="width:35%;">
                                         <ul>
-                                            <li v-for="(item,index2) in stock.Stockinitems" :key="index2">{{`${item.medicine} ${item.qty} ${item.uom}`}}</li>
+                                            <li v-for="(item,index2) in stock.Stockinitems" :key="index2">{{`${item.medicine} ${item.qty} ${item.uom}`}} Expiration Date: {{item.ExpirationDate}}</li>
                                         </ul>
                                     </td>
                                     <td></td>

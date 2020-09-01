@@ -317,6 +317,7 @@ export default {
                             status: list.status,
                             Start: list.Start,
                             End: list.End,
+                            isResched: list.isResched
                         }
                     }
                 })
@@ -343,6 +344,7 @@ export default {
                                 branch: list.Branch.branch,
                                 Start: list.Start,
                                 End: list.End,
+                                isResched: list.isResched
                         }
                     }
                 })
@@ -364,6 +366,7 @@ export default {
                                 branch: list.Branch.branch,
                                 Start: list.Start,
                                 End: list.End,
+                                isResched: list.isResched
                         }
                     }
                 })

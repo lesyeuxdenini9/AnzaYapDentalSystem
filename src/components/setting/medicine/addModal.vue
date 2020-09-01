@@ -1,6 +1,6 @@
 <template>
         <div class="modal" ref="bankModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"><span class="fa fa-plus"></span> New Medicine</h5>
@@ -19,7 +19,7 @@
                             
                             <div class="row">
 
-                                 <div class="col-md-12">
+                                 <div class="col-md-6">
                                         <div class="form-group">
                                                 <label>Branch</label>
                                                 <select class="form-control" v-model="medicine.branch">
@@ -29,41 +29,53 @@
                                     </div>
 
 
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <label>Medicine</label>
                                         <input type="text" class="form-control" v-model="medicine.medicine"/>
                                     </div>
 
-                                   <div class="col-md-12">
+                                   <div class="col-md-6">
                                         <label>Description</label>
                                         <input type="text" class="form-control" v-model="medicine.description"/>
                                     </div>
 
-                                      <div class="col-md-12">
+                                       <div class="col-md-6">
+                                        <label>Scientific Name</label>
+                                        <input type="text" class="form-control" v-model="medicine.scientific"/>
+                                    </div>
+
+                                       <div class="col-md-6">
+                                        <label>Brand</label>
+                                        <input type="text" class="form-control" v-model="medicine.brand"/>
+                                    </div>
+
+                                    
+                                    <div class="col-md-6">
+                                        <label>Product Code</label>
+                                        <input type="text" class="form-control" v-model="medicine.code"/>
+                                    </div>
+
+                                      <div class="col-md-6">
                                         <label>Unit of Measurement</label>
                                         <input type="text" class="form-control" v-model="medicine.uom"/>
                                     </div>
 
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <label>Minimum Stocks</label>
                                         <input type="text" class="form-control" v-model="medicine.limit"/>
                                     </div>
 
 
-                                    <div class="col-md-12">
-                                        <label>Product Code</label>
-                                        <input type="text" class="form-control" v-model="medicine.code"/>
-                                    </div>
 
                             </div>
 
                             <div class="row">
-                                    <div v-if="type==1" class="col-md-12">
+                                    <div v-if="type==1" class="col-md-6">
                                         <label>Price</label>
                                         <input type="number" class="form-control" v-model="medicine.price"/>
                                     </div>
 
-                                      <div class="col-md-12">
+                                      <div class="col-md-6">
                                         <label>Manufacturer</label>
                                         <input type="text" class="form-control" v-model="medicine.manufacturer"/>
                                     </div>
@@ -112,6 +124,8 @@ export default {
                  manufacturer: '',
                  code: '',
                  type: this.type,
+                 scientific: '',
+                 brand: '',
              }
         }
     },

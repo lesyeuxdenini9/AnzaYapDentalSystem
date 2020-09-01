@@ -42,7 +42,7 @@
                                                     <table class="table table-bordered" style="padding: 0;margin: 0;">
                                                               <tr @dblclick="addtoCart(med)" style="cursor:pointer;" v-for="(med,index) in medicines" :key="index">
                                                                 <td style="width: 10%">{{med.code}}</td>
-                                                                <td style="width: 20%">{{med.medicine}}</td>
+                                                                <td style="width: 20%">{{med.medicine}} ( {{med.brand}} )</td>
                                                                 <td style="width: 25%">{{med.description}}</td>
                                                                 <td style="width: 10%">{{med.price}}</td>
                                                                 <td style="width: 10%">{{med.stocks}}</td>

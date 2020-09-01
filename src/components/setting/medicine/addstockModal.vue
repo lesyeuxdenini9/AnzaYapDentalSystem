@@ -1,6 +1,6 @@
 <template>
         <div class="modal" ref="bankModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"><span class="fa fa-plus"></span> New Stocks</h5>
@@ -76,7 +76,7 @@
                                             <th style="width:30%">Item</th>
                                             <th>Qty</th>
                                             <th>Unit of Measurement</th>
-                
+                                            <th>Expiration Date</th>
                                             <th style="width:20%;"></th>
                                         </tr>
                                     </thead>
@@ -87,6 +87,7 @@
                                             </td>
                                             <td><input @change="changeqty(index)" type="number" class="form-control" v-model="item.qty"/></td>
                                             <td>{{item.uom}}</td>
+                                            <td><input type="date" class="form-control" v-model="item.expirationDate"/></td>
                                             <td style="text-align:right;"><button @click="removeitem(index)"><span class="fa fa-times"></span> </button></td>
                                         </tr>
                                     </tbody>
@@ -150,8 +151,10 @@ export default {
             let item = {
                 id: this.branch.Medicines[this.myValue].id,
                 qty: 1,
-                medicine: this.branch.Medicines[this.myValue].medicine,
+                medicine: `${this.branch.Medicines[this.myValue].medicine} ( ${this.branch.Medicines[this.myValue].brand} )`,
                 uom: this.branch.Medicines[this.myValue].uom,
+                // expirationDate: this.$helper.formatDate(new Date())
+                expirationDate: '',
             }
 
             if(this.stock.items.length == 0){
@@ -196,7 +199,7 @@ export default {
                     let x = -1
                     return  this.branch.Medicines.map((med)=>{
                         x++
-                        return {id: x , text: `${med.medicine}`} 
+                        return {id: x , text: `${med.medicine} ( ${med.brand} )`} 
                     
                     })
 

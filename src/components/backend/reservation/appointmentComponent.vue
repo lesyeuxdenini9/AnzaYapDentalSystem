@@ -10,8 +10,10 @@
                   <div class="col-md-6">
                       <ul class="legends">
                     <li><button disabled style="height:20px;width:20px;background: #1CC88A"></button> Waiting</li>
+                    <li><button disabled style="height:20px;width:20px;background: #9F29E0"></button> Reschedule</li>
                     <li><button disabled style="height:20px;width:20px;background: dimgray"></button> Cancelled</li>
                     <li><button disabled style="height:20px;width:20px;background: #385ECE"></button> Confirmed</li>
+                 
                   </ul>
 
                   </div>
@@ -366,7 +368,6 @@ export default {
             if(findindex.length == 0) this.filterDentist = 0
 
             this.$store.dispatch("dashboard/dentistTransaction",this.branches[this.activebranchIndex].id).then((data)=>{
-             console.log(data)
              this.dentistTransactions = data
            })
 
@@ -386,6 +387,9 @@ export default {
 
          if(info.event.extendedProps.status == 3) bg = "dimgray"
          if(info.event.extendedProps.status == 4) bg = "#385ECE"
+         if(info.event.extendedProps.isResched == 1 && info.event.extendedProps.status == 1) bg = "#9F29E0"
+
+         console.log(info.event.extendedProps)
 
         //  display = `<div style="background: ${bg};color:${color};height:100%;width:100%;position: relative;padding:10px;"><span style="font-weight:bold">${info.event.title}</span>
         //     <br/>
@@ -464,7 +468,6 @@ export default {
       //      }
       // } 
       this.refetchEventsCalendar(events)
-     console.log(events)
     },
     closemodal: function(){
       this.showActionReservationModal = false
@@ -507,7 +510,6 @@ export default {
               // calendarApi.addEventSource(this.getApprovedAppointments)
 
                 this.$store.dispatch("dashboard/dentistTransaction",this.branches[this.activebranchIndex].id).then((data)=>{
-                      console.log(data)
                       this.dentistTransactions = data
                   })  
               resolve()
@@ -551,7 +553,6 @@ export default {
 
      this.$mysocket.on('dentistTransaction',()=>{
            this.$store.dispatch("dashboard/dentistTransaction",this.branches[this.activebranchIndex].id).then((data)=>{
-             console.log(data)
                this.dentistTransactions = data
            })
       })

@@ -89,7 +89,7 @@
                               </div>
 
                                <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;"/>
-                                 <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>TOP 5 MOST SERVICE DONE BASED ON TRANSACTION DATE FROM  {{search.startyear}} TO {{search.endyear}}</span></div>
+                                 <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>NO. OF SERVICE DONE BASED ON TRANSACTION DATE FROM  {{search.startyear}} TO {{search.endyear}}</span></div>
                                       <div class="row">
                                   <div class="col-md-12">
                                       <pie-chart :download="true" width="100%" height="500px" :data="pieOptionsMostAvail.data"></pie-chart>

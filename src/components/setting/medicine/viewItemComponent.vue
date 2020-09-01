@@ -19,6 +19,16 @@
 
                                     </div>
 
+                                       <div class="col-md-4">
+                                           <div class="input-group mb-3">
+                                      <div class="input-group-prepend">
+                                          <span class="input-group-text" id="basic-addon3">Brand</span>
+                                      </div>
+                                      <input type="text" class="form-control" readonly style="background:white;" v-model="medicine.brand"/>
+                                  </div>
+
+                                    </div>
+
                                      <div class="col-md-4">
                                            <div class="input-group mb-3">
                                       <div class="input-group-prepend">
@@ -28,6 +38,17 @@
                                   </div>
 
                                     </div>
+
+                                           <div class="col-md-4">
+                                           <div class="input-group mb-3">
+                                      <div class="input-group-prepend">
+                                          <span class="input-group-text" id="basic-addon3">Scientific Name</span>
+                                      </div>
+                                      <input type="text" class="form-control" readonly style="background:white;" v-model="medicine.scientificName"/>
+                                  </div>
+
+                                    </div>
+
 
                                      <div class="col-md-4">
                                            <div class="input-group mb-3">
@@ -39,6 +60,21 @@
 
                                     </div>
 
+                                    
+                                  
+                                       
+                                     <div class="col-md-4">
+                                           <div class="input-group mb-3">
+                                      <div class="input-group-prepend">
+                                          <span class="input-group-text" id="basic-addon3">Stock Status</span>
+                                      </div>
+                                      <input type="text" class="form-control" readonly style="background:white;" v-model="stockstatus"/>
+                                  </div>
+
+                                    </div>
+
+                                    
+                                
 
                                        <div class="col-md-4">
                                            <div class="input-group mb-3">
@@ -73,16 +109,6 @@
                                     </div>
 
 
-                                       
-                                     <div class="col-md-4">
-                                           <div class="input-group mb-3">
-                                      <div class="input-group-prepend">
-                                          <span class="input-group-text" id="basic-addon3">Stock Status</span>
-                                      </div>
-                                      <input type="text" class="form-control" readonly style="background:white;" v-model="stockstatus"/>
-                                  </div>
-
-                                    </div>
 
                                        <div class="col-md-2">
                                            <button @click="edit()" class="btn btn-success form-control"><span class="fa fa-pen"></span> Edit</button>
@@ -139,6 +165,7 @@
                                           <th>Invoice RefNo</th>
                                           <th>Quantity</th>
                                           <th>Unit of Measurement</th>
+                                          <th>Expiration Date</th>
                                       </tr>
                                   </thead>
 
@@ -150,6 +177,7 @@
                                           <td>{{stock.Stockin.invoiceRefno}}</td>
                                           <td>{{stock.qty}}</td>
                                           <td>{{stock.uom}}</td>
+                                          <td>{{stock.ExpirationDate}}</td>
                                       </tr>
                                   </tbody>
 

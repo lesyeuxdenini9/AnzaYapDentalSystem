@@ -277,8 +277,7 @@ export default {
         closethis: function(){
             this.$emit("closemodal")
         },
-        save: function(){
-             
+        save: function(){          
             this.$store.dispatch('reservation/save',this.reservation)
                    .then((res)=>{
                    if(res.data.errors){

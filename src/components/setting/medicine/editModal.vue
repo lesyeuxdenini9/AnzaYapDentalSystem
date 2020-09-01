@@ -1,6 +1,6 @@
 <template>
         <div class="modal" ref="bankModal" tabindex="-1" role="dialog">
-            <div class="modal-dialog modal-md" role="document">
+            <div class="modal-dialog modal-xl" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"><span class="fa fa-edit"></span> Edit Medicine</h5>
@@ -18,56 +18,72 @@
 
 
                              <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-4">
                                         <label>Medicine</label>
                                         <input type="text" class="form-control" v-model="medicine.medicine"/>
                                     </div>
 
-                                   <div class="col-md-12">
+                                         
+                                      <div class="col-md-4">
+                                        <label>Brand</label>
+                                        <input type="text" class="form-control" v-model="medicine.brand"/>
+                                    </div>
+
+                                   <div class="col-md-4">
                                         <label>Description</label>
                                         <input type="text" class="form-control" v-model="medicine.description"/>
                                     </div>
 
-                                      <div class="col-md-12">
-                                        <label>Unit of Measurement</label>
-                                        <input type="text" class="form-control" v-model="medicine.uom"/>
+                                    
+                                    <div class="col-md-4">
+                                        <label>Scientific Name</label>
+                                        <input type="text" class="form-control" v-model="medicine.scientificName"/>
                                     </div>
 
-                                    <div class="col-md-12">
+                                    
+                                    <div class="col-md-4">
                                         <label>Code</label>
                                         <input type="text" class="form-control" v-model="medicine.code"/>
                                     </div>
 
+                                      <div class="col-md-4">
+                                        <label>Unit of Measurement</label>
+                                        <input type="text" class="form-control" v-model="medicine.uom"/>
+                                    </div>
+
+
+                               
+
+
                             </div>
 
-                            <div class="row" v-if="medicine.type == 1">
-                                    <div class="col-md-12">
+                            <div class="row" >
+
+                                
+                                      <div class="col-md-4" v-if="medicine.type == 1">
+                                        <label>Manufacturer</label>
+                                        <input type="text" class="form-control" v-model="medicine.manufacturer"/>
+                                    </div>
+                                    
+                                    <div class="col-md-4" v-if="medicine.type == 1">
                                         <label>Price</label>
                                         <input type="number" class="form-control" v-model="medicine.price"/>
                                     </div>
 
-                                      <div class="col-md-12">
-                                        <label>Manufacturer</label>
-                                        <input type="text" class="form-control" v-model="medicine.manufacturer"/>
-                                    </div>
 
-                            </div>
-
-                            <div class="row">
-                                    <div class="col-md-12">
+                                       <div class="col-md-4">
                                         <label>Remaining Stocks</label>
                                         <input type="number" class="form-control" v-model="medicine.stocks"/>
                                     </div>
 
-                            </div>
-
-                              <div class="row">
-                                    <div class="col-md-12">
+                                        <div class="col-md-4">
                                         <label>Minimum Stocks</label>
                                         <input type="number" class="form-control" v-model="medicine.limitMin"/>
                                     </div>
 
                             </div>
+
+                         
 
                             <!-- <div class="row">
 

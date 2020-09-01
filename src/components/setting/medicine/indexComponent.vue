@@ -52,8 +52,10 @@
                   <thead>
                     <tr style="background:#083D55;color:white;">
                       <th>Item</th>
+                      <th>Brand</th>
                       <th>Description</th>
                       <th>Code</th>
+                      <th>Scientific Name</th>
                       <th>Remaining Stock</th>
                       <th>Unit</th>
                       <th width="10%">Stock Status</th>
@@ -66,8 +68,10 @@
                     <tr v-for="(med,index) in medicineLists" :key="index">
                   
                      <td>{{med.medicine}}</td>
+                     <td>{{med.brand}}</td>
                      <td>{{med.description}}</td>
                      <td>{{med.code}}</td>
+                     <td>{{med.scientificName}}</td>
                      <td style="width:10%;">{{med.stocks}}</td>
                      <td style="width:10%;">{{med.uom}}</td>
                      <td v-html="getStatus(med.stocks,med.limitMin)"></td>

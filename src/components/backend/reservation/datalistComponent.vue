@@ -42,6 +42,33 @@
                             </div>
                             </div>
 
+                            <div class="col col-md-3">
+                                    <div class="input-group mb-3">
+                                      <div class="input-group-prepend">
+                                          <span class="input-group-text" id="basic-addon3">Dentist</span>
+                                      </div>
+                                     <select class="form-control" v-model="search.dentist">
+                                         <option value="All">All</option>
+                                         <option v-for="(dentist,index) in branches[activebranchIndex].Dentists" :key="index" :value="dentist.id">{{dentist.fullname}}</option>
+                                     </select>
+                            </div>
+                            </div>
+
+                            <div class="col col-md-3">
+                                    <div class="input-group mb-3">
+                                      <div class="input-group-prepend">
+                                          <span class="input-group-text" id="basic-addon3">Status</span>
+                                      </div>
+                                      <select class="form-control" v-model="search.status">
+                                         <option value="All">All</option>
+                                         <option value="1">Approved</option>
+                                         <option value="3">Cancelled</option>
+                                         <option value="4">Confirmed</option>
+                                         <option value="2">Denied</option>
+                                     </select>
+                            </div>
+                            </div>
+
                                <div class="col col-md-3">
                                     <div class="input-group mb-3">
                                       <div class="input-group-prepend">
@@ -74,6 +101,7 @@
                                     <th>End Time</th>
                                     <th>Dentist</th>
                                     <th>Status</th>
+                                    <!-- <th>Resched</th> -->
                                     <th></th>
                                 </tr>
                             </thead>
@@ -87,6 +115,10 @@
                                     <td>{{dHour(reserve.End)}}</td>
                                     <td>{{reserve.Dentist.fullname}}</td>
                                     <td>{{getStatus(reserve.status)}}</td>
+                                    <!-- <td>
+                                        <span v-if="reserve.isResched == 1">Yes</span>
+                                        <span v-else>No</span>
+                                    </td> -->
                                     <td><a @click="viewDetails(index)" href="javascript:void(0)">View Details</a></td>
                                 </tr>
                             </tbody>
@@ -115,6 +147,8 @@ export default {
                 start: "",
                 end: "",
                 reservationNo: "",
+                dentist: "All",
+                status: "All",
             },
             showDetailsModal: false,
             reservationInfo: {},
@@ -132,10 +166,10 @@ export default {
         getStatus: function(status){
             let des
             switch(status){
-                case 0:
+            case 0:
                 des = "Pending"
                 break
-                case 1:
+            case 1:
                 des = "Approved"
                 break
             case 2:
@@ -177,7 +211,7 @@ export default {
         })
     },
     mounted(){
-        this.$store.dispatch("branch/getList")
+        this.$store.dispatch("branch/getListDentist")
             .then((res)=>{
                 
                 const datenow = new Date()

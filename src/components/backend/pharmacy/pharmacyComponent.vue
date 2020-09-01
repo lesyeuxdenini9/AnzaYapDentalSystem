@@ -70,7 +70,7 @@
                                                         <tbody>
                                                             <tr v-for="(item,index) in items" :key="index">
                                                                 <td style="width: 10%">{{item.code}}</td>
-                                                                <td style="width: 20%">{{item.medicine}}</td>
+                                                                <td style="width: 20%">{{item.medicine}} ( {{item.brand}} )</td>
                                                                 <td style="width: 25%">{{item.description}}</td>
                                                                 <td style="width: 10%">{{item.price}}</td>
                                                                 <td style="width: 10%">{{item.stocks}}</td>

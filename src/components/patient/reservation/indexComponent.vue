@@ -13,6 +13,7 @@
                                <ul class="legends">
                                   <li><button disabled style="height:20px;width:20px;background: #36B9CC"></button> Pending</li>
                                   <li><button disabled style="height:20px;width:20px;background: #1CC88A"></button> Approved</li>
+                                  <li><button disabled style="height:20px;width:20px;background: #9F29E0"></button> Reschedule</li>
                                   <li><button disabled style="height:20px;width:20px;background: maroon"></button> Denied</li>
                                   <li><button disabled style="height:20px;width:20px;background: dimgray"></button> Cancelled</li>
                                   <li><button disabled style="height:20px;width:20px;background: #385ECE"></button> Confirmed</li>
@@ -337,6 +338,8 @@ export default {
               bg = "#385ECE"
               break
          }
+
+         if(info.event.extendedProps.isResched == 1 && info.event.extendedProps.status == 1) bg = "#9F29E0"
          
          display = `<div style="background: ${bg};color:${color};height:100%;width:100%;position: relative;padding:10px;"><span style="font-weight:bold">${info.event.title}</span>
             <br/>
