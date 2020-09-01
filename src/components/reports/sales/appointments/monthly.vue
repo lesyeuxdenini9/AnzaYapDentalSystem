@@ -2,7 +2,7 @@
     <div> 
          <!-- Begin Page Content -->
         <div class="container-fluid">
-                  <span class="pageheader"><i class="fa fa-calendar"></i> Monthly - Treatment</span>
+                  <span class="pageheader"><i class="fa fa-calendar"></i> Monthly - Appointments</span>
                     <button type="button" @click="back()" class="noprint float-right"><span class="fa fa-times"></span></button>
                     <hr/>
 
@@ -77,8 +77,8 @@
 
                                  <br/>
                                  <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;"/>
-                                   <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>EARNINGS FROM {{months[search.startmonth-1].des}} {{search.startyear}} TO {{months[search.endmonth-1].des}} {{search.endyear}}</span></div>
-                                      <column-chart :stacked="graphOptions.stacked" :legend="false" :download="true" :data="graphOptions.data"></column-chart>
+                                   <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>NO. OF APPOINTMENTS FROM {{months[search.startmonth-1].des}} {{search.startyear}} TO {{months[search.endmonth-1].des}} {{search.endyear}}</span></div>
+                                      <column-chart :stacked="graphOptions.stacked" :legend="true" :download="true" :data="graphOptions.data"></column-chart>
                            
                            
                             <div class="row">
@@ -86,21 +86,31 @@
                                             <table class="table table-condensed table-striped table-bordered">
                                                 <thead>
                                                     <tr style="background:#343A40;color:white;">
-                                                        <th style="width:50%">Date</th>
-                                                        <th>Earnings</th>
+                                                        <th>Date</th>
+                                                        <th>Approved</th>
+                                                        <th>Cancelled</th>
+                                                        <th>Reschedule</th>
+                                                        <th>Total</th>
                                                     </tr>
                                                 </thead>
 
                                                 <tbody>
-                                                    <tr v-for="(sale,index) in sales.graph" :key="index">
-                                                        <td>{{`${months[sale.monthname-1].des} ${sale.yearname}`}}</td>
-                                                        <td>{{sale.totalsales}}</td>
+                                                    <tr v-for="(appointment,index) in appointments.data" :key="index">
+                                                        <td>{{`${months[appointment.monthname-1].des} ${appointment.yearname}`}}</td>
+                                                        <td>{{appointment.Approved}}</td>
+                                                        <td>{{appointment.Cancelled}}</td>
+                                                        <td>{{appointment.Reschedule}}</td>
+                                                        <td>{{appointment.totalcount}}</td>
                                                     </tr>
                                                 </tbody>
-                                                <tfoot>
+
+                                                   <tfoot>
                                                     <tr>
                                                         <th>Total</th>
-                                                        <th>{{computeTotal}}</th>
+                                                        <th>{{computeTotal[0]}}</th>
+                                                        <th>{{computeTotal[1]}}</th>
+                                                        <th>{{computeTotal[2]}}</th>
+                                                        <th>{{computeTotal[3]}}</th>
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -108,77 +118,19 @@
                                       
                                 
                               </div>
-
+                              
                                 <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;"/>
-                                 <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>NO. OF SERVICE DONE BASED ON TRANSACTION DATE FROM {{months[search.startmonth-1].des}} {{search.startyear}} TO {{months[search.endmonth-1].des}} {{search.endyear}}</span></div>
+                                 <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>TOTAL NO. OF APPOINTMENTS FROM {{months[search.startmonth-1].des}} {{search.startyear}} TO {{months[search.endmonth-1].des}} {{search.endyear}}</span></div>
                                     <div class="row">
                                   <div class="col-md-12">
-                                      <pie-chart :download="true" width="100%" height="500px" :data="pieOptionsMostAvail.data"></pie-chart>
+                                      <pie-chart :download="true" width="100%" height="500px" :data="pieOptionsTotal.data"></pie-chart>
                                   </div>
 
                                    <div class="col-md-10 offset-md-1">
-                                            <table class="table table-condensed table-striped table-bordered">
-                                                <thead>
-                                                   <tr style="background:#343A40;color:white;">
-                                                        <th style="width:50%">Service</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-
-                                                <tbody>
-                                                    <tr v-for="(sale,index) in sales.serviceMostavail" :key="index">
-                                                        <td>{{sale.service}}</td>
-                                                        <td>{{sale.totalcount}} 
-                                                            <!-- <span v-if="sale.totalcount == 1">time</span><span v-else>times</span> -->
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                               
-                                            </table>
+                                            
                                         </div>
                               </div>
                               <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;"/>
-                                         <div style="text-align:center;margin-bottom:20px;"><span style="font-weight:bold;color:#696972;font-size:14pt;">DETAILED TRANSACTION DATA PER DENTIST FROM {{months[search.startmonth-1].des}} {{search.startyear}} TO {{months[search.endmonth-1].des}} {{search.endyear}}</span></div>
-                             
-                                 <div class="row">
-                   
-                                                   <div class="col-md-12">
-                                            <table class="table table-condensed table-striped table-bordered">
-                                                <tbody v-for="(dentist,index) in sales.dentistdata" :key="index">
-                                                    <tr style="background:dimgray;color:white;">
-                                                        <td colspan="8">{{dentist.fullname}}</td>
-                                                    </tr>
-                                                    <tr style="background:white;color:black;">
-                                                        <td style="font-weight:bold;font-size:12pt;">YEAR</td>
-                                                        <td style="font-weight:bold;font-size:12pt;">MONTH</td>
-                                                        <td style="font-weight:bold;font-size:12pt;">TRANSACTION DATE</td>
-                                                        <td style="font-weight:bold;font-size:12pt;">TRANSACTION NO</td>
-                                                        <td style="font-weight:bold;font-size:12pt;">PATIENT</td>
-                                                        <td style="font-weight:bold;font-size:12pt;">TREATMENTS</td>
-                                                        <td style="font-weight:bold;font-size:12pt;">STATUS</td>
-                                                        <td style="font-weight:bold;font-size:12pt;">AMOUNT PAID</td>
-                                                    </tr>
-                                                    <tr v-for="transaction in dentist.Transactions" :key="transaction.id">
-                                                         <td style="font-size:11pt;">{{getYear(transaction.transactionDate)}}</td>
-                                                        <td style="font-size:11pt;">{{getMonth(transaction.transactionDate)}}</td>
-                                                        <td style="font-size:11pt;">{{transaction.transactionDate}}</td>
-                                                        <td style="font-size:11pt;">{{transaction.transactionNo}}</td>
-                                                        <td style="font-size:11pt;">{{transaction.User.fullname}}</td>
-                                                        <td style="font-size:11pt;">
-                                                            <ul>
-                                                                <li v-for="treatment in transaction.Treatments" :key="treatment.id">{{treatment.service}}</li>
-                                                            </ul>
-                                                        </td>
-                                                        <td style="font-size:11pt;">{{getStatus(transaction.status)}}</td>
-                                                        <td style="font-size:11pt;">{{TotalAmount(transaction.Billings)}}</td>
-                                                    </tr>
-                                                </tbody>
-                                                
-
-                                            </table>
-                                        </div>
-                                 </div>
-
 
                     
         </div>
@@ -219,46 +171,12 @@ export default {
                     colors: ['#b00', '#666'],
                     data: [],
                 },
-                pieOptionsMostAvail: {
+                pieOptionsTotal: {
                     data: [],
                 },
         }
     },
     methods: {
-          getMonth: function(date){
-            let ddate = new Date(date)
-            return this.months[ddate.getMonth()].des
-        },
-        getYear: function(date){
-            let ddate = new Date(date)
-            return ddate.getFullYear()
-        },
-        getStatus: function(status){
-             let des = ''
-             switch(status){
-                 case 0:
-                     des = "On-Going"
-                     break
-                 case 1:
-                     des = "For Followup"
-                     break
-                 case 2:
-                     des = "Done"
-                     break
-                 default:
-                     des = "Cancelled"
-                     break
-             }
-
-             return des
-         },
-        TotalAmount: function(billings){
-            let total = 0
-            billings.forEach(bill=>{
-                total = total + parseFloat(bill.payment)
-            })
-            return total
-        },
         back: function(){
             this.$router.go(-1)
         },
@@ -275,18 +193,26 @@ export default {
          },
 
          searchProceed: function(){
-              this.$store.dispatch("report/sales_monthly",this.search)
+              this.$store.dispatch("report/appointment_monthly",this.search)
                 .then(()=>{
-                    let data = []
-                    this.sales.graph.forEach((sale)=>{
-                        data.push([`${this.months[sale.monthname-1].des} ${sale.yearname}`, sale.totalsales])
-                    })
-                    this.graphOptions.data = data
-                    data = []
-                     this.sales.serviceMostavail.forEach((sale)=>{
-                        data.push([sale.service, sale.totalcount])
-                    })
-                    this.pieOptionsMostAvail.data = data
+
+                this.graphOptions.data = []
+                this.graphOptions.data.push({name: 'Approved', data: {}})
+                this.graphOptions.data.push({name: 'Cancelled', data: {}})
+                this.graphOptions.data.push({name: 'Reschedule', data: {}})
+
+                this.appointments.data.forEach((appointment)=>{
+                    this.graphOptions.data[0].data[`${this.months[appointment.monthname-1].des} ${appointment.yearname}`] = appointment.Approved
+                    this.graphOptions.data[1].data[`${this.months[appointment.monthname-1].des} ${appointment.yearname}`] = appointment.Cancelled
+                    this.graphOptions.data[2].data[`${this.months[appointment.monthname-1].des} ${appointment.yearname}`] = appointment.Reschedule
+
+                })
+
+
+                  this.pieOptionsTotal.data = []
+               this.pieOptionsTotal.data.push(["Approved",this.computeTotal[0]])
+               this.pieOptionsTotal.data.push(["Cancelled",this.computeTotal[1]])
+               this.pieOptionsTotal.data.push(["Reschedule",this.computeTotal[2]])
                 })
                 .catch(err=>console.log(err))
          }
@@ -294,15 +220,18 @@ export default {
     computed: {
         ...mapState({
             branches: state=> state.branch.branches,
-            sales: state=> state.report.sales,
+            appointments: state=> state.report.sales,
         }),
         computeTotal: {
             get: function(){
-                let total = 0
-             this.sales.graph.forEach((sale)=>{
-                 total = total + parseFloat(sale.totalsales)
+             let approved = 0 , cancelled = 0 , reschedule =0 ,  total = 0
+             this.appointments.data.forEach((appointment)=>{
+                 total = total + parseFloat(appointment.totalcount)
+                 approved = approved + parseFloat(appointment.Approved)
+                 cancelled = cancelled + parseFloat(appointment.Cancelled)
+                 reschedule = reschedule + parseFloat(appointment.Reschedule)
              })
-             return total
+             return [approved,cancelled,reschedule,total]
             }
         }
     },

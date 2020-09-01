@@ -44,6 +44,10 @@ import pharmacydailyComponent from "@/components/reports/sales/pharmacy/daily"
 import pharmacymonthlyComponent from "@/components/reports/sales/pharmacy/monthly"
 import pharmacyyearlyComponent from "@/components/reports/sales/pharmacy/yearly"
 
+import appointmentdailyComponent from "@/components/reports/sales/appointments/daily"
+import appointmentmonthlyComponent from "@/components/reports/sales/appointments/monthly"
+import appointmentyearlyComponent from "@/components/reports/sales/appointments/yearly"
+
 import { backendmiddleware } from "@/helper/auth"
 
 const routes = [
@@ -97,6 +101,10 @@ const routes = [
 	{path: `/backend/reports/pharmacy/daily`,component: pharmacydailyComponent,beforeEnter: backendmiddleware,name: `pharmacy_daily`},
 	{path: `/backend/reports/pharmacy/monthly`,component: pharmacymonthlyComponent,beforeEnter: backendmiddleware,name: `pharmacy_monthly`},
 	{path: `/backend/reports/pharmacy/yearly`,component: pharmacyyearlyComponent,beforeEnter: backendmiddleware,name: `pharmacy_yearly`},
+
+	{path: `/backend/reports/appointments/daily`,component: appointmentdailyComponent,beforeEnter: backendmiddleware,name: `appointment_daily`},
+	{path: `/backend/reports/appointments/monthly`,component: appointmentmonthlyComponent,beforeEnter: backendmiddleware,name: `appointment_monthly`},
+	{path: `/backend/reports/appointments/yearly`,component: appointmentyearlyComponent,beforeEnter: backendmiddleware,name: `appointment_yearly`},
 
 
 	

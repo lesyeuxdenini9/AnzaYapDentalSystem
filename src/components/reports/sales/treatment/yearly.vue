@@ -117,6 +117,47 @@
                                         </div>
                               </div>
                               <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;"/>
+                                         <div style="text-align:center;margin-bottom:20px;"><span style="font-weight:bold;color:#696972;font-size:14pt;">DETAILED TRANSACTION DATA PER DENTIST FROM {{search.startyear}} TO {{search.endyear}}</span></div>
+                             
+                                 <div class="row">
+                   
+                                                   <div class="col-md-12">
+                                            <table class="table table-condensed table-striped table-bordered">
+                                                <tbody v-for="(dentist,index) in sales.dentistdata" :key="index">
+                                                    <tr style="background:dimgray;color:white;">
+                                                        <td colspan="8">{{dentist.fullname}}</td>
+                                                    </tr>
+                                                    <tr style="background:white;color:black;">
+                                                        <td style="font-weight:bold;font-size:12pt;">YEAR</td>
+                                                        <td style="font-weight:bold;font-size:12pt;">MONTH</td>
+                                                        <td style="font-weight:bold;font-size:12pt;">TRANSACTION DATE</td>
+                                                        <td style="font-weight:bold;font-size:12pt;">TRANSACTION NO</td>
+                                                        <td style="font-weight:bold;font-size:12pt;">PATIENT</td>
+                                                        <td style="font-weight:bold;font-size:12pt;">TREATMENTS</td>
+                                                        <td style="font-weight:bold;font-size:12pt;">STATUS</td>
+                                                        <td style="font-weight:bold;font-size:12pt;">AMOUNT PAID</td>
+                                                    </tr>
+                                                    <tr v-for="transaction in dentist.Transactions" :key="transaction.id">
+                                                         <td style="font-size:11pt;">{{getYear(transaction.transactionDate)}}</td>
+                                                        <td style="font-size:11pt;">{{getMonth(transaction.transactionDate)}}</td>
+                                                        <td style="font-size:11pt;">{{transaction.transactionDate}}</td>
+                                                        <td style="font-size:11pt;">{{transaction.transactionNo}}</td>
+                                                        <td style="font-size:11pt;">{{transaction.User.fullname}}</td>
+                                                        <td style="font-size:11pt;">
+                                                            <ul>
+                                                                <li v-for="treatment in transaction.Treatments" :key="treatment.id">{{treatment.service}}</li>
+                                                            </ul>
+                                                        </td>
+                                                        <td style="font-size:11pt;">{{getStatus(transaction.status)}}</td>
+                                                        <td style="font-size:11pt;">{{TotalAmount(transaction.Billings)}}</td>
+                                                    </tr>
+                                                </tbody>
+                                                
+
+                                            </table>
+                                        </div>
+                                 </div>
+
 
 
         </div>
@@ -144,10 +185,58 @@ export default {
                 pieOptionsMostAvail: {
                     data: [],
                 },
+                months: [
+                    {index: 1 , des: "JAN"},
+                    {index: 2 , des: "FEB"},
+                    {index: 3 , des: "MAR"},
+                    {index: 4 , des: "APR"},
+                    {index: 5 , des: "MAY"},
+                    {index: 6 , des: "JUN"},
+                    {index: 7 , des: "JUL"},
+                    {index: 8 , des: "AUG"},
+                    {index: 9 , des: "SEP"},
+                    {index: 10 , des: "OCT"},
+                    {index: 11 , des: "NOV"},
+                    {index: 12 , des: "DEC"},
+                ],
 
         }
     },
     methods: {
+          getMonth: function(date){
+            let ddate = new Date(date)
+            return this.months[ddate.getMonth()].des
+        },
+        getYear: function(date){
+            let ddate = new Date(date)
+            return ddate.getFullYear()
+        },
+        getStatus: function(status){
+             let des = ''
+             switch(status){
+                 case 0:
+                     des = "On-Going"
+                     break
+                 case 1:
+                     des = "For Followup"
+                     break
+                 case 2:
+                     des = "Done"
+                     break
+                 default:
+                     des = "Cancelled"
+                     break
+             }
+
+             return des
+         },
+        TotalAmount: function(billings){
+            let total = 0
+            billings.forEach(bill=>{
+                total = total + parseFloat(bill.payment)
+            })
+            return total
+        },
         back: function(){
             this.$router.go(-1)
         },

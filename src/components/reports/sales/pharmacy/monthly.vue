@@ -110,7 +110,7 @@
                               </div>
 
                                 <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;"/>
-                                 <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>TOP 10 MOST SOLD ITEMS FROM {{months[search.startmonth-1].des}} {{search.startyear}} TO {{months[search.endmonth-1].des}} {{search.endyear}}</span></div>
+                                 <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>NO. OF SOLD ITEMS FROM {{months[search.startmonth-1].des}} {{search.startyear}} TO {{months[search.endmonth-1].des}} {{search.endyear}}</span></div>
                                     <div class="row">
                                   <div class="col-md-12">
                                       <pie-chart :download="true" width="100%" height="500px" :data="pieOptionsMostAvail.data"></pie-chart>

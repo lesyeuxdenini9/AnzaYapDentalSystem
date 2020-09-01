@@ -2,7 +2,7 @@
     <div> 
          <!-- Begin Page Content -->
         <div class="container-fluid">
-                  <span class="pageheader"><i class="fa fa-calendar"></i> Yearly - Pharmacy</span>
+                  <span class="pageheader"><i class="fa fa-calendar"></i> Yearly - Appointments</span>
                     <button type="button" @click="back()" class="noprint float-right"><span class="fa fa-times"></span></button>
                     <hr/>
 
@@ -58,28 +58,37 @@
 
                                 <br/>
                                 <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;"/>
-                                <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>SALES FROM {{search.startyear}} TO {{search.endyear}}</span></div>
-                                 <column-chart :stacked="graphOptions.stacked" :legend="false" :download="true" :data="graphOptions.data"></column-chart>
+                                <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>NO. OF APPOINTMENTS FROM {{search.startyear}} TO {{search.endyear}}</span></div>
+                                 <column-chart :stacked="graphOptions.stacked" :legend="true" :download="true" :data="graphOptions.data"></column-chart>
                                         <div class="row">
                                         <div class="col-md-10 offset-md-1">
                                             <table class="table table-condensed table-striped table-bordered">
                                                 <thead>
                                                     <tr style="background:#343A40;color:white;">
-                                                        <th style="width:50%">Date</th>
-                                                        <th>Sales</th>
+                                                        <th>Date</th>
+                                                        <th>Approved</th>
+                                                        <th>Cancelled</th>
+                                                        <th>Reschedule</th>
+                                                        <th>Total</th>
                                                     </tr>
                                                 </thead>
 
-                                                <tbody>
-                                                    <tr v-for="(sale,index) in sales.graph" :key="index">
-                                                        <td>{{sale.yearname}}</td>
-                                                        <td>{{sale.totalsales}}</td>
+                                              <tbody>
+                                                    <tr v-for="(appointment,index) in appointments.data" :key="index">
+                                                       <td>{{appointment.yearname}}</td>
+                                                       <td>{{appointment.Approved}}</td>
+                                                       <td>{{appointment.Cancelled}}</td>
+                                                       <td>{{appointment.Reschedule}}</td>
+                                                       <td>{{appointment.totalcount}}</td>
                                                     </tr>
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
                                                         <th>Total</th>
-                                                        <th>{{computeTotal}}</th>
+                                                        <th>{{computeTotal[0]}}</th>
+                                                        <th>{{computeTotal[1]}}</th>
+                                                        <th>{{computeTotal[2]}}</th>
+                                                        <th>{{computeTotal[3]}}</th>
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -89,31 +98,14 @@
                               </div>
 
                                <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;"/>
-                                 <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>NO. OF SOLD ITEMS FROM  {{search.startyear}} TO {{search.endyear}}</span></div>
+                                 <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>TOTAL NO. OF APPOINTMENTS FROM  {{search.startyear}} TO {{search.endyear}}</span></div>
                                       <div class="row">
                                   <div class="col-md-12">
-                                      <pie-chart :download="true" width="100%" height="500px" :data="pieOptionsMostAvail.data"></pie-chart>
+                                      <pie-chart :download="true" width="100%" height="500px" :data="pieOptionsTotal.data"></pie-chart>
                                   </div>
 
                                    <div class="col-md-10 offset-md-1">
-                                            <table class="table table-condensed table-striped table-bordered">
-                                                <thead>
-                                                   <tr style="background:#343A40;color:white;">
-                                                        <th style="width:50%">Medicine</th>
-                                                        <th></th>
-                                                    </tr>
-                                                </thead>
-
-                                                <tbody>
-                                                    <tr v-for="(sale,index) in sales.serviceMostavail" :key="index">
-                                                        <td>{{sale.item}}</td>
-                                                        <td>{{sale.totalcount}} 
-                                                            <!-- <span v-if="sale.totalcount == 1">time</span><span v-else>times</span> -->
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                               
-                                            </table>
+                                         
                                         </div>
                               </div>
                               <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;"/>
@@ -141,7 +133,7 @@ export default {
                     colors: ['#b00', '#666'],
                     data: [],
                 },
-                pieOptionsMostAvail: {
+                pieOptionsTotal: {
                     data: [],
                 },
 
@@ -164,18 +156,24 @@ export default {
          },
 
          searchProceed: function(){
-              this.$store.dispatch("report/pharmacy_yearly",this.search)
+              this.$store.dispatch("report/appointment_yearly",this.search)
                 .then(()=>{
-                     let data = []
-                    this.sales.graph.forEach((sale)=>{
-                        data.push([sale.yearname, sale.totalsales])
+                    this.graphOptions.data = []
+                    this.graphOptions.data.push({name: 'Approved', data: {}})
+                    this.graphOptions.data.push({name: 'Cancelled', data: {}})
+                    this.graphOptions.data.push({name: 'Reschedule', data: {}})
+
+                    this.appointments.data.forEach((appointment)=>{
+                        this.graphOptions.data[0].data[`${appointment.yearname}`] = appointment.Approved
+                        this.graphOptions.data[1].data[`${appointment.yearname}`] = appointment.Cancelled
+                        this.graphOptions.data[2].data[`${appointment.yearname}`] = appointment.Reschedule
+
                     })
-                    this.graphOptions.data = data
-                    data = []
-                     this.sales.serviceMostavail.forEach((sale)=>{
-                        data.push([sale.item, sale.totalcount])
-                    })
-                    this.pieOptionsMostAvail.data = data
+
+                       this.pieOptionsTotal.data = []
+                        this.pieOptionsTotal.data.push(["Approved",this.computeTotal[0]])
+                        this.pieOptionsTotal.data.push(["Cancelled",this.computeTotal[1]])
+                        this.pieOptionsTotal.data.push(["Reschedule",this.computeTotal[2]])
                 })
                 .catch(err=>console.log(err))
          }
@@ -183,15 +181,18 @@ export default {
     computed: {
         ...mapState({
             branches: state=> state.branch.branches,
-            sales: state=> state.report.sales,
+            appointments: state=> state.report.sales,
         }),
         computeTotal: {
             get: function(){
-                let total = 0
-             this.sales.graph.forEach((sale)=>{
-                 total = total + parseFloat(sale.totalsales)
+             let approved = 0 , cancelled = 0 , reschedule =0 ,  total = 0
+             this.appointments.data.forEach((appointment)=>{
+                 total = total + parseFloat(appointment.totalcount)
+                 approved = approved + parseFloat(appointment.Approved)
+                 cancelled = cancelled + parseFloat(appointment.Cancelled)
+                 reschedule = reschedule + parseFloat(appointment.Reschedule)
              })
-             return total
+             return [approved,cancelled,reschedule,total]
             }
         }
     },

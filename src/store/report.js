@@ -84,6 +84,51 @@ export default {
                 })
             })
         },
+        appointment_daily: function(context,data){
+            return new Promise((resolve,reject)=>{
+                Axios.post(`${context.rootState.apiUrl}/api/reports/appointment_daily`,data,context.rootState.headerconfig)
+                .then((res)=>{     
+                        context.commit("setSales",res.data)
+                        resolve(res.data)
+                })
+                .catch((err)=>{
+                    if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                        context.dispatch("refreshtoken",null,{root:true})
+                    }               
+                    reject(err)
+                })
+            })
+        },  
+        appointment_monthly: function(context,data){
+            return new Promise((resolve,reject)=>{
+                Axios.post(`${context.rootState.apiUrl}/api/reports/appointment_monthly`,data,context.rootState.headerconfig)
+                .then((res)=>{     
+                        context.commit("setSales",res.data)
+                        resolve(res.data)
+                })
+                .catch((err)=>{
+                    if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                        context.dispatch("refreshtoken",null,{root:true})
+                    }               
+                    reject(err)
+                })
+            })
+        },  
+        appointment_yearly: function(context,data){
+            return new Promise((resolve,reject)=>{
+                Axios.post(`${context.rootState.apiUrl}/api/reports/appointment_yearly`,data,context.rootState.headerconfig)
+                .then((res)=>{     
+                        context.commit("setSales",res.data)
+                        resolve(res.data)
+                })
+                .catch((err)=>{
+                    if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                        context.dispatch("refreshtoken",null,{root:true})
+                    }               
+                    reject(err)
+                })
+            })
+        },  
         pharmacy_yearly: function(context,data){
             return new Promise((resolve,reject)=>{
                 Axios.post(`${context.rootState.apiUrl}/api/reports/pharmacy_yearly`,data,context.rootState.headerconfig)
