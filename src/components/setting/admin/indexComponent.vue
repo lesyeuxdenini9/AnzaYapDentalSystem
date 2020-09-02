@@ -27,6 +27,10 @@
                   <div class="col-md-2">
                       <button @click="searchAdmin()" class="form-control"><span class="fa fa-search"></span> Search</button>
                   </div>
+                   <div class="col-md-6" style="text-align:right;">
+                      <!-- <button @click="searchService()" style="margin-right:10px;" class="btn btn-success"><span class="fa fa-file-excel"></span> Excel</button> -->
+                      <button @click="printPDF()" class="btn btn-xs btn-danger"><span class="fa fa-file-pdf"></span> PDF</button>
+                  </div>
                   </div>
             <table class="table table-bordered" ref="testdata" id="dataTable" width="100%" cellspacing="0">
                   <thead>
@@ -97,6 +101,38 @@ export default {
           'getUsers',
           'removeUser'
         ]),
+        printPDF: function(){
+            
+
+          let userlist = this.branches[this.activebranchIndex].Users.map((user)=>{
+            return [user.employeeNo ,user.fullname, user.email, user.address, this.bdayformat(user.bday), user.gender, user.contact ]
+          }) 
+          userlist.sort()
+          userlist.unshift(['EMPLOYEE NO','NAME','EMAIL','ADDRESS','BIRTHDAY','GENDER','CONTACT NO'])
+           
+            var docDefinition = {  
+
+                    // header: {text: 'Simple Text', margin: 10 , alignment: 'center'},  
+                watermark: { text: 'AnzaYap Dental Clinic', color: 'blue', opacity: 0.1, bold: true, italics: false },
+                footer: function(currentPage, pageCount) { 
+                  return { text: currentPage.toString() + ' of ' + pageCount , alignment: 'center'}; 
+                  },
+                pageOrientation: 'landscape',
+               content: [
+                 {
+                   text: `${this.branches[this.activebranchIndex].branch} Admin User List`, alignment: 'center', margin: [0,0,0,20]
+                 },
+               {
+                 table: {
+                   widths: ['*','auto','auto','*','auto','auto','auto'],
+                   body: userlist
+                 }
+               }
+              ]
+              
+            }
+            this.$pdfMake.createPdf(docDefinition).open();
+        },
         refreshlist: function(data){
              this.$store.dispatch("branch/getListUser",0)
                 .then(()=>{

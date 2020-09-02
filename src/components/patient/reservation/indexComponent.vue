@@ -70,7 +70,7 @@
 
                     <div class="card">
                       <div class="card-header card-default" style="background:#343A40;color:white;">Table List
-                            
+                             <button @click="printPDF" class="btn btn-danger float-right"><span class="fa fa-file-pdf"></span> Pdf</button>
                             </div>
                         <div class="card-body">
                           <div class="col col-md-3">
@@ -280,6 +280,41 @@ export default {
     }
   },
   methods: {
+    printPDF: function(){
+        let records = this.reservationsList.map((reserve)=>{
+            let type = reserve.type == 0 ? "New" : "Followup"
+            let treatments = ''
+            reserve.Treatments.forEach((treatment)=>{
+              treatments = treatments + `* ${treatment.service}`
+            })
+            return [reserve.reservationNo,reserve.date,type,this.DHour(reserve.Start),this.DHour(reserve.End),this.getStatus(reserve.status),reserve.Dentist.fullname,treatments]
+          }) 
+          records.sort()
+          records.unshift(['APPOINTMENT NO','DATE','TYPE','START','END','STATUS','DENTIST','TREATMENTS'])
+           
+            var docDefinition = {  
+
+                    // header: {text: 'Simple Text', margin: 10 , alignment: 'center'},  
+                watermark: { text: 'AnzaYap Dental Clinic', color: 'blue', opacity: 0.1, bold: true, italics: false },
+                footer: function(currentPage, pageCount) { 
+                  return { text: currentPage.toString() + ' of ' + pageCount , alignment: 'center'}; 
+                  },
+                pageOrientation: 'landscape',
+               content: [
+                 {
+                   text: `${this.branches[this.ActiveBranchIndex].branch} Appointments From ${this.$helper.formatBdayDate(this.search.start)} To ${this.$helper.formatBdayDate(this.search.end)}`, alignment: 'center', margin: [0,0,0,20]
+                 },
+               {
+                 table: {
+                   widths: ['*','auto','auto','auto','auto','auto','*','*'],
+                   body: records
+                 }
+               }
+              ]
+              
+            }
+            this.$pdfMake.createPdf(docDefinition).open();
+    },
      changeFilterbranch: function(index){
             const navbranch = document.getElementsByClassName('navbranch')
             for(let x = 0 ; x < navbranch.length ; x++){

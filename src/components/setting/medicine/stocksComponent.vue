@@ -4,6 +4,7 @@
         <div class="container-fluid">
                   <span class="pageheader"><i class="fa fa-download"></i> {{branch.branch}} {{typedes}} Stocks In</span>
                   <button @click="showaddstockModal = true" class="btn btn-primary float-right"><span class="fa fa-plus"></span> Add Stocks</button>
+                    <button @click="printPDF" class="btn btn-danger float-right" style="margin-right:20px;"><span class="fa fa-file-pdf"></span> Pdf</button>
                     <hr/>
 
                       <div class="card">
@@ -142,6 +143,42 @@ export default {
             },
         },
         methods: {
+                printPDF: function(){
+
+                        let stocksin = this.stocksin.map((stock)=>{
+                                    let items = ''
+                                    stock.Stockinitems.forEach((item)=>{
+                                        items = items + `* ${item.medicine} ${item.qty} ${item.uom} Expiration Date: ${item.ExpirationDate}\n`
+                                    })
+                                return [stock.refno,stock.date,stock.manufacturer,stock.invoiceRefno,items]
+                        })
+                           
+                        stocksin.sort()
+                        stocksin.unshift(["STOCK REF NO","DATE","Supplier","INVOICE REF NO","ITEMS"])
+                    
+                        var docDefinition = {  
+                        
+                                // header: {text: 'Simple Text', margin: 10 , alignment: 'center'},  
+                                watermark: { text: 'AnzaYap Dental Clinic', color: 'blue', opacity: 0.1, bold: true, italics: false },
+                                footer: function(currentPage, pageCount) { 
+                                return { text: currentPage.toString() + ' of ' + pageCount , alignment: 'center'}; 
+                                },
+                                pageOrientation: 'landscape',
+                        content: [
+                            {
+                            text: `${this.branch.branch} ${this.typedes} Stocks In From ${this.$helper.formatBdayDate(this.search.start)} TO ${this.$helper.formatBdayDate(this.search.end)}`, alignment: 'center', margin: [0,0,0,20]
+                            },
+                            {
+                                table: {
+                                widths: ['auto','auto','auto','auto','*'],
+                                body: stocksin
+                                }
+                            }
+                        ]
+                        
+                        }
+                        this.$pdfMake.createPdf(docDefinition).open();
+                    },
             closemodal: function(){
                 this.showaddstockModal = false
             },

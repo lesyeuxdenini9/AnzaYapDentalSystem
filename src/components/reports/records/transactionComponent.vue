@@ -4,6 +4,7 @@
         <div class="container-fluid">
                   <span class="pageheader"><i class="fa fa-file-alt"></i> Records Search - Transaction</span>
                    <button type="button" @click="back()" class="noprint float-right"><span class="fa fa-times"></span></button>
+                   <button @click="printPDF" class="btn btn-danger float-right" style="margin-right:20px;"><span class="fa fa-file-pdf"></span> Pdf</button>
                     <hr/>
 
                           <ul class="nav nav-tabs">
@@ -102,7 +103,7 @@
                         </thead>
 
                         <tbody>
-                            <tr v-for="(transaction,index) in this.transactions" :key="index">
+                            <tr v-for="(transaction,index) in transactions" :key="index">
                                 <td>{{transaction.transactionNo}}</td>
                                 <td>{{transaction.transactionDate}}</td>
                                 <td>{{transaction.User.fullname}}</td>
@@ -139,6 +140,72 @@ export default {
         }
     },
     methods: {
+        findDentistName: function(id){
+            let finddentist = this.branches[this.activebranchIndex].Dentists.filter((dentist)=>{
+                if(dentist.id == id) return dentist
+            })
+
+            let findindex = this.branches[this.activebranchIndex].Dentists.indexOf(finddentist[0])
+            return this.branches[this.activebranchIndex].Dentists[findindex].fullname
+        },
+         printPDF: function(){
+            
+
+          let transactions = this.transactions.map((transaction)=>{
+            return [transaction.transactionNo,transaction.transactionDate,transaction.User.fullname,transaction.Dentist.fullname,this.getStatus(transaction.status)]
+          }) 
+          transactions.sort()
+          transactions.unshift(['REFERENCE NO','DATE','PATIENT','DENTIST','STATUS'])
+
+          let status = this.search.status == "All" ? "All" : this.getStatus(parseInt(this.search.status))
+
+          let dentist = this.search.dentist == "All" ? "All" : this.findDentistName(parseInt(this.search.dentist))
+            var docDefinition = {  
+
+                    // header: {text: 'Simple Text', margin: 10 , alignment: 'center'},  
+                watermark: { text: 'AnzaYap Dental Clinic', color: 'blue', opacity: 0.1, bold: true, italics: false },
+                footer: function(currentPage, pageCount) { 
+                  return { text: currentPage.toString() + ' of ' + pageCount , alignment: 'center'}; 
+                  },
+                pageOrientation: 'portrait',
+               content: [
+                 {
+                   text: `${this.branches[this.activebranchIndex].branch} Transaction Records`, alignment: 'center', margin: [0,0,0,20]
+                 },
+                 {
+      
+                    columns: [
+                        {
+                            text: `Start Date: ${this.$helper.formatBdayDate(this.search.start)}`
+                        },
+                        {
+                            text: `Dentist: ${dentist}`
+                        }
+                    ]
+                },
+                      {
+      
+                    columns: [
+                        {
+                            text: `End Date: ${this.$helper.formatBdayDate(this.search.end)}`
+                        },
+                        {
+                            text: `Status: ${status}`
+                        }
+                    ]
+                },
+                '\n',
+               {
+                 table: {
+                   widths: ['auto','auto','*','*','auto'],
+                   body: transactions
+                 }
+               }
+              ]
+              
+            }
+            this.$pdfMake.createPdf(docDefinition).open();
+        },
         back: function(){
             this.$router.go(-1)
         },

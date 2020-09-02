@@ -3,6 +3,7 @@
          <!-- Begin Page Content -->
         <div class="container-fluid">
                   <span class="pageheader"><i class="fa fa-file-alt"></i> Appointment List</span>
+                    <button @click="printPDF" class="btn btn-danger float-right"><span class="fa fa-file-pdf"></span> Pdf</button>
                     <hr/>
 
                     
@@ -156,6 +157,72 @@ export default {
         }
     },
     methods: {
+        findDentistName: function(id){
+            let finddentist = this.branches[this.activebranchIndex].Dentists.filter((dentist)=>{
+                if(dentist.id == id) return dentist
+            })
+
+            let findindex = this.branches[this.activebranchIndex].Dentists.indexOf(finddentist[0])
+            return this.branches[this.activebranchIndex].Dentists[findindex].fullname
+        },
+           printPDF: function(){
+            
+
+          let reservations = this.list.map((reserve)=>{
+            return [reserve.reservationNo,reserve.date,reserve.User.fullname,this.dHour(reserve.Start),this.dHour(reserve.End),reserve.Dentist.fullname,this.getStatus(reserve.status)]
+          }) 
+          reservations.sort()
+          reservations.unshift(['REFERENCE NO','DATE','PATIENT','START TIME','END TIME','DENTIST','STATUS'])
+
+          let status = this.search.status == "All" ? "All" : this.getStatus(parseInt(this.search.status))
+
+          let dentist = this.search.dentist == "All" ? "All" : this.findDentistName(parseInt(this.search.dentist))
+            var docDefinition = {  
+
+                    // header: {text: 'Simple Text', margin: 10 , alignment: 'center'},  
+                watermark: { text: 'AnzaYap Dental Clinic', color: 'blue', opacity: 0.1, bold: true, italics: false },
+                footer: function(currentPage, pageCount) { 
+                  return { text: currentPage.toString() + ' of ' + pageCount , alignment: 'center'}; 
+                  },
+                pageOrientation: 'landscape',
+               content: [
+                 {
+                   text: `${this.branches[this.activebranchIndex].branch} Appointments Records`, alignment: 'center', margin: [0,0,0,20]
+                 },
+                 {
+      
+                    columns: [
+                        {
+                            text: `Start Date: ${this.$helper.formatBdayDate(this.search.start)}`
+                        },
+                        {
+                            text: `Dentist: ${dentist}`
+                        }
+                    ]
+                },
+                      {
+      
+                    columns: [
+                        {
+                            text: `End Date: ${this.$helper.formatBdayDate(this.search.end)}`
+                        },
+                        {
+                            text: `Status: ${status}`
+                        }
+                    ]
+                },
+                '\n',
+               {
+                 table: {
+                   widths: ['auto','auto','*','auto','auto','*','auto'],
+                   body: reservations
+                 }
+               }
+              ]
+              
+            }
+            this.$pdfMake.createPdf(docDefinition).open();
+        },
         viewDetails:function(index){
             this.reservationInfo = this.list[index]
             this.showDetailsModal = true
@@ -189,10 +256,11 @@ export default {
             return this.$helper.formatraw12Hour(date)
         },
         searchProceed: function(){
-             this.search.branch = this.branches[this.activebranchIndex].id
+            this.search.branch = this.branches[this.activebranchIndex].id
             this.$store.dispatch("reservation/list",this.search)
         },
         changeFilterbranch: function(branch,index){
+            this.search.dentist = "All"
             const navbranch = document.getElementsByClassName('navbranch')
             for(let x = 0 ; x < navbranch.length ; x++){
                  navbranch[x].classList.remove('active')

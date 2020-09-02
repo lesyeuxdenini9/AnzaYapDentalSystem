@@ -198,7 +198,7 @@ export default {
                  transactionId: ''
              },
              apiUrl: this.$store.state.apiUrl,
-             ph: "Select Medicine From Pharmacy Inventory",
+             ph: "Select Medicine From Inventory",
              myValue: '',
         }
     },

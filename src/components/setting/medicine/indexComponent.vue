@@ -46,6 +46,10 @@
                   <div class="col-md-2">
                       <button @click="searchItem()" class="form-control"><span class="fa fa-search"></span> Search</button>
                   </div>
+                   <div class="col-md-2" style="text-align:right;">
+                      <!-- <button @click="searchService()" style="margin-right:10px;" class="btn btn-success"><span class="fa fa-file-excel"></span> Excel</button> -->
+                      <button @click="printPDF()" class="btn btn-xs btn-danger"><span class="fa fa-file-pdf"></span> PDF</button>
+                  </div>
        
                   </div>
             <table class="table table-bordered" ref="testdata" id="dataTable" width="100%" cellspacing="0">
@@ -116,6 +120,38 @@ export default {
         }
     },
     methods: {
+       printPDF: function(){
+
+            let medicineLists = this.medicineLists.map((med)=>{
+              return [med.medicine,med.brand,med.description,med.code,med.scientificName,med.stocks,med.uom,this.getStatus2(med.stocks,med.limitMin)]
+            })
+
+            medicineLists.sort()
+            medicineLists.unshift(["ITEM","BRAND","DESCRIPTION","CODE","SCIENTIFIC NAME","REMAINING STOCKS","UOM","STATUS"])
+           
+            var docDefinition = {  
+              
+                    // header: {text: 'Simple Text', margin: 10 , alignment: 'center'},  
+                    watermark: { text: 'AnzaYap Dental Clinic', color: 'blue', opacity: 0.1, bold: true, italics: false },
+                    footer: function(currentPage, pageCount) { 
+                      return { text: currentPage.toString() + ' of ' + pageCount , alignment: 'center'}; 
+                      },
+                      pageOrientation: 'landscape',
+               content: [
+                 {
+                   text: `${this.branches[this.activebranchIndex].branch} ${this.typedes} Inventory as of ${this.$helper.formatBdayDate(new Date())} ${this.$helper.format12Hour(new Date())}`, alignment: 'center', margin: [0,0,0,20]
+                 },
+               {
+                 table: {
+                   widths: ['*','*','*','auto','auto','auto','auto',100],
+                   body: medicineLists
+                 }
+               }
+              ]
+              
+            }
+            this.$pdfMake.createPdf(docDefinition).open();
+        },
         searchItem: function(){
             let data = {
               search: this.search,
@@ -159,6 +195,13 @@ export default {
           if(stock == 0) des = "<span style='color:white;background:maroon;padding:10px 20px;border-radius:10px'>NO STOCKS</span>"
           if(stock > limit) des = "<span style='color:white;background:green;padding:10px 20px;border-radius:10px'>GOOD</span>"
           if(stock > 0 && stock <= limit) des = "<span style='color:white;background:orange;padding:10px 20px;border-radius:10px'>LOW</span>"
+          return des
+        },
+        getStatus2: function(stock,limit){
+          let des = ''
+          if(stock == 0) des = "NO STOCKS"
+          if(stock > limit) des = "GOOD"
+          if(stock > 0 && stock <= limit) des = "LOW"
           return des
         },
         ...mapActions('medicine',[

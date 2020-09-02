@@ -4,6 +4,7 @@
         <div class="container-fluid">
                   <span class="pageheader"><i class="fa fa-file-alt"></i> Records Search - Pharmarcy Purchase Receipt</span>
                    <button type="button" @click="back()" class="noprint float-right"><span class="fa fa-times"></span></button>
+                    <button @click="printPDF" class="btn btn-danger float-right" style="margin-right:20px;"><span class="fa fa-file-pdf"></span> Pdf</button>
                     <hr/>
 
                           <ul class="nav nav-tabs">
@@ -106,6 +107,38 @@ export default {
         }
     },
     methods: {
+        printPDF: function(){
+            
+
+          let records = this.purchases.map((bill)=>{
+            return [bill.billrefNo,this.dDate(bill.createdAt),bill.modifiedBy,this.subtotal(bill.Billitems),bill.discount,this.subtotal(bill.Billitems) - bill.discount]
+          }) 
+          records.sort()
+          records.unshift(['REFERENCE NO','DATE TIME','STAFF','SUB TOTAL','DISCOUNT','TOTAL AMOUNT'])
+           
+            var docDefinition = {  
+
+                    // header: {text: 'Simple Text', margin: 10 , alignment: 'center'},  
+                watermark: { text: 'AnzaYap Dental Clinic', color: 'blue', opacity: 0.1, bold: true, italics: false },
+                footer: function(currentPage, pageCount) { 
+                  return { text: currentPage.toString() + ' of ' + pageCount , alignment: 'center'}; 
+                  },
+                pageOrientation: 'landscape',
+               content: [
+                 {
+                   text: `${this.branches[this.activebranchIndex].branch} Pharmacy Sales Records From ${this.$helper.formatBdayDate(this.search.start)} To ${this.$helper.formatBdayDate(this.search.end)}`, alignment: 'center', margin: [0,0,0,20]
+                 },
+               {
+                 table: {
+                   widths: ['*','auto','*','auto','auto','auto'],
+                   body: records
+                 }
+               }
+              ]
+              
+            }
+            this.$pdfMake.createPdf(docDefinition).open();
+        },
         back: function(){
             this.$router.go(-1)
         },

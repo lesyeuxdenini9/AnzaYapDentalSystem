@@ -153,6 +153,12 @@
                             <div class="col-md-3">
                                     <button @click="init()" class="form-control btn btn-primary"><span class="fa fa-search"></span> Search</button>
                             </div>
+                            
+                              <div class="col-md-3">
+                                    <button @click="printStocksIN()" ref="stockin" class="btn btn-danger"><span class="fa fa-file-pdf"></span> PDF</button>
+                                    <button @click="printStocksOUT(0)" ref="stockout" class="btn btn-danger" style="display:none;"><span class="fa fa-file-pdf"></span> PDF</button>
+                                    <button @click="printStocksOUT(1)" ref="stockout2" class="btn btn-danger"  style="display:none;"><span class="fa fa-file-pdf"></span> PDF</button>
+                            </div>
 
                               </div>
 
@@ -267,6 +273,86 @@ export default {
         }
     },
     methods: {
+
+        printStocksOUT: function(index){
+ 
+            let stocksout
+            let orientation
+
+
+            if(index == 0 ){
+                 stocksout = this.medicine.Stockouts.map((stock)=>{
+                    return [stock.Transaction.transactionNo,this.dDate(stock.createdAt),stock.Transaction.Dentist.fullname,`${stock.Action.Treatment.service}\nDate: ${stock.Action.date}`,stock.qty,stock.Medicine.uom]
+                })
+                stocksout.sort()
+                stocksout.unshift(["TRANSACTION REF NO","DATE","DENTIST","TREATMENT","QUANTITY","UOM"])
+                orientation = "landscape"
+            }else{
+                stocksout = this.medicine.Billitems.map((stock)=>{
+                    return [stock.Billing.billrefNo,this. dDate(stock.Billing.createdAt),stock.qty,stock.Medicine.uom ]
+                })
+                stocksout.sort()
+                stocksout.unshift(["PURCHASE REF NO","DATE","QUANTITY","UOM"])
+                orientation = "portrait"
+            }
+           
+            let width = index == 0 ? ['auto','auto','auto','*','auto','auto'] : ['*','auto','auto','*']
+
+            var docDefinition = {  
+                        
+                    // header: {text: 'Simple Text', margin: 10 , alignment: 'center'},  
+                    watermark: { text: 'AnzaYap Dental Clinic', color: 'blue', opacity: 0.1, bold: true, italics: false },
+                    footer: function(currentPage, pageCount) { 
+                    return { text: currentPage.toString() + ' of ' + pageCount , alignment: 'center'}; 
+                    },
+                    pageOrientation:orientation,
+                    content: [
+                            {
+                            text: `${this.medicine.medicine} ( ${this.medicine.brand} ) Stocks Out From ${this.$helper.formatBdayDate(this.search.start)} TO ${this.$helper.formatBdayDate(this.search.end)}`, alignment: 'center', margin: [0,0,0,20]
+                            },
+                            {
+                                table: {
+                                widths: width,
+                                body: stocksout
+                                }
+                            }
+                        ]
+                        
+                        }
+                this.$pdfMake.createPdf(docDefinition).open();
+        },
+        printStocksIN: function(){
+            let stocksin = this.medicine.Stockinitems.map((stock)=>{
+                return [stock.Stockin.refno,stock.Stockin.date,stock.Stockin.manufacturer,stock.Stockin.invoiceRefno,stock.qty,stock.uom,stock.ExpirationDate]
+            })
+
+            stocksin.sort()
+            stocksin.unshift(["STOCK REF NO","DATE","SUPPLIER","INVOICE REF NO","QUANTITY","UOM","EXPIRATION DATE"])
+
+                         var docDefinition = {  
+                        
+                                // header: {text: 'Simple Text', margin: 10 , alignment: 'center'},  
+                                watermark: { text: 'AnzaYap Dental Clinic', color: 'blue', opacity: 0.1, bold: true, italics: false },
+                                footer: function(currentPage, pageCount) { 
+                                return { text: currentPage.toString() + ' of ' + pageCount , alignment: 'center'}; 
+                                },
+                                pageOrientation: 'landscape',
+                        content: [
+                            {
+                            text: `${this.medicine.medicine} ( ${this.medicine.brand} ) Stocks In From ${this.$helper.formatBdayDate(this.search.start)} TO ${this.$helper.formatBdayDate(this.search.end)}`, alignment: 'center', margin: [0,0,0,20]
+                            },
+                            {
+                                table: {
+                                widths: ['*','auto','*','auto','auto','auto','*'],
+                                body: stocksin
+                                }
+                            }
+                        ]
+                        
+                        }
+                        this.$pdfMake.createPdf(docDefinition).open();
+
+        },
         edit: function(){
             this.showeditModal = true
             this.editInfo = this.medicine
@@ -284,6 +370,20 @@ export default {
             }
             navfilterstock[index].classList.add('active')
             this.filterstock = filterstock
+         
+            if(filterstock=="in"){
+                this.$refs.stockin.style.display = "block"
+                this.$refs.stockout.style.display = "none"
+                this.$refs.stockout2.style.display = "none"
+            }else if(filterstock == "out"){
+                this.$refs.stockin.style.display = "none"
+                this.$refs.stockout.style.display = "block"
+                this.$refs.stockout2.style.display = "none"
+            }else{
+                this.$refs.stockin.style.display = "none"
+                this.$refs.stockout.style.display = "none"
+                this.$refs.stockout2.style.display = "block"
+            }
         },
         back: function(){
             this.$router.go(-1)

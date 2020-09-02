@@ -28,6 +28,10 @@
                   <div class="col-md-2">
                       <button @click="searchDentist()" class="form-control"><span class="fa fa-search"></span> Search</button>
                   </div>
+                       <div class="col-md-6" style="text-align:right;">
+                      <!-- <button @click="searchService()" style="margin-right:10px;" class="btn btn-success"><span class="fa fa-file-excel"></span> Excel</button> -->
+                      <button @click="printPDF()" class="btn btn-xs btn-danger"><span class="fa fa-file-pdf"></span> PDF</button>
+                  </div>
                   </div>
             <table class="table table-bordered" ref="testdata" id="dataTable" width="100%" cellspacing="0">
                   <thead>
@@ -92,6 +96,39 @@ export default {
           'getList',
           'removeList',
         ]),
+                printPDF: function(){
+            
+
+          let userlist = this.branches[this.activebranchIndex].Dentists.map((user)=>{
+            return [user.fullname ,user.email, user.address, user.contact, user.gender , user.licence, user.ptr ]
+          }) 
+          userlist.sort()
+          userlist.unshift(['NAME','EMAIL','ADDRESS','CONTACT NO','GENDER','LICENCE','PTR'])
+           
+            var docDefinition = {  
+
+                    // header: {text: 'Simple Text', margin: 10 , alignment: 'center'},  
+                watermark: { text: 'AnzaYap Dental Clinic', color: 'blue', opacity: 0.1, bold: true, italics: false },
+                footer: function(currentPage, pageCount) { 
+                  return { text: currentPage.toString() + ' of ' + pageCount , alignment: 'center'}; 
+                  },
+                pageOrientation: 'landscape',
+               content: [
+                 {
+                   text: `${this.branches[this.activebranchIndex].branch} Dentist List`, alignment: 'center', margin: [0,0,0,20]
+                 },
+               {
+                 table: {
+                   widths: ['*','auto','*','auto','auto','auto','auto'],
+                   body: userlist
+                 }
+               }
+              ]
+              
+            }
+            this.$pdfMake.createPdf(docDefinition).open();
+        },
+
         searchDentist: function(){
           let data = {
               search: this.search,

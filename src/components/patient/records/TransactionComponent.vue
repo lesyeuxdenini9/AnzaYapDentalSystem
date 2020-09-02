@@ -3,6 +3,7 @@
          <!-- Begin Page Content -->
         <div class="container-fluid">
                   <span class="pageheader"><i class="fa fa-file-alt"></i> My Transactions</span>
+                    <button @click="printPDF" class="btn btn-danger float-right"><span class="fa fa-file-pdf"></span> Pdf</button>
                     <hr/>
 
                           <ul class="nav nav-tabs">
@@ -69,7 +70,7 @@
                         </thead>
 
                         <tbody>
-                            <tr v-for="(transaction,index) in this.transactions" :key="index">
+                            <tr v-for="(transaction,index) in transactions" :key="index">
                                 <td>{{transaction.transactionNo}}</td>
                                 <td>{{transaction.transactionDate}}</td>
                                 <td>{{transaction.Dentist.fullname}}</td>
@@ -98,10 +99,44 @@ export default {
                 end: "",
                 transactionNo: "",
                 branch: "",
+                dentist: "All",
+                status: "All",
             },
         }
     },
     methods: {
+                   printPDF: function(){
+            
+
+          let records = this.transactions.map((transaction)=>{
+            return [transaction.transactionNo,transaction.transactionDate,transaction.Dentist.fullname,this.getStatus(transaction.status)]
+          }) 
+          records.sort()
+          records.unshift(['REFERENCE NO','DATE','DENTIST','STATUS'])
+           
+            var docDefinition = {  
+
+                    // header: {text: 'Simple Text', margin: 10 , alignment: 'center'},  
+                watermark: { text: 'AnzaYap Dental Clinic', color: 'blue', opacity: 0.1, bold: true, italics: false },
+                footer: function(currentPage, pageCount) { 
+                  return { text: currentPage.toString() + ' of ' + pageCount , alignment: 'center'}; 
+                  },
+                pageOrientation: 'portrait',
+               content: [
+                 {
+                   text: `${this.branches[this.activebranchIndex].branch} Transaction Records From ${this.$helper.formatBdayDate(this.search.start)} To ${this.$helper.formatBdayDate(this.search.end)}`, alignment: 'center', margin: [0,0,0,20]
+                 },
+               {
+                 table: {
+                   widths: ['auto','auto','*','auto'],
+                   body: records
+                 }
+               }
+              ]
+              
+            }
+            this.$pdfMake.createPdf(docDefinition).open();
+        },
          getStatus: function(status){
              let des = ''
              switch(status){
