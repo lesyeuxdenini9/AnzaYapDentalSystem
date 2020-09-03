@@ -9,6 +9,9 @@ export default {
         medicines: [],
         stocksin: [],
         medicine: {},
+        stockInfo: {
+            Stockinitems: [],
+        },
     },
     actions: {
         search: function(context,data){
@@ -125,12 +128,26 @@ export default {
                     context.dispatch("refreshtoken",null,{root:true})
                 }               
             })
+        },
+        stockinfo: function(context,data){
+            Axios.post(`${context.rootState.apiUrl}/api/medicine/stockinfo`,data,context.rootState.headerconfig)
+            .then((res)=>{     
+                     context.commit("setStockInfo",res.data.data)
+            })
+            .catch((err)=>{
+                if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                    context.dispatch("refreshtoken",null,{root:true})
+                }               
+            })
         }
     },
     getters: {
 
     },
     mutations: {
+        setStockInfo: function(state,data){
+            state.stockInfo = data
+        },
         setMedicineInfo: function(state,data){
             state.medicine = data
         },

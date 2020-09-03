@@ -43,11 +43,15 @@
                                                               <tr @dblclick="addtoCart(med)" style="cursor:pointer;" v-for="(med,index) in medicines" :key="index">
                                                                 <td style="width: 10%">{{med.code}}</td>
                                                                 <td style="width: 20%">{{med.medicine}} ( {{med.brand}} )</td>
-                                                                <td style="width: 25%">{{med.description}}</td>
+                                                                <td style="width: 23%">{{med.description}}</td>
                                                                 <td style="width: 10%">{{med.price}}</td>
                                                                 <td style="width: 10%">{{med.stocks}}</td>
                                                                 <td style="width: 10%">{{med.uom}}</td>
-                                                                <td style="text-align:right;width:10%"><button @click="addtoCart(med)"><span class="fa fa-plus"></span> Add</button></td>
+                                                                <td style="text-align:right;width:12%">
+                                                                    <button class="form-control" style="margin-bottom:10px;" @click="addtoCart(med)"><span class="fa fa-plus"></span> Add</button>
+                                                                    <button class="form-control" @click="viewstockInfo(med)"><span class="fa fa-check"></span>Stock Info</button>
+                                                                    
+                                                                    </td>
                                                             </tr>
                                                     </table>
                                                 </div>
@@ -67,13 +71,18 @@
                
                 </div>
             </div>
+
+
+            <stockInfoModal v-if="viewStock" :med="med" @closemodal="closemodal"/>
             </div>
 </template>
 
 <script>
 // import { formatHour } from "@/helper/helper"
 import { mapState } from "vuex"
+import stockInfoModal from "@/components/backend/pharmacy/stockInfoModal"
 export default {
+    components: {stockInfoModal},
     props: {
        branch: {
            type: Number,
@@ -86,6 +95,8 @@ export default {
             doneTypingInterval: 1000,
             typingTimer: '',
             search: '',
+            viewStock: false,
+            med: 0,
             
         }
     },
@@ -113,7 +124,13 @@ export default {
         })
     },
     methods: {
-
+        closemodal: function(){
+            this.viewStock = false
+        },
+        viewstockInfo: function(med){
+            this.viewStock = true
+            this.med = med
+        },
         closethis: function(){
             this.$emit("closemodal")
         },

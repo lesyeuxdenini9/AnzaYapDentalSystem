@@ -56,7 +56,7 @@
                                  <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;"/>
                                 
                                       <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>NO. OF APPOINTMENTS FROM {{search.start}} TO {{search.end}}</span></div>
-                                      <column-chart :stacked="graphOptions.stacked" :legend="true" :download="true" :data="graphOptions.data"></column-chart>
+                                      <column-chart :library="columnlibrary" :stacked="graphOptions.stacked" :legend="true" :download="true" :data="graphOptions.data"></column-chart>
                                     <div class="row">
                                         <div class="col-md-10 offset-md-1">
                                             <table class="table table-condensed table-striped table-bordered">
@@ -98,7 +98,7 @@
                               <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>TOTAL NO. OF APPOINTMENTS FROM {{search.start}} TO {{search.end}}</span></div>
                               <div class="row">
                                   <div class="col-md-12">
-                                      <pie-chart :download="true" width="100%" height="500px" :data="pieOptionsTotal.data"></pie-chart>
+                                      <pie-chart :library="pielibrary" :download="true" width="100%" height="500px" :data="pieOptionsTotal.data"></pie-chart>
                                   </div>
 
                                    <div class="col-md-10 offset-md-1">
@@ -110,6 +110,8 @@
                                 <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;"/>
 
                      </div>
+
+                    
   
     </div>
 </template>
@@ -134,11 +136,31 @@ export default {
                 pieOptionsTotal: {
                     data: [],
                 },
+                columnlibrary: {
+                    animation: {
+                        onComplete: this.doneChart
+                    }
+                },
+                pielibrary: {
+                    animation: {
+                        onComplete: this.donePie
+                    }
+                },
+                columnimg: null,
+                pieimg: null,
       
     
         }
     },
     methods: {
+        doneChart: function(){
+            let charts = document.getElementsByClassName('chartjs-render-monitor')
+            this.columnimg = charts[0].toDataURL()
+        },
+        donePie: function(){
+            let charts = document.getElementsByClassName('chartjs-render-monitor')
+            this.pieimg = charts[1].toDataURL()
+        },
         back: function(){
             this.$router.go(-1)
         },
