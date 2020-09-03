@@ -53,8 +53,10 @@
                               </div>
 
                               <br/>
-                                 <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;"/>
-                                
+                                 <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;position:relative">
+                                     <button @click="printcolumn()" class="btn btn-danger" style="position:absolute;right:0;bottom:-40px;"><span class="fa fa-file-pdf"></span> PDF</button>
+                                 </div>
+                                    
                                       <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>NO. OF APPOINTMENTS FROM {{search.start}} TO {{search.end}}</span></div>
                                       <column-chart :library="columnlibrary" :stacked="graphOptions.stacked" :legend="true" :download="true" :data="graphOptions.data"></column-chart>
                                     <div class="row">
@@ -94,7 +96,9 @@
                                 
                               </div>
                          
-                                <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;"/>
+                                <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;position:relative;">
+                                     
+                                </div>
                               <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>TOTAL NO. OF APPOINTMENTS FROM {{search.start}} TO {{search.end}}</span></div>
                               <div class="row">
                                   <div class="col-md-12">
@@ -161,6 +165,56 @@ export default {
             let charts = document.getElementsByClassName('chartjs-render-monitor')
             this.pieimg = charts[1].toDataURL()
         },
+        printcolumn: function(){
+
+            let data = this.appointments.data.map((appointment)=>{
+                return [appointment.date,appointment.Approved,appointment.Cancelled,appointment.Reschedule,appointment.totalcount]
+            })
+
+            data.unshift(['DATE','APPROVED','CANCELLED','RESCHEDULE','TOTAL'])
+
+            data.push(['Total',this.computeTotal[0],this.computeTotal[1],this.computeTotal[2],this.computeTotal[3]])
+             var docDefinition = {  
+                 
+                    // header: {text: 'Simple Text', margin: 10 , alignment: 'center'},  
+                watermark: { text: 'AnzaYap Dental Clinic', color: 'blue', opacity: 0.1, bold: true, italics: false },
+                footer: function(currentPage, pageCount) { 
+                  return { text: currentPage.toString() + ' of ' + pageCount , alignment: 'center'}; 
+                  },
+                pageOrientation: 'landscape',
+               content: [
+                 {
+                   text: `${this.branches[this.activebranchIndex].branch} No. Of Appointments From ${this.search.start} To ${this.search.end}`, alignment: 'center', margin: [0,0,0,20]
+                 },
+                 {
+                     image: this.columnimg,
+                     height:300,
+                     width:750,
+                 },
+                {
+                 table: {
+                   widths: ['*','*','*','*','*'],
+                   body: data,
+                   pageBreak: 'after'
+                 }
+               },
+           
+               {
+                   image: this.pieimg,
+                   height:400,
+                   width: 1500,
+                   alignment: 'center',
+                   margin: [0,0,0,20]
+               },
+                 {
+                   text: `${this.branches[this.activebranchIndex].branch} Total No. Of Appointments From ${this.search.start} To ${this.search.end}`, alignment: 'center', margin: [0,0,0,20]
+                 },
+              ]
+              
+            }
+            this.$pdfMake.createPdf(docDefinition).open();
+        },
+        
         back: function(){
             this.$router.go(-1)
         },
