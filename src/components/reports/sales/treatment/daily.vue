@@ -53,10 +53,12 @@
                               </div>
 
                               <br/>
-                                 <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;"/>
+                                   <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;position:relative">
+                                     <button @click="printcolumn()" class="btn btn-danger" style="position:absolute;right:0;bottom:-40px;"><span class="fa fa-file-pdf"></span> PDF</button>
+                                 </div>
                                 
-                                      <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>EARNINGS FROM {{search.start}} TO {{search.end}}</span></div>
-                                      <column-chart :stacked="graphOptions.stacked" :legend="false" :download="true" :data="graphOptions.data"></column-chart>
+                                      <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>TREATMENT EARNINGS FROM {{search.start}} TO {{search.end}}</span></div>
+                                      <column-chart :library="columnlibrary" :stacked="graphOptions.stacked" :legend="false" :download="true" :data="graphOptions.data"></column-chart>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <table class="table table-condensed table-striped table-bordered">
@@ -86,18 +88,20 @@
 
                          
                          
-                                <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;"/>
+                                    <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;position:relative">
+                                     <button @click="printpie()" class="btn btn-danger" style="position:absolute;right:0;bottom:-40px;"><span class="fa fa-file-pdf"></span> PDF</button>
+                                 </div>
                               <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>NO. OF SERVICE DONE BASED ON TRANSACTION DATE FROM {{search.start}} TO {{search.end}}</span></div>
                               <div class="row">
                                   <div class="col-md-12">
-                                      <pie-chart :download="true" width="100%" height="500px" :data="pieOptionsMostAvail.data"></pie-chart>
+                                      <pie-chart :library="pielibrary" :download="true" width="100%" height="500px" :data="pieOptionsMostAvail.data"></pie-chart>
                                   </div>
 
                                    <div class="col-md-10 offset-md-1">
                                             <table class="table table-condensed table-striped table-bordered">
                                                 <thead>
                                                    <tr style="background:#343A40;color:white;">
-                                                        <th style="width:50%">Service</th>
+                                                        <th style="width:50%">Service / Treatment</th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>
@@ -116,7 +120,9 @@
                               </div>
 
                               
-                                <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;"/>
+                                    <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;position:relative">
+                                     <button @click="printDetailed()" class="btn btn-danger" style="position:absolute;right:0;bottom:-40px;"><span class="fa fa-file-pdf"></span> PDF</button>
+                                 </div>
                                 <div style="text-align:center;margin-bottom:20px;"><span style="font-weight:bold;color:#696972;font-size:14pt;">DETAILED TRANSACTION DATA PER DENTIST FROM {{search.start}} TO {{search.end}}</span></div>
                              
                                  <div class="row">
@@ -202,10 +208,163 @@ export default {
                     {index: 11 , des: "NOV"},
                     {index: 12 , des: "DEC"},
                 ],
+                columnlibrary: {
+                    animation: {
+                        onComplete: this.doneChart
+                    }
+                },
+                pielibrary: {
+                    animation: {
+                        onComplete: this.donePie
+                    }
+                },
+                columnimg: null,
+                pieimg: null,
     
         }
     },
     methods: {
+        printDetailed: function(){
+
+            let data = []
+
+            this.sales.dentistdata.forEach((dentist)=>{
+                data.push([{text: dentist.fullname,colSpan: 8},{},{},{},{},{},{},{}])
+                dentist.Transactions.forEach((transaction)=>{
+                    let treatments = ''
+                    transaction.Treatments.forEach((treatment)=>{
+                        treatments = treatments + `* ${treatment.service}\n`
+                    })
+
+                    data.push([
+                            this.getYear(transaction.transactionDate),
+                            this.getMonth(transaction.transactionDate),
+                            transaction.transactionDate,
+                            transaction.transactionNo,
+                            transaction.User.fullname,
+                            treatments,
+                            this.getStatus(transaction.status),
+                            this.TotalAmount(transaction.Billings),
+                    ])
+
+                })
+            })
+
+            var docDefinition = {
+                  watermark: { text: 'AnzaYap Dental Clinic', color: 'blue', opacity: 0.1, bold: true, italics: false },
+                footer: function(currentPage, pageCount) { 
+                  return { text: currentPage.toString() + ' of ' + pageCount , alignment: 'center'}; 
+                  },
+                pageOrientation: 'landscape',
+                content: [
+                    {
+                        text: `${this.branches[this.activebranchIndex].branch} Detailed Transaction Data Per Dentist From ${this.search.start} To ${this.search.end}`, alignment: 'center', margin: [0,0,0,20]
+                    },
+                    {
+                        table: {
+                            widths: ['auto','auto','auto','auto','*','*','auto','auto'],
+                            body: data,
+                            pageBreak: 'after'
+                        }
+                    }
+                ],
+                // styles: {
+                //     tableHeader: {
+                //         bold: true,
+                //         background: 'dimgray',
+                //         color: 'white',
+                //     }
+                // } 
+            }
+
+            this.$pdfMake.createPdf(docDefinition).open()
+        },
+         printpie: function(){
+               let data = this.sales.serviceMostavail.map((sale)=>{
+                return [sale.service,sale.totalcount]
+            })
+
+            data.unshift(['Service/Treatment',''])
+
+             var docDefinition = {  
+                 
+                    // header: {text: 'Simple Text', margin: 10 , alignment: 'center'},  
+                watermark: { text: 'AnzaYap Dental Clinic', color: 'blue', opacity: 0.1, bold: true, italics: false },
+                footer: function(currentPage, pageCount) { 
+                  return { text: currentPage.toString() + ' of ' + pageCount , alignment: 'center'}; 
+                  },
+                pageOrientation: 'portrait',
+               content: [
+                 {
+                   text: `${this.branches[this.activebranchIndex].branch} No. Of Service Done Based On Transaction Date From ${this.search.start} To ${this.search.end}`, alignment: 'center', margin: [0,0,0,20]
+                 },
+                 {
+                    image: this.pieimg,
+                    height:400,
+                    width: 1200,
+                    alignment: 'center',
+                    margin: [0,0,0,20]
+                 },
+                {
+                 table: {
+                   widths: ['*','*'],
+                   body: data,
+                   pageBreak: 'after'
+                 }
+               },
+           
+              ]
+              
+            }
+            this.$pdfMake.createPdf(docDefinition).open();
+         },
+         printcolumn: function(){
+
+            let data = this.sales.graph.map((sale)=>{
+                return [sale.date,sale.totalsales]
+            })
+
+            data.unshift(['PAYMENT DATE','EARNINGS'])
+
+            data.push(['Total',this.computeTotal])
+             var docDefinition = {  
+                 
+                    // header: {text: 'Simple Text', margin: 10 , alignment: 'center'},  
+                watermark: { text: 'AnzaYap Dental Clinic', color: 'blue', opacity: 0.1, bold: true, italics: false },
+                footer: function(currentPage, pageCount) { 
+                  return { text: currentPage.toString() + ' of ' + pageCount , alignment: 'center'}; 
+                  },
+                pageOrientation: 'landscape',
+               content: [
+                 {
+                   text: `${this.branches[this.activebranchIndex].branch} Treatment Earnings From ${this.search.start} To ${this.search.end}`, alignment: 'center', margin: [0,0,0,20]
+                 },
+                 {
+                     image: this.columnimg,
+                     height:300,
+                     width:750,
+                 },
+                {
+                 table: {
+                   widths: ['*','*'],
+                   body: data,
+                   pageBreak: 'after'
+                 }
+               },
+           
+              ]
+              
+            }
+            this.$pdfMake.createPdf(docDefinition).open();
+        },
+        doneChart: function(){
+            let charts = document.getElementsByClassName('chartjs-render-monitor')
+            this.columnimg = charts[0].toDataURL()
+        },
+        donePie: function(){
+            let charts = document.getElementsByClassName('chartjs-render-monitor')
+            this.pieimg = charts[1].toDataURL()
+        },
         getMonth: function(date){
             let ddate = new Date(date)
             return this.months[ddate.getMonth()].des
