@@ -406,8 +406,8 @@ export default {
     data: function(){
         return {
             user: {
-                email: "superadmin@gmail.com",
-                password: "Lxgiwyl1234", 
+                email: "",
+                password: "", 
             },
             successlogin: false,
             errormsg: [],
