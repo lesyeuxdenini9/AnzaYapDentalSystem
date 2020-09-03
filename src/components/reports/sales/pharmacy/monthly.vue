@@ -76,9 +76,11 @@
                               </div>
 
                                  <br/>
-                                 <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;"/>
-                                   <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>SALES FROM {{months[search.startmonth-1].des}} {{search.startyear}} TO {{months[search.endmonth-1].des}} {{search.endyear}}</span></div>
-                                      <column-chart :stacked="graphOptions.stacked" :legend="false" :download="true" :data="graphOptions.data"></column-chart>
+                                  <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;position:relative">
+                                     <button @click="printcolumn()" class="btn btn-danger" style="position:absolute;right:0;bottom:-40px;"><span class="fa fa-file-pdf"></span> PDF</button>
+                                 </div>
+                                   <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>PHARMACY SALES FROM {{months[search.startmonth-1].des}} {{search.startyear}} TO {{months[search.endmonth-1].des}} {{search.endyear}}</span></div>
+                                      <column-chart :library="columnlibrary" :stacked="graphOptions.stacked" :legend="false" :download="true" :data="graphOptions.data"></column-chart>
                            
                            
                             <div class="row">
@@ -109,11 +111,13 @@
                                 
                               </div>
 
-                                <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;"/>
-                                 <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>NO. OF SOLD ITEMS FROM {{months[search.startmonth-1].des}} {{search.startyear}} TO {{months[search.endmonth-1].des}} {{search.endyear}}</span></div>
+                                  <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;position:relative">
+                                     <button @click="printpie()" class="btn btn-danger" style="position:absolute;right:0;bottom:-40px;"><span class="fa fa-file-pdf"></span> PDF</button>
+                                 </div>
+                                 <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>NO. OF SOLD ITEMS / MEDICINES FROM {{months[search.startmonth-1].des}} {{search.startyear}} TO {{months[search.endmonth-1].des}} {{search.endyear}}</span></div>
                                     <div class="row">
                                   <div class="col-md-12">
-                                      <pie-chart :download="true" width="100%" height="500px" :data="pieOptionsMostAvail.data"></pie-chart>
+                                      <pie-chart :library="pielibrary" :download="true" width="100%" height="500px" :data="pieOptionsMostAvail.data"></pie-chart>
                                   </div>
 
                                    <div class="col-md-10 offset-md-1">
@@ -128,7 +132,7 @@
                                                 <tbody>
                                                     <tr v-for="(sale,index) in sales.serviceMostavail" :key="index">
                                                         <td>{{sale.item}}</td>
-                                                        <td>{{sale.totalcount}} 
+                                                        <td>{{sale.totalcount}} {{sale.uom}}
                                                             <!-- <span v-if="sale.totalcount == 1">time</span><span v-else>times</span> -->
                                                         </td>
                                                     </tr>
@@ -181,9 +185,107 @@ export default {
                 pieOptionsMostAvail: {
                     data: [],
                 },
+                columnlibrary: {
+                    animation: {
+                        onComplete: this.doneChart
+                    }
+                },
+                pielibrary: {
+                    animation: {
+                        onComplete: this.donePie
+                    }
+                },
+                columnimg: null,
+                pieimg: null,
         }
     },
     methods: {
+          doneChart: function(){
+            let charts = document.getElementsByClassName('chartjs-render-monitor')
+            this.columnimg = charts[0].toDataURL()
+        },
+        donePie: function(){
+            let charts = document.getElementsByClassName('chartjs-render-monitor')
+            this.pieimg = charts[1].toDataURL()
+        },
+                 printpie: function(){
+               let data = this.sales.serviceMostavail.map((sale)=>{
+                return [sale.item,`${sale.totalcount} ${sale.uom}`]
+            })
+
+            data.unshift(['Service/Treatment',''])
+
+             var docDefinition = {  
+                 
+                    // header: {text: 'Simple Text', margin: 10 , alignment: 'center'},  
+                watermark: { text: 'AnzaYap Dental Clinic', color: 'blue', opacity: 0.1, bold: true, italics: false },
+                footer: function(currentPage, pageCount) { 
+                  return { text: currentPage.toString() + ' of ' + pageCount , alignment: 'center'}; 
+                  },
+                pageOrientation: 'portrait',
+               content: [
+                 {
+                   text: `${this.branches[this.activebranchIndex].branch} No. Of Sold Items / Medicine From ${this.months[this.search.startmonth-1].des} ${this.search.startyear} To ${this.months[this.search.endmonth-1].des} ${this.search.endyear}`, alignment: 'center', margin: [0,0,0,20]
+                 },
+                 {
+                    image: this.pieimg,
+                    height:400,
+                    width: 1200,
+                    alignment: 'center',
+                    margin: [0,0,0,20]
+                 },
+                {
+                 table: {
+                   widths: ['*','*'],
+                   body: data,
+                   pageBreak: 'after'
+                 }
+               },
+           
+              ]
+              
+            }
+            this.$pdfMake.createPdf(docDefinition).open();
+         },
+         printcolumn: function(){
+
+            let data = this.sales.graph.map((sale)=>{
+                return [`${this.months[sale.monthname-1].des} ${sale.yearname}`,sale.totalsales]
+            })
+
+            data.unshift(['DATE','EARNINGS'])
+
+            data.push(['Total',this.computeTotal])
+             var docDefinition = {  
+                 
+                    // header: {text: 'Simple Text', margin: 10 , alignment: 'center'},  
+                watermark: { text: 'AnzaYap Dental Clinic', color: 'blue', opacity: 0.1, bold: true, italics: false },
+                footer: function(currentPage, pageCount) { 
+                  return { text: currentPage.toString() + ' of ' + pageCount , alignment: 'center'}; 
+                  },
+                pageOrientation: 'landscape',
+               content: [
+                 {
+                   text: `${this.branches[this.activebranchIndex].branch} Pharmacy Sales From ${this.months[this.search.startmonth-1].des} ${this.search.startyear} To ${this.months[this.search.endmonth-1].des} ${this.search.endyear}`, alignment: 'center', margin: [0,0,0,20]
+                 },
+                 {
+                     image: this.columnimg,
+                     height:300,
+                     width:750,
+                 },
+                {
+                 table: {
+                   widths: ['*','*'],
+                   body: data,
+                   pageBreak: 'after'
+                 }
+               },
+           
+              ]
+              
+            }
+            this.$pdfMake.createPdf(docDefinition).open();
+        },
         back: function(){
             this.$router.go(-1)
         },
