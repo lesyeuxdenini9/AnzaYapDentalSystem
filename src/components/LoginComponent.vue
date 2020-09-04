@@ -71,7 +71,7 @@
                    <div id="secondslide" class="slideitem" >
                      <div>
                         <div>
-                        <span>Making Our Customers Satisfied <span style="color:#87CEEB;" class="fa fa-thumbs-up"></span></span><br/>
+                        <span>Making Our Customers Satisfied... <span style="color:#87CEEB;" class="fa fa-thumbs-up"></span></span><br/>
                           <small style='font-size: 12pt'> 
                            For compliance of DOH requirement for dental clinic<br/><hr style="background:white;"/>
                           *Hyphochlorus Machine *UV Light *Hepa Filter *HI VAC *Temperature Scanner *PPE *Autoclave Sterilizer
@@ -84,7 +84,7 @@
                    <div id="thirdslide" class="slideitem" >
                       <div>
                         <div>
-                      <span>Always Delivering Best Of Our Services <span style="color:#F6C23E;" class="fa fa-smile"></span></span><br/>
+                      <span>Always Delivering Best Of Our Services... <span style="color:#F6C23E;" class="fa fa-smile"></span></span><br/>
                               <small style='font-size: 12pt'> 
                            For compliance of DOH requirement for dental clinic<br/><hr style="background:white;"/>
                           *Hyphochlorus Machine *UV Light *Hepa Filter *HI VAC *Temperature Scanner *PPE *Autoclave Sterilizer
@@ -599,7 +599,7 @@ footer span {
       top:50%;
       left:50%;
       transform: translate(-50%,-50%);
-      font-size:4em;
+      font-size:3.5em;
       color:white;
       font-family: tahoma;
       font-weight: bold;
