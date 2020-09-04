@@ -3,7 +3,7 @@
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"><span class="fa fa-calendar"></span> Change Schedule Date</h5>
+                    <h5 class="modal-title"><span class="fa fa-calendar"></span> Change Schedule</h5>
                     <button type="button" class="close" @click="closethis()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
@@ -17,6 +17,19 @@
                             </div>
 
                             <div class="row">
+
+                                <div class="col col-md-12" v-if="transaction.info.status == 1 && transaction.info.type == 0">
+                                      <div class="input-group mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="basic-addon3" >Change Dentist</span>
+                                        </div>
+                                            <select class="form-control" v-model="filterData.dentist">
+                                                <option v-for="(dentist,index) in dentists" :key="index" :value="dentist.id">{{dentist.fullname}}</option>
+                                            </select>
+                                         </div>
+
+                                </div>
+
                                 <div class="col col-md-4">
                                       <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -92,16 +105,17 @@ export default {
         transaction: {
             type: Object,
             required: true,
+        },
+        dentists: {
+            type: Array,
+            required: true,
         }
     },
     watch: {
         'filterData.date': async function(newval){
-            console.log(this.filterData)
             let calendarApi = this.$refs.fullCalendar.getApi()
             let scheduledate = new Date(newval)
             calendarApi.gotoDate(scheduledate)
-
-
             let selectedDate = scheduledate.getDay()
             this.calendarOptions.slotMinTime = `${this.branch.Schedules[selectedDate].start}:00`
             this.calendarOptions.slotMaxTime = `${this.branch.Schedules[selectedDate].end}:00`
@@ -112,6 +126,10 @@ export default {
 
 
              await this.getApprovedListDay(this.filterData)
+             this.calendarOptions.events = this.getActiveEvents
+        },
+        'filterData.dentist': async function(){
+            await this.getApprovedListDay(this.filterData)
              this.calendarOptions.events = this.getActiveEvents
         }
     },
@@ -129,6 +147,7 @@ export default {
                  minTime: "",
                  maxTime: "",
                  remarks: "",
+                 refno: this.transaction.info.id,
              },
          calendarOptions: {
         plugins: [
@@ -201,6 +220,8 @@ export default {
             let color = "white"
 
         if(info.event.extendedProps.status == 4) bg = "#385ECE"
+
+        if(info.event.id == this.transaction.info.id) bg = "silver"
  
          display = `<div style="background: ${bg};color:${color};height:100%;width:100%;position: relative;padding:5px;">
             <span style="font-weight:bold">${info.event.title}</span><br/><span>Start: ${this.formatDHour(info.event.start)} End: ${this.formatDHour(info.event.end)}</span>
@@ -244,6 +265,8 @@ export default {
                calendarApi.gotoDate(scheduledate)
 
                 let selectedDate = scheduledate.getDay()
+                this.filterData.start = this.transaction.info.Start
+                this.filterData.end = this.transaction.info.End
                 this.calendarOptions.slotMinTime = `${this.branch.Schedules[selectedDate].start}:00`
                 this.calendarOptions.slotMaxTime = `${this.branch.Schedules[selectedDate].end}:00`
                 this.filterData.minTime = `${this.branch.Schedules[selectedDate].start}`
