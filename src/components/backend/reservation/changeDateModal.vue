@@ -221,7 +221,10 @@ export default {
 
         if(info.event.extendedProps.status == 4) bg = "#385ECE"
 
-        if(info.event.id == this.transaction.info.id) bg = "silver"
+        if(info.event.id == this.transaction.info.id){
+            bg = "#DDFFDD"
+            color = "black"
+        }
  
          display = `<div style="background: ${bg};color:${color};height:100%;width:100%;position: relative;padding:5px;">
             <span style="font-weight:bold">${info.event.title}</span><br/><span>Start: ${this.formatDHour(info.event.start)} End: ${this.formatDHour(info.event.end)}</span>
