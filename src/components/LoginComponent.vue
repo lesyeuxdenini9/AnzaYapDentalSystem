@@ -582,7 +582,7 @@ footer span {
       background-size: cover;
       background-repeat: no-repeat;
       background-position: center;
-      height:35em;
+      height:33em;
       position:relative;
       width:100%;
     }
