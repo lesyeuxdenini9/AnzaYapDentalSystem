@@ -336,7 +336,7 @@ export default {
                   end: formatDate(finalscheduledDate.setDate(finalscheduledDate.getDate()+1)),
                   overlap: false,
                   display: 'background',
-                  color: '#DEF5DA',
+                  color: '#4268D6',
                   customRender: false,
                   extendedProps: {
                     status: 10,
