@@ -42,7 +42,7 @@
                    <div class="card">
                         <div class="card-header"></div>
                     <div class="card-body">
-                        <table class="table table-condensed table-hover table-striped" v-if="patients.length>0">
+                        <table class="table table-condensed table-hover table-striped">
                             <thead>
                                  <tr>
                                     <th>Lastname</th>
@@ -68,7 +68,7 @@
                         </table>
                          <div style="text-align:center"><span>Page {{filter.page}}</span></div>
 
-                        <button @click="prev" :disabled="page == 1" class="btn btn-default float-left"><span class="fa fa-arrow-left"></span> Prev</button>
+                        <button @click="prev" :disabled="filter.page == 1" class="btn btn-default float-left"><span class="fa fa-arrow-left"></span> Prev</button>
                         <button @click="next" class="btn btn-default float-right">Next <span class="fa fa-arrow-right"></span></button>
                     </div>
                    </div>
@@ -116,9 +116,10 @@ export default {
              middlename: '',
              firstname: '',
              email: '',
+             limit: 20,
              page: 1,
          }
-         this.$store.state.user.patients = []
+        this.search()
      },
        prev: function(){
            this.filter.page--
