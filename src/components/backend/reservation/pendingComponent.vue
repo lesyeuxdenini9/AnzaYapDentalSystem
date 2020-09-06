@@ -2,7 +2,7 @@
     <div> 
          <!-- Begin Page Content -->
         <div class="container-fluid">
-                  <span class="pageheader"><i class="fa fa-file-alt"></i> Pending Appointment List</span>
+                  <span class="pageheader"><i class="fa fa-file-alt"></i> Pending Appointment List - {{pendingCount}} Reservation(s)</span>
                     <hr/>
 
                 <div class="card">
@@ -81,7 +81,8 @@ export default {
     },
     computed: {
         ...mapState({
-          pendingReservation: state=>state.reservation.pendings
+          pendingReservation: state=>state.reservation.pendings,
+          pendingCount: state=>state.reservation.pendingCount
         })
     },
     mounted(){
