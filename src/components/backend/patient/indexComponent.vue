@@ -116,6 +116,7 @@ export default {
              middlename: '',
              firstname: '',
              email: '',
+             page: 1,
          }
          this.$store.state.user.patients = []
      },
