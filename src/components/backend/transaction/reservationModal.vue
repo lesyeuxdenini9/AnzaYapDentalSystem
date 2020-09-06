@@ -59,6 +59,7 @@
                 <div class="modal-footer">
                     <button :disabled="dateactive == 0" class="btn btn-primary" @click="save"><span class="fa fa-check"></span> Create</button>
                 </div>
+
                 </div>
             </div>
             </div>

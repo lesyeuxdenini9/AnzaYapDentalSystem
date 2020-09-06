@@ -16,7 +16,7 @@
                       </button>
 
                         <button @click="showchangedateModal = true" type="button" class="float-left" style="margin-left:50px;padding:10px;border-radius:10px;box-shadow: 2px 2px 1px black">
-                                <span class="fa fa-calendar"></span> Reschedule
+                                <span class="fa fa-calendar"></span> Change Schedule
                       </button>
                       <img style="max-height:100px;max-width:100px;margin-bottom:10px;" v-if="reservationInfo.User.img == null || reservationInfo.User.img == ''" class="float-right" src="@/assets/default.png"/>
                       <img style="max-height:100px;max-width:100px;margin-bottom:10px;"  class="float-right" :src="`${imgUrl}/${reservationInfo.User.img}`"/>
@@ -120,7 +120,7 @@
               
                 </div>
             </div>
-            <changeReserveModal v-if="showchangedateModal" :transaction="reservationchangedata" @closemodal="closemodal" @init="init"/>
+            <changeReserveModal :dentists="dentists" v-if="showchangedateModal" :transaction="reservationchangedata" @closemodal="closemodal" @init="init"/>
             <cancelModal :reservationInfo="reservationInfo" v-if="showcancelModal" @closemodal="closemodal" @init="init"/>
             <notifModal :reservationInfo="reservationInfo" v-if="shownotifModal" @closemodal="closemodal"/>
             </div>
@@ -135,6 +135,10 @@ export default {
     props: {
         reservationInfo: {
             type: Object,
+            required: true,
+        },
+        dentists: {
+            type: Array,
             required: true,
         }
     },

@@ -6,7 +6,7 @@
                     <hr/>
                     <div class="card">
                             <div class="card-header card-default" style="background:#343A40;color:white;"><span class="card-title" style="color:white !important;">Details</span>
-                              <button  @click="showchangedateModal = true" class="float-right"><span class="fa fa-calendar"></span> Change Date</button>
+                              <button  @click="showchangedateModal = true" class="float-right"><span class="fa fa-calendar"></span> Change Schedule</button>
                             </div>
                         <div class="card-body">
                               <!-- {{reservationInfo}} -->
@@ -345,6 +345,7 @@ export default {
                   this.filterData.date = this.reservationInfo.date
                   this.filterData.dentist = this.reservationInfo.dentistId
                   this.filterData.branch = this.reservationInfo.branchId
+                  this.filterData.refno = this.reservationInfo.id
                   await this.getApprovedListDay(this.filterData)
                   this.calendarOptions.events = this.getActiveEvents
              })

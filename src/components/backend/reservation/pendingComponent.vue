@@ -2,7 +2,7 @@
     <div> 
          <!-- Begin Page Content -->
         <div class="container-fluid">
-                  <span class="pageheader"><i class="fa fa-file-alt"></i> Pending Appointment List</span>
+                  <span class="pageheader"><i class="fa fa-file-alt"></i> Pending Appointment List - {{pendingCount}} Reservation(s)</span>
                     <hr/>
 
                 <div class="card">
@@ -38,6 +38,10 @@
                                 </tr>
                             </tbody>
                         </table>
+                          <div style="text-align:center"><span>Page {{page}}</span></div>
+
+                        <button @click="prev" :disabled="page == 1" class="btn btn-default float-left"><span class="fa fa-arrow-left"></span> Prev</button>
+                        <button @click="next" class="btn btn-default float-right">Next <span class="fa fa-arrow-right"></span></button>
                     </div>
                 </div>
 
@@ -50,7 +54,21 @@
 import { formatBdayDate  } from '@/helper/helper'
 import { mapState } from 'vuex'
 export default {
+    data: ()=>{
+        return {
+            page: 1,
+            limit: 20,
+        }
+    },
     methods: {
+         prev: function(){
+            this.page--
+            this.$store.dispatch("reservation/getPending",{page: this.page, limit: this.limit})
+        },
+        next: function(){
+            this.page++
+            this.$store.dispatch("reservation/getPending",{page: this.page, limit: this.limit})
+        },
         dDate: function(date){
             return formatBdayDate(date)
         },
@@ -63,12 +81,13 @@ export default {
     },
     computed: {
         ...mapState({
-          pendingReservation: state=>state.reservation.pendings
+          pendingReservation: state=>state.reservation.pendings,
+          pendingCount: state=>state.reservation.pendingCount
         })
     },
     mounted(){
         this.$store.dispatch("activenav","reservenav")
-        this.$store.dispatch("reservation/getPending")
+        this.$store.dispatch("reservation/getPending",{page: this.page, limit: this.limit})
     }
 
 }

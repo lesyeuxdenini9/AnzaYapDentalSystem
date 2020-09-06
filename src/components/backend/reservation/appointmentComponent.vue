@@ -137,7 +137,7 @@
 
         </div>
 
-        <actionReservationModal v-if="showActionReservationModal" :reservationInfo="reservationInfo" @closemodal="closemodal" @init="init"/>
+        <actionReservationModal :dentists="branches[activebranchIndex].Dentists" v-if="showActionReservationModal" :reservationInfo="reservationInfo" @closemodal="closemodal" @init="init"/>
         <walkinModal v-if="showwalkinmodal" :transaction="walkinReservation" @closemodal="closemodal" @init="init"/>
     </div>
 </template>

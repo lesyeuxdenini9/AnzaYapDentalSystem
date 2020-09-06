@@ -14,6 +14,7 @@ export default {
         reservationFollowups: [],
         list: [],
         nextappointments: [],
+        pendingCount: 0,
     },
     actions: {
         getUserTransactionWalkIn: function(context,{status,branch,userid}){
@@ -67,16 +68,30 @@ export default {
                 })
             })
         },
-        getPending: function(context){
-            Axios.get(`${context.rootState.apiUrl}/api/reservation/get/0`,context.rootState.headerconfig)
-            .then((res)=>{     
-                context.commit("setPendingReservation",res.data.data)      
-            })
-            .catch((err)=>{
-                if(err.response.status == 401 && err.response.data == "Unauthorized"){
-                    context.dispatch("refreshtoken",null,{root:true})
-                }               
-            })
+        getPending: function(context,data = null){
+            if(data==null){
+                Axios.get(`${context.rootState.apiUrl}/api/reservation/get/0`,context.rootState.headerconfig)
+                .then((res)=>{     
+                    context.commit("setPendingReservation",res.data.data) 
+                    context.commit("setPendingCount",res.data.data.length)     
+                })
+                .catch((err)=>{
+                    if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                        context.dispatch("refreshtoken",null,{root:true})
+                    }               
+                })
+            }else{
+                Axios.post(`${context.rootState.apiUrl}/api/reservation/get/0`,data,context.rootState.headerconfig)
+                .then((res)=>{     
+                    context.commit("setPendingReservation",res.data.data)      
+                })
+                .catch((err)=>{
+                    if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                        context.dispatch("refreshtoken",null,{root:true})
+                    }               
+                })
+            }
+      
         },
         getReservationInfo: function(context,idno){
             return new Promise((resolve,reject)=>{
@@ -397,6 +412,9 @@ export default {
 
     },
     mutations: {
+        setPendingCount: function(state,data){
+            state.pendingCount = data
+        },
         setFollowupTransaction: function(state,data){
             state.followupTransactions = data
         },

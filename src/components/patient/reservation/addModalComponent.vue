@@ -177,6 +177,11 @@ export default {
         }
     },
     watch: {
+        'reservation.type': function(){
+            this.reservation.servicelist = []
+            this.reservation.transaction = ""
+            this.reservation.start = ""
+        },
         'reservation.dentist': function(newval){
               this.refreshscheduletime()
                 this.filtertimedata.dentist = newval
@@ -271,7 +276,14 @@ export default {
             }else{
                 this.reservation.transaction = this.followups[index].id,
                 this.reservation.dentist = this.followups[index].dentistId,
-                transact.style.background = "silver"
+                 transact.style.background = "silver"
+                this.reservation.servicelist = this.followups[index].Treatments.map((treatment)=>{
+                    return {
+                        id:treatment.serviceId,
+                        service:treatment.service,
+                        price:treatment.amount,
+                    }
+                })
             }
         },
         closethis: function(){
