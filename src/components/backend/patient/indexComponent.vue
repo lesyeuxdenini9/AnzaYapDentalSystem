@@ -40,7 +40,7 @@
                   </div>
 
                    <div class="card">
-                        <div class="card-header">Results - {{patients.length}}</div>
+                        <div class="card-header"></div>
                     <div class="card-body">
                         <table class="table table-condensed table-hover table-striped" v-if="patients.length>0">
                             <thead>
@@ -66,6 +66,10 @@
                                 </tr>
                             </tbody>
                         </table>
+                         <div style="text-align:center"><span>Page {{filter.page}}</span></div>
+
+                        <button @click="prev" :disabled="page == 1" class="btn btn-default float-left"><span class="fa fa-arrow-left"></span> Prev</button>
+                        <button @click="next" class="btn btn-default float-right">Next <span class="fa fa-arrow-right"></span></button>
                     </div>
                    </div>
 
@@ -85,7 +89,10 @@ export default {
              middlename: '',
              firstname: '',
              email: '',
-         }
+             page: 1,
+             limit: 20,
+         },
+       
      }
  },
  computed: {
@@ -111,10 +118,19 @@ export default {
              email: '',
          }
          this.$store.state.user.patients = []
-     }
+     },
+       prev: function(){
+           this.filter.page--
+           this.search()
+        },
+        next: function(){
+            this.filter.page++
+            this.search()
+        },
  },
  mounted(){
     this.$store.dispatch("activenav","patientnav")
+    this.search()
  }
 
 }
