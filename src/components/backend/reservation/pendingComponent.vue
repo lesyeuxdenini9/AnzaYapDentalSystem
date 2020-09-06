@@ -38,6 +38,10 @@
                                 </tr>
                             </tbody>
                         </table>
+                          <div style="text-align:center"><span>Page {{page}}</span></div>
+
+                        <button @click="prev" :disabled="page == 1" class="btn btn-default float-left"><span class="fa fa-arrow-left"></span> Prev</button>
+                        <button @click="next" class="btn btn-default float-right">Next <span class="fa fa-arrow-right"></span></button>
                     </div>
                 </div>
 
@@ -50,7 +54,21 @@
 import { formatBdayDate  } from '@/helper/helper'
 import { mapState } from 'vuex'
 export default {
+    data: ()=>{
+        return {
+            page: 1,
+            limit: 20,
+        }
+    },
     methods: {
+         prev: function(){
+            this.page--
+            this.$store.dispatch("reservation/getPending",{page: this.page, limit: this.limit})
+        },
+        next: function(){
+            this.page++
+            this.$store.dispatch("reservation/getPending",{page: this.page, limit: this.limit})
+        },
         dDate: function(date){
             return formatBdayDate(date)
         },
@@ -68,7 +86,7 @@ export default {
     },
     mounted(){
         this.$store.dispatch("activenav","reservenav")
-        this.$store.dispatch("reservation/getPending")
+        this.$store.dispatch("reservation/getPending",{page: this.page, limit: this.limit})
     }
 
 }
