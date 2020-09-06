@@ -177,6 +177,11 @@ export default {
         }
     },
     watch: {
+        'reservation.type': function(){
+            this.reservation.servicelist = []
+            this.reservation.transaction = ""
+            this.reservation.start = ""
+        },
         'reservation.dentist': function(newval){
               this.refreshscheduletime()
                 this.filtertimedata.dentist = newval
