@@ -14,6 +14,7 @@ export default {
         reservationFollowups: [],
         list: [],
         nextappointments: [],
+        pendingCount: 0,
     },
     actions: {
         getUserTransactionWalkIn: function(context,{status,branch,userid}){
@@ -71,7 +72,8 @@ export default {
             if(data==null){
                 Axios.get(`${context.rootState.apiUrl}/api/reservation/get/0`,context.rootState.headerconfig)
                 .then((res)=>{     
-                    context.commit("setPendingReservation",res.data.data)      
+                    context.commit("setPendingReservation",res.data.data) 
+                    context.commit("setPendingCount",res.data.data.length)     
                 })
                 .catch((err)=>{
                     if(err.response.status == 401 && err.response.data == "Unauthorized"){
@@ -410,6 +412,9 @@ export default {
 
     },
     mutations: {
+        setPendingCount: function(state,data){
+            state.pendingCount = data
+        },
         setFollowupTransaction: function(state,data){
             state.followupTransactions = data
         },
