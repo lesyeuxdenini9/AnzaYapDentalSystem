@@ -46,7 +46,7 @@
 
               <li id="reservenav" class="dropdown nav-item"> <a class="nav-link" href="javascript:void(0)">
           <i class="fas fa-fw fa-file-alt"></i>
-          <span> Appointment(s)</span><span class="badgenum" v-if="pendingReservation.length > 0">{{pendingReservation.length}}</span></a>
+          <span> Appointment(s)</span><span class="badgenum" v-if="pendingCount > 0">{{pendingCount}}</span></a>
         <div class="dropdown-content">
             <router-link class="dropdownItem" :to="{name: 'appointment'}"><span class="fa fa-file-alt"></span> Appointment(s)</router-link>
            <router-link class="dropdownItem" :to="{name: 'pendingReservation'}"><span class="fa fa-times-circle"></span> Pending</router-link>
@@ -142,7 +142,7 @@ export default {
             return JSON.parse(this.$store.state.userinfo)
         },
         ...mapState({
-          pendingReservation: state=>state.reservation.pendings
+          pendingCount: state=>state.reservation.pendingCount
         })
     },
     mounted(){
