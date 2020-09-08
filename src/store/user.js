@@ -24,15 +24,19 @@ export default {
                     })
         },
         getUserinfo: function(context,idno){
-            Axios.get(`${context.rootState.apiUrl}/api/user/details/${idno}`,context.rootState.headerconfig)
-            .then((res)=>{      
-                    context.commit('setUserinfo',res.data.data)          
-            })
-            .catch((err)=>{
-                if(err.response.status == 401 && err.response.data == "Unauthorized"){
-                    context.dispatch("refreshtoken",null,{root:true})
-                }               
-            })
+            return new Promise((resolve,reject)=>{
+                Axios.get(`${context.rootState.apiUrl}/api/user/details/${idno}`,context.rootState.headerconfig)
+                    .then((res)=>{      
+                            context.commit('setUserinfo',res.data.data)        
+                            resolve(res)  
+                    })
+                    .catch((err)=>{
+                        if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                            context.dispatch("refreshtoken",null,{root:true})
+                        }
+                        reject(err)               
+                    })
+            }) 
         },  
         searchUser: function(context,data){
 
@@ -258,6 +262,17 @@ export default {
             Axios.post(`${context.rootState.apiUrl}/api/user/search`,data,context.rootState.headerconfig)
             .then((res)=>{     
                 context.commit("setuser",res.data.data)            
+            })
+            .catch((err)=>{
+                if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                    context.dispatch("refreshtoken",null,{root:true})
+                }               
+            })
+        },
+        changearchivestatus: function(context,data){
+            Axios.post(`${context.rootState.apiUrl}/api/user/changearchivestatus`,data,context.rootState.headerconfig)
+            .then(()=>{     
+               
             })
             .catch((err)=>{
                 if(err.response.status == 401 && err.response.data == "Unauthorized"){

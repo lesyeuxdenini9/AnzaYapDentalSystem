@@ -10,12 +10,18 @@
                     <editModal :editInfo="editInfo" v-if="showeditModal" @closemodal="closemodal()"/>
 
                     <div class="card">
-                            <div class="card-header card-default" style="background:#343A40;color:white;">Information(s)
+                            <div class="card-header card-default" style="background:#343A40;color:white;">
+                     
+                                <toggle-button style="margin-top: 5px;" @change="changestatus()" v-model="archiveStatus" :sync="true"
+                                    :labels="{checked: 'Active', unchecked: 'Inactive'}"
+                                    :width="130"
+                                    :font-size="18"
+                                    :height="30"
+                                    />
                                 <button @click="edit" class="float-right btn btn-default" style="color:white;"><span class="fa fa-pen"></span></button>
                             </div>
                         <div class="card-body">
-                                <!-- {{user}} -->
-
+                    
                             <div class="col col-md-3" style="position:relative;">
                                 <img v-if="user.img == null" src="@/assets/default.png" style="height:18em;width:100%;"/>
                                 <img v-else :src="`${imgUrl}/${user.img}`" style="height:18em;width:100%;"/>
@@ -99,6 +105,8 @@
 
 
                         </div>
+
+                        <button @click="changeStatus()">TEST</button>
 
                  
 
@@ -213,6 +221,7 @@
 </template>
 
 <script>
+import { ToggleButton } from 'vue-js-toggle-button'
 import { formatBdayDate , formatHour  } from "@/helper/helper"
 import editModal from "@/components/setting/staff/editModal"
 import addTransactionModal from "@/components/backend/transaction/addModal"
@@ -224,9 +233,18 @@ export default {
                 showeditModal: false,
                 showaddTransactModal: false,
                 imgUrl: this.$store.state.imgUrl,
+                statuspatient: true,
+                archiveStatus: false,
+                
         }
     },
    methods: {
+       getarhiveStatus: function(){
+           this.archiveStatus =  this.$store.state.user.userinfo.archive == 0 ? true : false
+       },
+       changestatus: function(){
+           this.$store.dispatch("user/changearchivestatus",{status: this.archiveStatus, id: this.user.id})
+       },
        viewReservation: function(id){
            alert(id)
        },
@@ -293,11 +311,15 @@ export default {
   },
   mounted(){
     this.$store.dispatch("activenav","patientnav")
-    this.getUserinfo(this.$route.params.idno)
+    this.getUserinfo(this.$route.params.idno).then(()=>{
+        this.archiveStatus = this.user.archive == 0 ? true : false    
+    })
+
   },
   components: {
       editModal,
-      addTransactionModal
+      addTransactionModal,
+      ToggleButton
   }
 
 

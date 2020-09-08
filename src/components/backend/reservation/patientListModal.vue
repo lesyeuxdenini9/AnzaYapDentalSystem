@@ -84,13 +84,18 @@
                                                 <td style="width:15%;">{{patient.middlename}}</td>
                                                 <td style="width:15%;">{{patient.email}}</td>
                                                 <td style="width:15%;">{{patient.contact}}</td>
-                                                <td style="text-align:right;width:10%;"><button @click="select(patient)"><span class="fa fa-check"></span> Select</button></td>
+                                                <td style="text-align:right;width:10%;"><button @click="select(patient)"><span class="fa fa-check"></span></button></td>
                                             </tr>  
                                         </tbody>
                                     </table>
                                </div>
 
                             </div>
+
+                              <div style="text-align:center"><span>Page {{filter.page}}</span></div>
+
+                        <button @click="prev" :disabled="filter.page == 1" class="btn btn-default float-left"><span class="fa fa-arrow-left"></span> Prev</button>
+                        <button @click="next" class="btn btn-default float-right">Next <span class="fa fa-arrow-right"></span></button>
 
                             <!-- {{medicines}} -->
                         </div>
@@ -120,6 +125,8 @@ export default {
                 middlename: '',
                 firstname: '',
                 email: '',
+                limit: 20,
+                page: 1,
             },
              imgUrl: this.$store.state.imgUrl,
         }
@@ -143,6 +150,14 @@ export default {
         })
     },
     methods: {
+        prev: function(){
+           this.filter.page--
+           this.search()
+        },
+        next: function(){
+            this.filter.page++
+            this.search()
+        },
          search: function(){
             this.$store.dispatch('user/searchPatient',this.filter)
         },
@@ -157,7 +172,7 @@ export default {
     },
 
     mounted(){
-         this.$store.dispatch('user/searchPatient',this.filter)
+        this.search()
     },
  
 }

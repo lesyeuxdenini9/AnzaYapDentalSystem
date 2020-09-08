@@ -351,6 +351,7 @@ export default {
 
         if(this.ActiveReservation.length == 0 && this.PendingReservation.length == 0){
             this.dayoffadditionalrangecount = 0
+            let x = 0
             do{
                 finalscheduledDate = this.checkifnooperation(finalscheduledDate)
                 this.getReservationEvents.push(  {
@@ -366,7 +367,9 @@ export default {
                       branch: '',
                     }
               })
-            }while(this.getReservationEvents.length < 5)
+
+              x++
+            }while(x < 5)
           
         }
 

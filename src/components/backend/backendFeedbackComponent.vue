@@ -35,7 +35,8 @@
                                 <td><img v-for="(star,index2) in feedback.stararray" :key="index2" src="@/assets/feedback/feedback1.png" style="height:20px;width:20px;"/></td>
                                 <td style="padding:0;">
                                     <div style="display:inline;float:left;margin-right:20px;">
-                                    <img style="border-radius:50%;padding:0;height:50px;width:50px;" :src="`${imgUrl}/${feedback.User.img}`"/> 
+                                    <img ref="userimg" v-if="feedback.User.img == null" src="@/assets/default.png" style="border-radius:50%;height:50px;width:50px;"/>
+                                    <img v-else style="border-radius:50%;padding:0;height:50px;width:50px;" :src="`${imgUrl}/${feedback.User.img}`"/> 
                                     </div>
                                     <div style="display:inline;float:left;">
                                     <span>{{feedback.User.fullname}}<br/><small>{{feedback.User.email}}</small></span>
