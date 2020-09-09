@@ -135,7 +135,15 @@
                                                     <td style="width:10%;"><span v-if="treatment.paymentmethod=='healthcard'">{{treatment.paymentmethod}}</span></td>
                                                 </tr>
                                                 <tr>
-                                                    <td colspan="2" style="padding-top:0;padding-bottom:0;text-align:right;font-weight:bold;font-size:16pt;">Total Transaction Amount: </td>
+                                                    <td colspan="2" style="padding-top:0;padding-bottom:0;text-align:right;font-weight:bold;font-size:16pt;">Net of Vat: </td>
+                                                    <td colspan="2" style="padding-top:0;padding-bottom:0;font-weight:bold;font-size:16pt;background:#F8F7DA;">{{ $helper.roundToDecimal((totalAmount/(1+(billinfo.Branch.vat/100))),2)}}</td>
+                                                </tr>
+                                                 <tr>
+                                                    <td colspan="2" style="padding-top:0;padding-bottom:0;text-align:right;font-weight:bold;font-size:16pt;">Vat ({{billinfo.Branch.vat}} %): </td>
+                                                    <td colspan="2" style="padding-top:0;padding-bottom:0;font-weight:bold;font-size:16pt;background:#F8F7DA;">{{$helper.roundToDecimal((totalAmount/(1+(billinfo.Branch.vat/100))) * (billinfo.Branch.vat/100),2)}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2" style="padding-top:0;padding-bottom:0;text-align:right;font-weight:bold;font-size:16pt;">Gross Transaction Amount: </td>
                                                     <td colspan="2" style="padding-top:0;padding-bottom:0;font-weight:bold;font-size:16pt;background:#F8F7DA;">{{totalAmount}}</td>
                                                 </tr>
                                                  <tr>

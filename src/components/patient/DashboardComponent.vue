@@ -297,11 +297,12 @@ export default {
         },
         doneTransaction: {
             get: function(){
-                   let donetransact = this.user.Transactions.filter((transact)=>{
-                        if(transact.status == 2) return transact
-                   })
+                  //  let donetransact = this.user.Transactions.filter((transact)=>{
+                  //       if(transact.status == 2) return transact
+                  //  })
 
-                   return donetransact[0] == null ?  "None" : donetransact.length
+                  //  return donetransact[0] == null ?  "None" : donetransact.length
+                  return this.user.Transactions.length
             }
         },
         followupTransaction: {

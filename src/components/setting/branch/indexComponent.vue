@@ -28,6 +28,7 @@
                                 <th>Contact</th>
                                 <th>Email Address</th>
                                 <th>TIN</th>
+                                <th>VAT</th>
                                 <th></th>
                                 </tr>
                             </thead>
@@ -40,6 +41,7 @@
                                     <td>{{branch.contact}}</td>
                                     <td>{{branch.email}}</td>
                                     <td>{{branch.tin}}</td>
+                                    <td>{{branch.vat}} %</td>
                                     <td>              
                                         <button @click="edit(index)" style="margin-right:10px;color:green;" title="Update Informations"><span class="fa fa-pen"></span> </button>
                                         <button @click="remove(index)" style="color:maroon;" title="Remove from the list"><span class="fa fa-times"></span> </button>

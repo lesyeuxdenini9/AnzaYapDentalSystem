@@ -127,9 +127,14 @@
 
                                             </tr>
                                             <tr>
-                                                <td colspan="2" style="font-size:16pt;">Total Amount: P {{getTotalAmount}}
+                                               <td colspan="2" style="font-size:16pt;">
+                                                    Net of Vat: P {{ $helper.roundToDecimal((getTotalAmount/(1+(transactionInfo.Branch.vat/100))),2)}}
+                                                    <br/>Vat ({{transactionInfo.Branch.vat}} %): P {{$helper.roundToDecimal((getTotalAmount/(1+(transactionInfo.Branch.vat/100))) * (transactionInfo.Branch.vat/100),2)}}
+                                                    <br/>Gross Amount: P {{getTotalAmount}}
                                                     <br/>Discount Amount: P {{transactionInfo.discount}}
-                                                    <br/>Grand Total Amount: P {{(getTotalAmount - transactionInfo.discount)}}</td>
+                                                    <br/>Grand Total Amount: P {{(getTotalAmount - transactionInfo.discount)}}
+                                                    
+                                                </td>
                                             </tr>
                                         </tbody>
 

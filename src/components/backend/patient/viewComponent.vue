@@ -106,10 +106,6 @@
 
                         </div>
 
-                        <button @click="changeStatus()">TEST</button>
-
-                 
-
                      <!-- <div class="card">
                             <div class="card-header card-default" style="background:#343A40;color:white;"><span>Approved Reservation</span></div>
                         <div class="card-body">

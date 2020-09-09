@@ -35,8 +35,16 @@
                                             <td>{{treatment.amount}}</td>
                                             <td><input readonly @change="changeactualamount(index)" type="number" class="form-control actualamount" v-model="treatment.actualAmount"/></td>
                                         </tr>
+                                          <tr style="padding:0px;font-size:18pt;font-weight:bold;">
+                                            <td colspan="2" style="text-align:right;padding:0px;">Net of Vat:</td>
+                                            <td style="text-align:right;padding:0px;">{{ $helper.roundToDecimal((totalrawAmount/(1+(transactionInfo.Branch.vat/100))),2)}}</td>
+                                        </tr>
+                                          <tr style="padding:0px;font-size:18pt;font-weight:bold;">
+                                            <td colspan="2" style="text-align:right;padding:0px;">Vat ({{transactionInfo.Branch.vat}} %):</td>
+                                            <td style="text-align:right;padding:0px;">{{$helper.roundToDecimal((totalrawAmount/(1+(transactionInfo.Branch.vat/100))) * (transactionInfo.Branch.vat/100),2)}}</td>
+                                        </tr>
                                             <tr style="padding:0px;font-size:18pt;font-weight:bold;">
-                                            <td colspan="2" style="text-align:right;padding:0px;">Total Amount:</td>
+                                            <td colspan="2" style="text-align:right;padding:0px;">Gross Amount:</td>
                                             <td style="text-align:right;padding:0px;">{{totalrawAmount}}</td>
                                         </tr>
                                          <tr style="padding:0px;font-size:18pt;font-weight:bold;">

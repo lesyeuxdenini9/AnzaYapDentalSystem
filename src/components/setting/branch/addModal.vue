@@ -50,6 +50,11 @@
                                         <input type="text" class="form-control" v-model="branch.tin"/>
                                     </div>
 
+                                       <div class="col-md-12">
+                                        <label>VAT</label>
+                                        <input type="number" class="form-control" v-model="branch.vat"/>
+                                    </div>
+
                             </div>
 
                         
@@ -78,6 +83,7 @@ export default {
                  contact: '',
                  email: '',
                  tin: '',
+                 vat: 12,
              }
         }
     },
