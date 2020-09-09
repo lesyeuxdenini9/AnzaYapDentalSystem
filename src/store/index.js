@@ -43,10 +43,10 @@ export default new Vuex.Store({
             }
         },
 
-        //apiUrl: "https://anza-yap-backend.herokuapp.com",
-        //imgUrl: "https://dentalthesisphotostorage.000webhostapp.com/dentalPublic/uploads",
-        imgUrl: "http://localhost:8080/public/images/patients",
-        apiUrl: "http://localhost:8080",
+        apiUrl: "https://anza-yap-backend.herokuapp.com",
+        imgUrl: "https://dentalthesisphotostorage.000webhostapp.com/dentalPublic/uploads",
+        //imgUrl: "http://localhost:8080/public/images/patients",
+        //apiUrl: "http://localhost:8080",
         schedules: [],
     },
     getters: {
