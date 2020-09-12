@@ -5,7 +5,6 @@
                   <span class="pageheader"><i class="fa fa-calendar"></i> Daily ( Date Range ) - Treatment</span>
                     <button type="button" @click="back()" class="noprint float-right"><span class="fa fa-times"></span></button>
                     <hr class="noprint"/>
-
                       <ul class="nav nav-tabs noprint">
             
                                 <li class="nav-item" v-for="(branch,index) in branches" :key="index">
@@ -103,14 +102,16 @@
                                                    <tr style="background:#343A40;color:white;">
                                                         <th style="width:50%">Service / Treatment</th>
                                                         <th></th>
+                                                        <th></th>
                                                     </tr>
                                                 </thead>
 
                                                 <tbody>
                                                     <tr v-for="(sale,index) in sales.serviceMostavail" :key="index">
                                                         <td>{{sale.service}}</td>
-                                                        <td>{{sale.totalcount}} 
-                                                            <!-- <span v-if="sale.totalcount == 1">time</span><span v-else>times</span> -->
+                                                        <td>{{sale.totalcount}}</td>
+                                                        <td>
+                                                           <a @click="showgenderModal(index)" href="javascript:void(0)">Detailed By Gender</a>
                                                         </td>
                                                     </tr>
                                                 </tbody>
@@ -119,6 +120,9 @@
                                         </div>
                               </div>
 
+                              <bygenderModal :branch="branches[activebranchIndex].branch" :flag="1" :search="search" :service="service" @closemodal="closemodal" v-if="showbygender" />
+
+                            
                               
                                     <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;position:relative">
                                      <button @click="printDetailed()" class="btn btn-danger" style="position:absolute;right:0;bottom:-40px;"><span class="fa fa-file-pdf"></span> PDF</button>
@@ -173,10 +177,13 @@
 
 <script>
 import { mapState } from 'vuex'
+import bygenderModal from "@/components/reports/sales/treatment/genderModal"
 export default {
-
+    components: {bygenderModal},
     data: function(){
         return {
+                showbygender: false,
+                service: {},
                 activebranchIndex: 0,
                 search :{
                     start: "",
@@ -224,6 +231,13 @@ export default {
         }
     },
     methods: {
+        closemodal: function(){
+            this.showbygender = false
+        },
+        showgenderModal: function(index){
+            this.showbygender = true
+            this.service = this.sales.serviceMostavail[index]
+        },
         printDetailed: function(){
 
             let data = []
