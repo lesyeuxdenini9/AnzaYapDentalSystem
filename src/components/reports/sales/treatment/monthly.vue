@@ -126,6 +126,7 @@
                                                    <tr style="background:#343A40;color:white;">
                                                         <th style="width:50%">Service / Treatment</th>
                                                         <th></th>
+                                                         <th></th>
                                                     </tr>
                                                 </thead>
 
@@ -135,12 +136,19 @@
                                                         <td>{{sale.totalcount}} 
                                                             <!-- <span v-if="sale.totalcount == 1">time</span><span v-else>times</span> -->
                                                         </td>
+                                                         <td>
+                                                           <a @click="showgenderModal(index)" href="javascript:void(0)">Detailed By Gender</a>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                                
                                             </table>
                                         </div>
                               </div>
+
+                               <bygenderModal :branch="branches[activebranchIndex].branch" :flag="2" :search="search" :service="service" @closemodal="closemodal" v-if="showbygender" />
+
+
                                 <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;position:relative">
                                      <button @click="printDetailed()" class="btn btn-danger" style="position:absolute;right:0;bottom:-40px;"><span class="fa fa-file-pdf"></span> PDF</button>
                                  </div>
@@ -194,10 +202,13 @@
 
 <script>
 import { mapState } from 'vuex'
+import bygenderModal from "@/components/reports/sales/treatment/genderModal"
 export default {
-
+    components: {bygenderModal},
     data: function(){
         return {
+                showbygender: false,
+                service: {},
                 activebranchIndex: 0,
                 search :{
                     startmonth:1,
@@ -243,6 +254,13 @@ export default {
         }
     },
     methods: {
+          closemodal: function(){
+            this.showbygender = false
+        },
+        showgenderModal: function(index){
+            this.showbygender = true
+            this.service = this.sales.serviceMostavail[index]
+        },
           doneChart: function(){
             let charts = document.getElementsByClassName('chartjs-render-monitor')
             this.columnimg = charts[0].toDataURL()

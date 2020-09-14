@@ -84,10 +84,10 @@ export default {
             
 
           let branchlist = this.branches.map((branch)=>{
-            return [branch.branch, branch.address , branch.contact, branch.email, branch.tin]
+            return [branch.branch, branch.address , branch.contact, branch.email, branch.tin, `${branch.vat} %`]
           }) 
           branchlist.sort()
-          branchlist.unshift(['BRANCH','ADDRESS','CONTACT NO','EMAIL ADDRESS','TIN'])
+          branchlist.unshift(['BRANCH','ADDRESS','CONTACT NO','EMAIL ADDRESS','TIN','VAT'])
            
             var docDefinition = {  
 
@@ -103,7 +103,7 @@ export default {
                  },
                {
                  table: {
-                   widths: ['*','*','auto','auto','auto'],
+                   widths: ['*','*','auto','auto','auto','auto'],
                    body: branchlist
                  }
                }

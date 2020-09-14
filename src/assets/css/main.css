@@ -589,7 +589,7 @@ html , body {
     display: block !important;
     top: 0;
     left: 0;
-    padding-top: 80px;
+    padding: 10px;
     /*animation: example 0.2s linear;
     -webkit-animation: example 0.2s linear;*/
     }

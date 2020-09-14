@@ -128,9 +128,16 @@
               
 
              <br/>
-             <div class="col-md-4 noprint" v-if="reservationInfo.status == 0">
-             <button @click="deletereservation" class="btn btn-danger form-control float-left"><span class="fa fa-times"></span> Delete</button>
+             <div class="alert alert-danger noprint" role="alert" style="padding-bottom: 0;">
+                     <ul>
+                       <li>After 24 hours, your appointment cannot be cancelled</li>
+                      </ul>
+                      
+                    </div>
+             <div class="col-md-4 noprint" v-if="reservationInfo.status == 0 && Expiration < 86400000">
+             <button @click="deletereservation" class="btn btn-danger form-control float-left"><span class="fa fa-times"></span> Cancel / Delete</button>
              </div>
+
     </div>
 </template>
 
@@ -146,6 +153,13 @@ export default {
         ...mapState({
             reservationInfo: state=> state.reservation.reservationInfo
         }),
+        Expiration: {
+            get: function(){
+                let datenow = new Date()
+                let diff = datenow - new Date(this.reservationInfo.createdAt)
+                return diff
+            }
+        },
         Age: {
             get: function(){
                 return calculateAge(this.reservationInfo.User.bday)

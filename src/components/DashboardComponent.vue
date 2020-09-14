@@ -133,7 +133,7 @@
                   <table class="table table-condensed table-striped">
                     <tbody>
                       <tr v-for="(med,index) in medicinesLow" :key="index">
-                          <td style="font-size:12pt;font-weight:normal;">{{med.medicine}}</td>
+                          <td style="font-size:12pt;font-weight:normal;">{{med.medicine}} ( {{med.brand}} )</td>
                       </tr>
                     </tbody>
                   </table>
@@ -142,7 +142,7 @@
                   <table class="table table-condensed table-striped">
                     <tbody>
                       <tr v-for="(med,index) in pharmacyLow" :key="index">
-                          <td style="font-size:12pt;font-weight:normal;">{{med.medicine}}</td>
+                          <td style="font-size:12pt;font-weight:normal;">{{med.medicine}} ( {{med.brand}} )</td>
                       </tr>
                     </tbody>
                   </table>
@@ -158,7 +158,7 @@
                   <table class="table table-condensed table-striped">
                     <tbody>
                       <tr v-for="(med,index) in medicinesZero" :key="index">
-                          <td style="font-size:12pt;font-weight:normal;">{{med.medicine}}</td>
+                          <td style="font-size:12pt;font-weight:normal;">{{med.medicine}} ( {{med.brand}} )</td>
                       </tr>
                     </tbody>
                   </table>
@@ -167,7 +167,7 @@
                   <table class="table table-condensed table-striped">
                     <tbody>
                       <tr v-for="(med,index) in pharmacyZero" :key="index">
-                          <td style="font-size:12pt;font-weight:normal;">{{med.medicine}}</td>
+                          <td style="font-size:12pt;font-weight:normal;">{{med.medicine}} ( {{med.brand}} )</td>
                       </tr>
                     </tbody>
                   </table>

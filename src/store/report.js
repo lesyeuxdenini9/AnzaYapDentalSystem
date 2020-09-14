@@ -6,8 +6,24 @@ export default {
         billings: [],
         sales: [],
         purchases: [],
+        byGender: [],
     },
     actions: {
+        getByGender: function(context,data){
+            return new Promise((resolve,reject)=>{
+                Axios.post(`${context.rootState.apiUrl}/api/reports/getByGender`,data,context.rootState.headerconfig)
+                .then((res)=>{     
+                        context.commit("setByGender",res.data)
+                        resolve(res)
+                })
+                .catch((err)=>{
+                    if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                        context.dispatch("refreshtoken",null,{root:true})
+                    }  
+                    reject(err)             
+                })
+            })
+        },
         sales_yearly: function(context,data){
             return new Promise((resolve,reject)=>{
                 Axios.post(`${context.rootState.apiUrl}/api/reports/sales_yearly`,data,context.rootState.headerconfig)
@@ -182,6 +198,9 @@ export default {
    
     },
     mutations: {
+        setByGender: function(state,data){
+            state.byGender = data
+        },
         setTransactions: function(state,data){
             state.transactions = data
         },

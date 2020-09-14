@@ -245,6 +245,10 @@ export default {
                 await this.getApprovedListDay(this.filterData)
                 this.calendarOptions.events = this.getActiveEvents
             }
+        },
+        'filterData.type': function(){
+            this.filterData.dentist = ""
+            this.filterData.transaction = ""
         }
     },
     data: function(){
@@ -257,7 +261,7 @@ export default {
              errormsg: [],
              filterData: {
                  date: formatDate(new Date()),
-                 dentist: this.transaction.dentistId,
+                 dentist: "",
                  start: "",
                  end: "",
                  curdate: formatDate(new Date()),
@@ -337,15 +341,23 @@ export default {
                 if(transact.style.background == "silver"){
                     this.filterData.transaction = ""
                     this.filterData.dentist = ""
+                    this.filterData.servicelist = []
                     transact.style.background = "white"
                 }else{
                     this.filterData.transaction = this.followups[index].id,
                     this.filterData.dentist = this.followups[index].dentistId,
                     transact.style.background = "silver"
+                    this.filterData.servicelist = this.followups[index].Treatments.map((treatment)=>{
+                        return {
+                            id: treatment.serviceId,
+                            service: treatment.service,
+                            price: treatment.regularPrice
+                        }
+                    })
                 }
             },
             removepatient: function(){
-                  this.filterData.patient = ""
+                this.filterData.patient = ""
                 this.filterData.patientname = ""
             },
             setpatient: function(patient){
