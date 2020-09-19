@@ -23,6 +23,18 @@ export default {
                         }               
                     })
         },
+        getUsersbyArchive: function(context,{usertype,archive}){
+            Axios.get(`${context.rootState.apiUrl}/api/user/list/${usertype}/${archive}`,context.rootState.headerconfig)
+            .then((res)=>{     
+
+                    context.commit('setuser',res.data.data)          
+            })
+            .catch((err)=>{
+                if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                    context.dispatch("refreshtoken",null,{root:true})
+                }               
+            })
+        },
         getUserinfo: function(context,idno){
             return new Promise((resolve,reject)=>{
                 Axios.get(`${context.rootState.apiUrl}/api/user/details/${idno}`,context.rootState.headerconfig)
@@ -123,8 +135,8 @@ export default {
                 })
             })
         },
-        removeUser: function(context,data){
-            Axios.patch(`${context.rootState.apiUrl}/api/user/archive/${data.id}`,data,context.rootState.headerconfig)
+        archiveList: function(context,data){
+            Axios.patch(`${context.rootState.apiUrl}/api/user/archive/${data.id}/${data.archivestatus}`,data,context.rootState.headerconfig)
             .then((res)=>{
                 if(res.data=="archived") context.commit("removeUser",data.index)
             })  

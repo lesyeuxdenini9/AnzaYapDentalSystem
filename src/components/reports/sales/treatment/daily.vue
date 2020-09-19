@@ -2,7 +2,7 @@
     <div> 
          <!-- Begin Page Content -->
         <div class="container-fluid">
-                  <span class="pageheader"><i class="fa fa-calendar"></i> Daily ( Date Range ) - Treatment</span>
+                  <span class="pageheader"><i class="fa fa-calendar"></i> Daily ( Date Range ) - Services & Treatments</span>
                     <button type="button" @click="back()" class="noprint float-right"><span class="fa fa-times"></span></button>
                     <hr class="noprint"/>
                       <ul class="nav nav-tabs noprint">
@@ -56,7 +56,7 @@
                                      <button @click="printcolumn()" class="btn btn-danger" style="position:absolute;right:0;bottom:-40px;"><span class="fa fa-file-pdf"></span> PDF</button>
                                  </div>
                                 
-                                      <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>TREATMENT EARNINGS FROM {{search.start}} TO {{search.end}}</span></div>
+                                      <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>SERVICE & TREATMENT EARNINGS FROM {{search.start}} TO {{search.end}}</span></div>
                                       <column-chart :library="columnlibrary" :stacked="graphOptions.stacked" :legend="false" :download="true" :data="graphOptions.data"></column-chart>
                                     <div class="row">
                                         <div class="col-md-6">
@@ -90,17 +90,40 @@
                                     <div style="width: 100%;height:10px;background:#3A61D0;margin-bottom:50px;position:relative">
                                      <button @click="printpie()" class="btn btn-danger" style="position:absolute;right:0;bottom:-40px;"><span class="fa fa-file-pdf"></span> PDF</button>
                                  </div>
-                              <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>NO. OF SERVICE DONE BASED ON TRANSACTION DATE FROM {{search.start}} TO {{search.end}}</span></div>
+                              <div style="text-align:center;color:dimgray;font-size:14pt;font-weight:bold;"><span>NO. OF SERVICE & TREATMENT DONE BASED ON TRANSACTION DATE FROM {{search.start}} TO {{search.end}}</span></div>
                               <div class="row">
-                                  <div class="col-md-12">
-                                      <pie-chart :library="pielibrary" :download="true" width="100%" height="500px" :data="pieOptionsMostAvail.data"></pie-chart>
-                                  </div>
+                                  <div class="col-md-6" style="text-align:center">
+                                       <span style="font-weight:bold;color:dimgray;">BY SERVICE CATEGORY</span>
+                                       <pie-chart :library="pielibrary2" :download="true" width="100%" height="500px" :data="byCategory"></pie-chart>
 
-                                   <div class="col-md-10 offset-md-1">
                                             <table class="table table-condensed table-striped table-bordered">
                                                 <thead>
                                                    <tr style="background:#343A40;color:white;">
-                                                        <th style="width:50%">Service / Treatment</th>
+                                                        <th style="text-align:left;">Category</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr v-for="(categ,index) in byCategory" :key="index">
+                                                        <td>{{categ[0]}}</td>
+                                                        <td>{{categ[1]}}</td>
+                                                  
+                                                    </tr>
+                                                </tbody>
+                                               
+                                            </table>
+                                  </div>
+
+                                  <div class="col-md-6" style="text-align:center">
+                                     <span style="font-weight:bold;color:dimgray;">BY SERVICE TREATMENT</span>
+                                       <pie-chart :library="pielibrary" :download="true" width="100%" height="500px" :data="pieOptionsMostAvail.data"></pie-chart>
+
+                                            <table class="table table-condensed table-striped table-bordered">
+                                                <thead>
+                                                   <tr style="background:#343A40;color:white;">
+                                                        <th style="text-align:left;">Service & Treatment</th>
+                                                        <th style="text-align:left;">Category</th>
                                                         <th></th>
                                                         <th></th>
                                                     </tr>
@@ -109,6 +132,7 @@
                                                 <tbody>
                                                     <tr v-for="(sale,index) in sales.serviceMostavail" :key="index">
                                                         <td>{{sale.service}}</td>
+                                                        <td>{{sale.category}}</td>
                                                         <td>{{sale.totalcount}}</td>
                                                         <td>
                                                            <a @click="showgenderModal(index)" href="javascript:void(0)">Detailed By Gender</a>
@@ -117,7 +141,9 @@
                                                 </tbody>
                                                
                                             </table>
-                                        </div>
+                                  </div>
+
+                      
                               </div>
 
                               <bygenderModal :branch="branches[activebranchIndex].branch" :flag="1" :search="search" :service="service" @closemodal="closemodal" v-if="showbygender" />
@@ -143,7 +169,7 @@
                                                         <td style="font-weight:bold;font-size:12pt;">TRANSACTION DATE</td>
                                                         <td style="font-weight:bold;font-size:12pt;">TRANSACTION NO</td>
                                                         <td style="font-weight:bold;font-size:12pt;">PATIENT</td>
-                                                        <td style="font-weight:bold;font-size:12pt;">TREATMENTS</td>
+                                                        <td style="font-weight:bold;font-size:12pt;">SERVICES & TREATMENTS</td>
                                                         <td style="font-weight:bold;font-size:12pt;">STATUS</td>
                                                         <td style="font-weight:bold;font-size:12pt;">AMOUNT PAID</td>
                                                     </tr>
@@ -225,8 +251,14 @@ export default {
                         onComplete: this.donePie
                     }
                 },
+                pielibrary2: {
+                    animation: {
+                        onComplete: this.donePie2
+                    }
+                },
                 columnimg: null,
                 pieimg: null,
+                pieimg2: null,
     
         }
     },
@@ -244,6 +276,7 @@ export default {
 
             this.sales.dentistdata.forEach((dentist)=>{
                 data.push([{text: dentist.fullname,colSpan: 8},{},{},{},{},{},{},{}])
+                data.push(['YEAR','MONTH','DATE','TRANSACTION NO','PATIENT','SERVICES & TREATMENTS','STATUS','AMOUNT'])
                 dentist.Transactions.forEach((transaction)=>{
                     let treatments = ''
                     transaction.Treatments.forEach((treatment)=>{
@@ -295,10 +328,13 @@ export default {
         },
          printpie: function(){
                let data = this.sales.serviceMostavail.map((sale)=>{
-                return [sale.service,sale.totalcount]
+                return [sale.service,sale.category,sale.totalcount]
             })
 
-            data.unshift(['Service/Treatment',''])
+            data.unshift(['Service & Treatment','Category',''])
+
+            let datacategory = this.byCategory
+            datacategory.unshift(['Category',''])
 
              var docDefinition = {  
                  
@@ -307,21 +343,42 @@ export default {
                 footer: function(currentPage, pageCount) { 
                   return { text: currentPage.toString() + ' of ' + pageCount , alignment: 'center'}; 
                   },
-                pageOrientation: 'portrait',
+                pageOrientation: 'landscape',
                content: [
                  {
-                   text: `${this.branches[this.activebranchIndex].branch} No. Of Service Done Based On Transaction Date From ${this.search.start} To ${this.search.end}`, alignment: 'center', margin: [0,0,0,20]
+                   text: `${this.branches[this.activebranchIndex].branch} No. Of Service & Treatment Done Based On Transaction Date From ${this.search.start} To ${this.search.end}`, alignment: 'center', margin: [0,0,0,20]
+                 },
+                  {
+                   text: `By Service Category`, alignment: 'center', margin: [0,0,0,20]
+                 },
+                 {
+                    image: this.pieimg2,
+                    height:400,
+                    // width: 1200,
+                    alignment: 'center',
+                    margin: [0,0,0,20],
+                     pageBreak: 'after'
+                 },{
+                     table: {
+                        widths: ['*','*'],
+                        body: datacategory,
+                        pageBreak: 'after'
+                    }
+                 },
+                 {
+                   text: `By Service Treatment`, alignment: 'center', margin: [0,0,0,20], pageBreak: 'before'
                  },
                  {
                     image: this.pieimg,
                     height:400,
-                    width: 1200,
+                    // width: 1200,
                     alignment: 'center',
-                    margin: [0,0,0,20]
+                    margin: [0,0,0,20],
+                     pageBreak: 'after'
                  },
                 {
                  table: {
-                   widths: ['*','*'],
+                   widths: ['*','*','*'],
                    body: data,
                    pageBreak: 'after'
                  }
@@ -351,7 +408,7 @@ export default {
                 pageOrientation: 'landscape',
                content: [
                  {
-                   text: `${this.branches[this.activebranchIndex].branch} Treatment Earnings From ${this.search.start} To ${this.search.end}`, alignment: 'center', margin: [0,0,0,20]
+                   text: `${this.branches[this.activebranchIndex].branch} Service & Treatment Earnings From ${this.search.start} To ${this.search.end}`, alignment: 'center', margin: [0,0,0,20]
                  },
                  {
                      image: this.columnimg,
@@ -377,7 +434,11 @@ export default {
         },
         donePie: function(){
             let charts = document.getElementsByClassName('chartjs-render-monitor')
-            this.pieimg = charts[1].toDataURL()
+            this.pieimg = charts[2].toDataURL()
+        },
+        donePie2: function(){
+            let charts = document.getElementsByClassName('chartjs-render-monitor')
+            this.pieimg2 = charts[1].toDataURL()
         },
         getMonth: function(date){
             let ddate = new Date(date)
@@ -453,7 +514,32 @@ export default {
         ...mapState({
             branches: state=> state.branch.branches,
             sales: state=> state.report.sales,
+            categories: state=> state.service.categories,
         }),
+        byCategory: {
+            get: function(){
+                let totalcount = [0,0,0,0,0,0]
+                this.sales.serviceMostavail.forEach((sale)=>{
+
+                    if(sale.category == this.categories[0]) totalcount[0] = totalcount[0] + sale.totalcount
+                    if(sale.category == this.categories[1]) totalcount[1] = totalcount[1] + sale.totalcount
+                    if(sale.category == this.categories[2]) totalcount[2] = totalcount[2] + sale.totalcount
+                    if(sale.category == this.categories[3]) totalcount[3] = totalcount[3] + sale.totalcount
+                    if(sale.category == this.categories[4]) totalcount[4] = totalcount[4] + sale.totalcount
+                    if(sale.category == this.categories[5]) totalcount[5] = totalcount[5] + sale.totalcount
+                    
+                })
+
+                return [
+                    [this.categories[0],totalcount[0]],
+                    [this.categories[1],totalcount[1]],
+                    [this.categories[2],totalcount[2]],
+                    [this.categories[3],totalcount[3]],
+                    [this.categories[4],totalcount[4]],
+                    [this.categories[5],totalcount[5]],
+                ].sort()
+            }
+        },
         computeTotal: {
             get: function(){
                 let total = 0

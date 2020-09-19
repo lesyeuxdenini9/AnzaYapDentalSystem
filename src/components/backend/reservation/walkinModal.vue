@@ -20,7 +20,7 @@
                                 <div class="col col-md-4">
                                       <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon3" >Date</span>
+                                            <span class="input-group-text" id="basic-addon3" >Date <span style="color:maroon;">*</span></span>
                                         </div>
                                         <input type="date" class="form-control" v-model="filterData.date"/>
                                          </div>
@@ -30,7 +30,7 @@
                                  <div class="col col-md-4">
                                       <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon3">StartTime</span>
+                                            <span class="input-group-text" id="basic-addon3">StartTime <span style="color:maroon;">*</span></span>
                                         </div>
                                         <input type="time" class="form-control" v-model="filterData.start"/>
                                          </div>
@@ -40,7 +40,7 @@
                                  <div class="col col-md-4">
                                       <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon3">EndTime</span>
+                                            <span class="input-group-text" id="basic-addon3">EndTime <span style="color:maroon;">*</span></span>
                                         </div>
                                         <input type="time" class="form-control" v-model="filterData.end"/>
                                          </div>
@@ -54,7 +54,7 @@
                                 <div class="col col-md-8">
                                       <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon3">Patient</span>
+                                            <span class="input-group-text" id="basic-addon3">Patient <span style="color:maroon;">*</span></span>
                                         </div>
                                                <input type="text" v-model="filterData.patientname" class="form-control" readonly style="background:white;"/>
                                          </div>
@@ -114,7 +114,7 @@
                                 <div class="col col-md-12" v-if="filterData.type == '0'">
                                       <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon3">Dentist</span>
+                                            <span class="input-group-text" id="basic-addon3">Dentist  <span style="color:maroon;">*</span></span>
                                         </div>
                                         <select class="form-control" v-model="filterData.dentist">
                                                 <option v-for="(dentist,index) in branch.Dentists" :key="index" :value="dentist.id">{{dentist.fullname}}</option>
@@ -153,7 +153,7 @@
                                     <table class="table table-condensed">
                                         <thead>
                                             <tr>
-                                                <th>Service</th>
+                                                <th>Service  <span style="color:maroon;">*</span></th>
                                                 <th>Amount</th>
                                                 <th></th>
                                             </tr>
@@ -459,7 +459,7 @@ export default {
                
         }, 
         save: function(){
-
+            if(this.filterData.patient == 0) this.filterData.patient = ""
             this.$store.dispatch("reservation/createWalkInReservation",this.filterData)
                     .then((res)=>{
                         if(res.data.errors){

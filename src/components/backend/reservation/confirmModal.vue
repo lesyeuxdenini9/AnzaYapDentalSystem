@@ -19,7 +19,7 @@
                             <span style="color:dimgray;font-weight:bold;font-size:12pt;">Date: {{datesched}} Opening: {{opening}} Closing: {{closing}}</span>
 
                             <div class="form-group">
-                                <label>Dentist</label>
+                                <label>Dentist  <span style="color:maroon;">*</span></label>
                                 <select class="form-control" v-model="confirmInfo.dentist">
                                     <option v-for="(dentist,index) in dentists" :key="index" :value="dentist.id">{{dentist.fullname}}</option>
                                 </select>
@@ -27,12 +27,12 @@
                             </div>
 
                             <div class="form-group">
-                                <label>Start Time</label>
+                                <label>Start Time  <span style="color:maroon;">*</span></label>
                                 <input type="time" class="form-control" v-model="starttime"/>
                             </div>
 
                              <div class="form-group">
-                                <label>End Time</label>
+                                <label>End Time  <span style="color:maroon;">*</span></label>
                                 <input type="time" class="form-control" v-model="endtime"/>
                             </div>
         

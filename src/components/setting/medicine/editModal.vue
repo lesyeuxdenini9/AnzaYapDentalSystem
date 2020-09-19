@@ -19,18 +19,18 @@
 
                              <div class="row">
                                     <div class="col-md-4">
-                                        <label>Medicine</label>
+                                        <label>Medicine <span style="color:maroon;">*</span></label>
                                         <input type="text" class="form-control" v-model="medicine.medicine"/>
                                     </div>
 
                                          
                                       <div class="col-md-4">
-                                        <label>Brand</label>
+                                        <label>Brand <span style="color:maroon;">*</span></label>
                                         <input type="text" class="form-control" v-model="medicine.brand"/>
                                     </div>
 
                                    <div class="col-md-4">
-                                        <label>Description</label>
+                                        <label>Description <span style="color:maroon;">*</span></label>
                                         <input type="text" class="form-control" v-model="medicine.description"/>
                                     </div>
 
@@ -47,7 +47,7 @@
                                     </div>
 
                                       <div class="col-md-4">
-                                        <label>Unit of Measurement</label>
+                                        <label>Unit of Measurement <span style="color:maroon;">*</span></label>
                                         <input type="text" class="form-control" v-model="medicine.uom"/>
                                     </div>
 
@@ -66,7 +66,7 @@
                                     </div>
                                     
                                     <div class="col-md-4" v-if="medicine.type == 1">
-                                        <label>Price</label>
+                                        <label>Price <span style="color:maroon;">*</span></label>
                                         <input type="number" class="form-control" v-model="medicine.price"/>
                                     </div>
 
@@ -77,7 +77,7 @@
                                     </div>
 
                                         <div class="col-md-4">
-                                        <label>Minimum Stocks</label>
+                                        <label>Minimum Stocks <span style="color:maroon;">*</span></label>
                                         <input type="number" class="form-control" v-model="medicine.limitMin"/>
                                     </div>
 

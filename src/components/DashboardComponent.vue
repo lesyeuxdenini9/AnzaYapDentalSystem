@@ -29,8 +29,8 @@
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Earnings (Annual)</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">
-                          <small style="font-weight:bold;">Pharmacy: {{data.pyearsales}}</small><br/>
-                         <small style="font-weight:bold;">Treatment: {{data.yearsales}}</small><br/>
+                          <small style="font-weight:bold;cursor:pointer;" @click="redirect('pharmacy_yearly')">Pharmacy: {{data.pyearsales}}</small><br/>
+                         <small style="font-weight:bold;cursor:pointer;" @click="redirect('sale_yearly')">Services & Treatment: {{data.yearsales}}</small><br/>
                          <small style="font-weight:bold;">Total: {{data.yearsales + data.pyearsales}}</small>   
                       </div>
                     </div>
@@ -51,8 +51,8 @@
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Earnings (Monthly)</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">
-                         <small style="font-weight:bold;">Pharmacy: {{data.pmonthsales}}</small><br/>
-                         <small style="font-weight:bold;">Treatment: {{data.monthsales}}</small><br/>
+                         <small style="font-weight:bold;cursor:pointer;" @click="redirect('pharmacy_monthly')">Pharmacy: {{data.pmonthsales}}</small><br/>
+                         <small style="font-weight:bold;cursor:pointer;" @click="redirect('sale_monthly')">Services & Treatment: {{data.monthsales}}</small><br/>
                          <small style="font-weight:bold;">Total: {{data.monthsales + data.pmonthsales}}</small>   
                       </div>
                     </div>
@@ -74,8 +74,8 @@
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Earnings (Today)</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">
-                         <small style="font-weight:bold;">Pharmacy: {{data.ptodaysales}}</small><br/>
-                         <small style="font-weight:bold;">Treatment: {{data.todaysales}}</small><br/>
+                         <small style="font-weight:bold;cursor:pointer;" @click="redirect('pharmacy_daily')">Pharmacy: {{data.ptodaysales}}</small><br/>
+                         <small style="font-weight:bold;cursor:pointer;" @click="redirect('sale_daily')">Services & Treatment: {{data.todaysales}}</small><br/>
                          <small style="font-weight:bold;">Total: {{data.todaysales + data.ptodaysales}}</small> 
                         </div>
                     </div>
@@ -89,7 +89,7 @@
 
                   
             <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-3 col-md-6 mb-4">
+            <div class="col-xl-3 col-md-6 mb-4" style="cursor:pointer;" @click="redirect('appointment')">
               <div class="card border-left-info shadow h-100 py-2">
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
@@ -124,50 +124,74 @@
 
 
           
-          <div class="col-md-4" style="margin-top:40px;">
+          <div class="col-md-6" style="margin-top:40px;">
 
                 <div class="card">
               <div class="card-header" style="text-align:center;background:orange;"><span style="font-size:20pt;color:white !important;" class="card-title">ITEM LOW STOCKS</span></div>
               <div class="card-body">
-                  <span>Dental Clinic Items</span>
+                  
                   <table class="table table-condensed table-striped">
+                       <thead>
+                     <tr style="cursor:pointer"  @click="redirect('medicinelist',0)">
+                        <th colspan="2">     <span>Dental Clinic Items - {{medicinesLow.length}} item(s)</span></th>
+                      </tr>
+                    </thead>
                     <tbody>
                       <tr v-for="(med,index) in medicinesLow" :key="index">
                           <td style="font-size:12pt;font-weight:normal;">{{med.medicine}} ( {{med.brand}} )</td>
+                          <td style="font-size:12pt;font-weight:normal;">{{med.stocks}} {{med.uom}} remaining</td>
                       </tr>
                     </tbody>
                   </table>
                   <hr/>
-                  <span>Pharmacy Medicines</span>
+                
                   <table class="table table-condensed table-striped">
+                         <thead>
+                      <tr style="cursor:pointer"  @click="redirect('medicinelist',1)">
+                        <th colspan="2">     <span>Pharmacy Medicines - {{pharmacyLow.length}} item(s)</span></th>
+                      </tr>
+                    </thead>
                     <tbody>
                       <tr v-for="(med,index) in pharmacyLow" :key="index">
                           <td style="font-size:12pt;font-weight:normal;">{{med.medicine}} ( {{med.brand}} )</td>
+                          <td style="font-size:12pt;font-weight:normal;">{{med.stocks}} {{med.uom}} remaining</td>
                       </tr>
                     </tbody>
                   </table>
               </div>
             </div>
           </div>
-               <div class="col-md-4"  style="margin-top:40px;">
+               <div class="col-md-6"  style="margin-top:40px;">
 
                 <div class="card">
               <div class="card-header" style="text-align:center;background:maroon;"><span style="font-size:20pt;color:white !important;" class="card-title">ITEM OUT OF STOCKS</span></div>
               <div class="card-body">
-                      <span>Dental Clinic Items</span>
+                    
                   <table class="table table-condensed table-striped">
+                    <thead>
+                      <tr style="cursor:pointer"  @click="redirect('medicinelist',0)">
+                        <th colspan="2">  <span>Dental Clinic Items - {{medicinesZero.length}} item(s)</span></th>
+                      </tr>
+                    </thead>
                     <tbody>
                       <tr v-for="(med,index) in medicinesZero" :key="index">
                           <td style="font-size:12pt;font-weight:normal;">{{med.medicine}} ( {{med.brand}} )</td>
+                          <td style="font-size:12pt;font-weight:normal;">{{med.stocks}} {{med.uom}} remaining</td>
                       </tr>
                     </tbody>
                   </table>
                   <hr/>
-                  <span>Pharmacy Medicines</span>
+               
                   <table class="table table-condensed table-striped">
+                     <thead>
+                      <tr style="cursor:pointer"  @click="redirect('medicinelist',1)">
+                        <th colspan="2">  <span>Pharmacy Medicines - {{pharmacyZero.length}} item(s)</span></th>
+                      </tr>
+                    </thead>
                     <tbody>
                       <tr v-for="(med,index) in pharmacyZero" :key="index">
                           <td style="font-size:12pt;font-weight:normal;">{{med.medicine}} ( {{med.brand}} )</td>
+                          <td style="font-size:12pt;font-weight:normal;">{{med.stocks}} {{med.uom}} remaining</td>
                       </tr>
                     </tbody>
                   </table>
@@ -214,6 +238,9 @@ export default {
 
     },
     methods: {
+         redirect: function(route, type=0){
+           this.$router.push({name: route, params: {type: type}})
+         },
          initializeStockItems: function(){
 
             this.medicinesLow = this.branches[this.activebranchIndex].Medicines.filter((med)=>{
@@ -242,7 +269,7 @@ export default {
              this.$store.dispatch("dashboard/getData",this.branches[this.activebranchIndex].id).then(()=>{
                this.weekSalesData = []
              this.weekSalesData.push({name: 'Pharmacy', data: {}})
-             this.weekSalesData.push({name: 'Treatments', data: {}})
+             this.weekSalesData.push({name: 'Services & Treatments', data: {}})
              this.weekSalesData.push({name: 'Total', data: {}})
              this.data.weeksales.forEach((sale)=>{
                   // this.weekSalesData.push([`${sale.day} (${sale.date})`, sale.treatment])
@@ -261,7 +288,7 @@ export default {
          this.$store.dispatch("dashboard/getData",this.branches[this.activebranchIndex].id).then(()=>{
              this.weekSalesData = []
              this.weekSalesData.push({name: 'Pharmacy', data: {}})
-             this.weekSalesData.push({name: 'Treatments', data: {}})
+             this.weekSalesData.push({name: 'Services & Treatments', data: {}})
              this.weekSalesData.push({name: 'Total', data: {}})
              this.data.weeksales.forEach((sale)=>{
                   // this.weekSalesData.push([`${sale.day} (${sale.date})`, sale.treatment])

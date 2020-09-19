@@ -7,7 +7,7 @@
                   </span> - <span>{{user.email}}</span>
                     <hr/>
 
-                    <editModal :editInfo="editInfo" v-if="showeditModal" @closemodal="closemodal()"/>
+                    <editModal :editInfo="editInfo" v-if="showeditModal" @closemodal="closemodal()" @refreshlist="init"/>
 
                     <div class="card">
                             <div class="card-header card-default" style="background:#343A40;color:white;">
@@ -217,7 +217,6 @@
 </template>
 
 <script>
-import { ToggleButton } from 'vue-js-toggle-button'
 import { formatBdayDate , formatHour  } from "@/helper/helper"
 import editModal from "@/components/setting/staff/editModal"
 import addTransactionModal from "@/components/backend/transaction/addModal"
@@ -286,6 +285,11 @@ export default {
         }
 
         return statustring
+    },
+    init: function(){
+          this.getUserinfo(this.$route.params.idno).then(()=>{
+        this.archiveStatus = this.user.archive == 0 ? true : false    
+    })
     }
       
   },
@@ -315,7 +319,6 @@ export default {
   components: {
       editModal,
       addTransactionModal,
-      ToggleButton
   }
 
 

@@ -14,6 +14,21 @@ export default {
         },
     },
     actions: {
+        retrieveList: function(context,id){
+            return new Promise((resolve,reject)=>{
+                Axios.patch(`${context.rootState.apiUrl}/api/medicine/retrieve/${id}`,{},context.rootState.headerconfig)
+                .then((res)=>{
+                    // if(res.data=="archived") context.commit("removeList",data.index)
+                    resolve(res)
+                })  
+                .catch((err)=>{
+                    if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                        context.dispatch("refreshtoken",null,{root:true})
+                    }  
+                    reject(err) 
+                })
+            })
+        },
         search: function(context,data){
             return new Promise((resolve,reject)=>{
                 Axios.post(`${context.rootState.apiUrl}/api/medicine/search`,data,context.rootState.headerconfig)

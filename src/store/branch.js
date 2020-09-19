@@ -49,9 +49,39 @@ export default {
                 })
             })
         },
-        getListUser: function(context,usetype){
+        getListByArchive:function(context,archive){
             return new Promise((resolve,reject)=>{
-            Axios.get(`${context.rootState.apiUrl}/api/branch/getListUser/${usetype}`,context.rootState.headerconfig)
+                Axios.get(`${context.rootState.apiUrl}/api/branch/list/${archive}`,context.rootState.headerconfig)
+                    .then((res)=>{     
+                        context.commit("setList",res.data.data) 
+                        resolve(res.data.data)       
+                    })
+                    .catch((err)=>{
+                        if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                            context.dispatch("refreshtoken",null,{root:true})
+                            reject(err)
+                        }               
+                    })
+                })
+        },
+        getListUserByArchive: function(context,{usertype,archive}){
+            return new Promise((resolve,reject)=>{
+                Axios.get(`${context.rootState.apiUrl}/api/branch/getListUser/${usertype}/${archive}`,context.rootState.headerconfig)
+                    .then((res)=>{     
+                        context.commit("setList",res.data.data) 
+                        resolve(res.data.data)       
+                    })
+                    .catch((err)=>{
+                        if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                            context.dispatch("refreshtoken",null,{root:true})
+                            reject(err)
+                        }               
+                    })
+                })
+        },
+        getListUser: function(context,usertype){
+            return new Promise((resolve,reject)=>{
+            Axios.get(`${context.rootState.apiUrl}/api/branch/getListUser/${usertype}`,context.rootState.headerconfig)
                 .then((res)=>{     
                     context.commit("setList",res.data.data) 
                     resolve(res.data.data)       
@@ -63,6 +93,21 @@ export default {
                     }               
                 })
             })
+        },
+        getListServiceByArchive: function(context,{archive}){
+            return new Promise((resolve,reject)=>{
+                Axios.get(`${context.rootState.apiUrl}/api/branch/getListServiceByArchive/${archive}`,context.rootState.headerconfig)
+                    .then((res)=>{     
+                        context.commit("setList",res.data.data) 
+                        resolve(res.data.data)       
+                    })
+                    .catch((err)=>{
+                        if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                            context.dispatch("refreshtoken",null,{root:true})
+                            reject(err)
+                        }               
+                    })
+                })
         },
         getListService: function(context){
             return new Promise((resolve,reject)=>{
@@ -94,9 +139,39 @@ export default {
                     })
                 })
         },
+        getListDentistbyArchive: function(context,archive){
+            return new Promise((resolve,reject)=>{
+                Axios.get(`${context.rootState.apiUrl}/api/branch/getListDentistbyArchive/${archive}`,context.rootState.headerconfig)
+                    .then((res)=>{     
+                        context.commit("setList",res.data.data) 
+                        resolve(res.data.data)       
+                    })
+                    .catch((err)=>{
+                        if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                            context.dispatch("refreshtoken",null,{root:true})
+                            reject(err)
+                        }               
+                    })
+                })
+        },
         getListMedicine: function(context,type){
             return new Promise((resolve,reject)=>{
                 Axios.get(`${context.rootState.apiUrl}/api/branch/getListMedicine/${type}`,context.rootState.headerconfig)
+                    .then((res)=>{     
+                        context.commit("setList",res.data.data) 
+                        resolve(res.data.data)       
+                    })
+                    .catch((err)=>{
+                        if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                            context.dispatch("refreshtoken",null,{root:true})
+                            reject(err)
+                        }               
+                    })
+                })
+        },
+        getListMedicineByArchive: function(context,data){
+            return new Promise((resolve,reject)=>{
+                Axios.get(`${context.rootState.apiUrl}/api/branch/getListMedicine/${data.type}/${data.archive}`,context.rootState.headerconfig)
                     .then((res)=>{     
                         context.commit("setList",res.data.data) 
                         resolve(res.data.data)       
@@ -157,8 +232,8 @@ export default {
                 })
             })
         },
-        remove: function(context,data){
-            Axios.patch(`${context.rootState.apiUrl}/api/branch/remove`,data,context.rootState.headerconfig)
+        archivelist: function(context,data){
+            Axios.patch(`${context.rootState.apiUrl}/api/branch/archivelist`,data,context.rootState.headerconfig)
             .then(()=>{     
                 context.commit("removeList",data.index)          
             })

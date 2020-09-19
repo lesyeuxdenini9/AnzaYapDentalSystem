@@ -7,13 +7,21 @@
                     <hr/>
 
                          <div class="row">
+                            <div class="col-md-2">
+                       <toggle-button style="margin-top: 5px;" @change="changearchive()" v-model="archiveStatus" :sync="true"
+                                    :labels="{checked: 'Active List', unchecked: 'Inactive List'}"
+                                    :width="200"
+                                    :font-size="18"
+                                    :height="30"
+                          />
+                  </div>
                     <div class="col-md-4">
-                      <input v-model="search" type="text" class="form-control" placeholder="Fullname..."/>
+                      <input v-model="search" type="text" class="form-control" placeholder="Branch name..."/>
                   </div>
                   <div class="col-md-2">
                       <button @click="searchBranch()" class="form-control"><span class="fa fa-search"></span> Search</button>
                   </div>
-                  <div class="col-md-6" style="text-align:right;">
+                  <div class="col-md-4" style="text-align:right;">
                       <!-- <button @click="searchService()" style="margin-right:10px;" class="btn btn-success"><span class="fa fa-file-excel"></span> Excel</button> -->
                       <button @click="printPDF()" class="btn btn-xs btn-danger"><span class="fa fa-file-pdf"></span> PDF</button>
                   </div>
@@ -42,9 +50,12 @@
                                     <td>{{branch.email}}</td>
                                     <td>{{branch.tin}}</td>
                                     <td>{{branch.vat}} %</td>
-                                    <td>              
+                                    <td v-if="branch.archive == 0">              
                                         <button @click="edit(index)" style="margin-right:10px;color:green;" title="Update Informations"><span class="fa fa-pen"></span> </button>
                                         <button @click="remove(index)" style="color:maroon;" title="Remove from the list"><span class="fa fa-times"></span> </button>
+                                    </td>
+                                       <td v-else>
+                                        <a href="javascript:void(0)" @click="retrieve(index)" style="color:green;">Retrieve</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -72,6 +83,7 @@ export default {
             showaddModal: false,
             showeditModal: false,
             search: '',
+            archiveStatus: true,
         }
     },
     computed: {
@@ -80,6 +92,9 @@ export default {
         })
     },
     methods: {
+           changearchive: function(){
+             this.$store.dispatch("branch/getListByArchive",this.archiveStatus)
+           },
            printPDF: function(){
             
 
@@ -114,7 +129,7 @@ export default {
         },
         searchBranch: function(){
             if(this.search == ""){
-                this.$store.dispatch("branch/getList")
+                this.$store.dispatch("branch/getListByArchive",this.archiveStatus)
             }else{
                 this.$store.dispatch("branch/search",this.search)
             }
@@ -136,7 +151,29 @@ export default {
                 if (result.value) {
                     const branch = this.branches[index]
                     branch.index = index
-                    this.$store.dispatch("branch/remove",branch)
+                    branch.archive = 1
+                    this.$store.dispatch("branch/archivelist",branch)
+                    this.$store.dispatch("branch/getListByArchive",this.archiveStatus)
+                }
+              })
+         
+        },
+          retrieve: function(index){
+              this.$swal({
+                title: 'Retrieve from List?',
+                text: "",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+              }).then((result) => {
+                if (result.value) {
+                    const branch = this.branches[index]
+                    branch.index = index
+                    branch.archive = 0
+                    this.$store.dispatch("branch/archivelist",branch)
+                    this.$store.dispatch("branch/getListByArchive",this.archiveStatus)
                 }
               })
          
@@ -149,7 +186,7 @@ export default {
     },
     mounted(){
            this.$store.dispatch("activenav","settingnav")  
-           this.$store.dispatch("branch/getList")
+           this.$store.dispatch("branch/getListByArchive",this.archiveStatus)
     }
 
 }

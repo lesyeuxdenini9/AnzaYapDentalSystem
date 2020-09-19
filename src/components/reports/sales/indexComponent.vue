@@ -64,7 +64,7 @@
                   </div>
 
                   <hr/>
-                     <span class="reporttitle"><span class="fa fa-wrench"></span> Treatments</span>
+                     <span class="reporttitle"><span class="fa fa-wrench"></span> Services & Treatments</span>
                   <div class="row">
                                
                                 <!-- Earnings (Daily) Card Example -->
@@ -124,7 +124,7 @@
 
                   <hr/>
 
-                      <span class="reporttitle"><span class="fa fa-medkit"></span> Pharmacy Earnings</span>
+                      <span class="reporttitle"><span class="fas fa-file-prescription"></span> Pharmacy Earnings</span>
                   <div class="row"> 
                                
                         
@@ -183,6 +183,65 @@
                   </div>
 
                   <hr/>
+
+                               <!-- <span class="reporttitle"><span class="fa fa-medkit"></span> Dental Clinic Item Reports</span>
+                  <div class="row"> 
+                               
+                        
+                                <div @click="changesale('dentalitem_daily')" class="col-xl-3 col-md-6 mb-4 reports">
+                                <div class="card border-left-danger shadow h-100 py-2">
+                                    <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                        <div class="text-lg font-weight-bold text-danger text-uppercase mb-1">Daily / Weekly (Date Range)</div>
+                                    
+                                        </div>
+                                        <div class="col-auto">
+                                        <i class="fas fa-file-alt fa-2x text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+
+
+                             
+                                <div @click="changesale('dentalitem_monthly')" class="col-xl-3 col-md-6 mb-4 reports">
+                                <div class="card border-left-danger shadow h-100 py-2">
+                                    <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                        <div class="text-lg font-weight-bold text-danger text-uppercase mb-1">Monthly</div>
+                      
+                                        </div>
+                                        <div class="col-auto">
+                                        <i class="fas fa-file-alt fa-2x text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+
+                                        
+                                <div @click="changesale('dentalitem_yearly')" class="col-xl-3 col-md-6 mb-4 reports">
+                                <div class="card border-left-danger shadow h-100 py-2">
+                                    <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                        <div class="text-lg font-weight-bold text-danger text-uppercase mb-1">Yearly</div>
+                                
+                                        </div>
+                                        <div class="col-auto">
+                                        <i class="fas fa-file-alt fa-2x text-gray-500"></i>
+                                        </div>
+                                    </div>
+                                    </div>
+                                </div>
+                                </div>
+
+
+                  </div>
+                  <hr/> -->
 
         </div>
   

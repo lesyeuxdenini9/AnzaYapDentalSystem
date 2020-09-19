@@ -21,7 +21,7 @@
 
                                  <div class="col-md-6">
                                         <div class="form-group">
-                                                <label>Branch</label>
+                                                <label>Branch <span style="color:maroon;">*</span></label>
                                                 <select class="form-control" v-model="medicine.branch">
                                                     <option v-for="(branch,index) in branches" :key="index" :value="branch.id">{{branch.branch}}</option>
                                                 </select>
@@ -30,12 +30,12 @@
 
 
                                     <div class="col-md-6">
-                                        <label>Medicine</label>
+                                        <label>Medicine <span style="color:maroon;">*</span></label>
                                         <input type="text" class="form-control" v-model="medicine.medicine"/>
                                     </div>
 
                                    <div class="col-md-6">
-                                        <label>Description</label>
+                                        <label>Description <span style="color:maroon;">*</span></label>
                                         <input type="text" class="form-control" v-model="medicine.description"/>
                                     </div>
 
@@ -45,7 +45,7 @@
                                     </div>
 
                                        <div class="col-md-6">
-                                        <label>Brand</label>
+                                        <label>Brand <span style="color:maroon;">*</span></label>
                                         <input type="text" class="form-control" v-model="medicine.brand"/>
                                     </div>
 
@@ -56,12 +56,12 @@
                                     </div>
 
                                       <div class="col-md-6">
-                                        <label>Unit of Measurement</label>
+                                        <label>Unit of Measurement <span style="color:maroon;">*</span></label>
                                         <input type="text" class="form-control" v-model="medicine.uom"/>
                                     </div>
 
                                     <div class="col-md-6">
-                                        <label>Minimum Stocks</label>
+                                        <label>Minimum Stocks <span style="color:maroon;">*</span></label>
                                         <input type="text" class="form-control" v-model="medicine.limit"/>
                                     </div>
 
@@ -71,7 +71,7 @@
 
                             <div class="row">
                                     <div v-if="type==1" class="col-md-6">
-                                        <label>Price</label>
+                                        <label>Price <span style="color:maroon;">*</span></label>
                                         <input type="number" class="form-control" v-model="medicine.price"/>
                                     </div>
 

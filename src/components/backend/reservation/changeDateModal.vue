@@ -33,7 +33,7 @@
                                 <div class="col col-md-4">
                                       <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon3" >Date</span>
+                                            <span class="input-group-text" id="basic-addon3" >Date  <span style="color:maroon;">*</span></span>
                                         </div>
                                         <input type="date" class="form-control" v-model="filterData.date"/>
                                          </div>
@@ -43,7 +43,7 @@
                                  <div class="col col-md-4">
                                       <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon3">StartTime</span>
+                                            <span class="input-group-text" id="basic-addon3">StartTime  <span style="color:maroon;">*</span></span>
                                         </div>
                                         <input type="time" class="form-control" v-model="filterData.start"/>
                                          </div>
@@ -53,7 +53,7 @@
                                  <div class="col col-md-4">
                                       <div class="input-group mb-3">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="basic-addon3">EndTime</span>
+                                            <span class="input-group-text" id="basic-addon3">EndTime  <span style="color:maroon;">*</span></span>
                                         </div>
                                         <input type="time" class="form-control" v-model="filterData.end"/>
                                          </div>

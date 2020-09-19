@@ -7,6 +7,14 @@ export default {
     namespaced:true,
     state: {
         services: [],
+        categories: [
+            'Esthetic Dentistry',
+            'Preventive Dentistry',
+            'Periodontics & Endodontics',
+            'Oral Surgery',
+            'Orthodontics',
+            'Dental Roentology',
+        ],
     },
     actions: {
         getList: function(context,branchid){
@@ -36,8 +44,8 @@ export default {
                 })
             })
         },
-        removeList: function(context,data){
-            Axios.patch(`${context.rootState.apiUrl}/api/service/archive/${data.id}`,data,context.rootState.headerconfig)
+        archiveList: function(context,data){
+            Axios.patch(`${context.rootState.apiUrl}/api/service/archive/${data.id}/${data.archivestatus}`,data,context.rootState.headerconfig)
             .then((res)=>{
                 if(res.data=="archived") context.commit("removeList",data.index)
             })  
@@ -47,6 +55,7 @@ export default {
                 }   
             })
         },
+      
         update: function(context,data){
             return new Promise((resolve,reject)=>{
                 Axios.patch(`${context.rootState.apiUrl}/api/service/update/${data.id}`,data,context.rootState.headerconfig)

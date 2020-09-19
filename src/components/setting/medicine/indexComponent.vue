@@ -21,6 +21,14 @@
                     </ul>   
 
                   <div class="row">
+                     <div class="col-md-2">
+                       <toggle-button style="margin-top: 5px;" @change="changearchive()" v-model="archiveStatus" :sync="true"
+                                    :labels="{checked: 'Active List', unchecked: 'Inactive List'}"
+                                    :width="200"
+                                    :font-size="18"
+                                    :height="30"
+                          />
+                  </div>
                   <div class="col-md-2">
                       <button @click="showstockin()" class="form-control"><span class="fa fa-download"></span> Stocks In</button>
                   </div>
@@ -43,10 +51,10 @@
                     <div class="col-md-4">
                       <input v-model="search" type="text" class="form-control" placeholder="Item or Code..."/>
                   </div>
-                  <div class="col-md-2">
+                  <div class="col-md-1">
                       <button @click="searchItem()" class="form-control"><span class="fa fa-search"></span> Search</button>
                   </div>
-                   <div class="col-md-2" style="text-align:right;">
+                   <div class="col-md-1" style="text-align:right;">
                       <!-- <button @click="searchService()" style="margin-right:10px;" class="btn btn-success"><span class="fa fa-file-excel"></span> Excel</button> -->
                       <button @click="printPDF()" class="btn btn-xs btn-danger"><span class="fa fa-file-pdf"></span> PDF</button>
                   </div>
@@ -80,12 +88,15 @@
                      <td style="width:10%;">{{med.uom}}</td>
                      <td v-html="getStatus(med.stocks,med.limitMin)"></td>
                      <!-- <td>{{med.price}}</td> -->
-                      <td style="text-align:center;">
+                      <td style="text-align:center;" v-if="med.archive==0">
 
                             <!-- <button @click="edit(index)" style="margin-right:10px;color:green;" title="Update Informations"><span class="fa fa-pen"></span> </button>
                             <button @click="remove(index)" style="color:maroon;" title="Remove from the list"><span class="fa fa-times"></span> </button> -->
                             <router-link :to="{name: 'viewItemDetails',params: {idno: med.id}}"><button style="font-size:10pt;" class="btn btn-primary"><span class="fa fa-search"></span> View More</button></router-link>
 
+                      </td>
+                       <td style="text-align:center;" v-else>
+                          <a href="javascript:void(0)" @click="retrieve(med.id)" style="color:green;">Retrieve</a>
                       </td>
                     </tr>
       
@@ -117,9 +128,15 @@ export default {
             search: '',
             type: 0,
             typedes: '',
+            archiveStatus: true,
         }
     },
     methods: {
+      changearchive: function(){
+       this.$store.dispatch("branch/getListMedicineByArchive",{type:this.type,archive: this.archiveStatus}).then(()=>{
+                    this.setMedicinelist()
+                })
+      },
        printPDF: function(){
 
             let medicineLists = this.medicineLists.map((med)=>{
@@ -161,7 +178,7 @@ export default {
             }
 
             if(this.search == ""){
-                this.$store.dispatch("branch/getListMedicine",this.type).then(()=>{
+                this.$store.dispatch("branch/getListMedicineByArchive",{type:this.type,archive: this.archiveStatus}).then(()=>{
                     this.setMedicinelist()
                 })
             }else{
@@ -207,18 +224,35 @@ export default {
         ...mapActions('medicine',[
           'getList',
           'removeList',
+          'retrieveList',
         ]),
         showstockin: function(){
           let branch = this.branches[this.activebranchIndex].id
           this.$router.push({name: 'stocksin',params: {branch: branch, type: `type=${this.type}`}})
         },
         refreshlist: function(index){
-             this.$store.dispatch("branch/getListMedicine",this.type)
+             this.$store.dispatch("branch/getListMedicineByArchive",{type:this.type,archive: this.archiveStatus})
                 .then(()=>{
                     this.changeFilterbranch(index)
                 })
                 .catch(err=>console.log(err))
         },
+             retrieve: function(id){
+              this.$swal({
+                    title: 'Retrieve from List?',
+                    text: "",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes'
+                  }).then((result) => {
+                    if (result.value) {
+                      this.retrieveList(id)
+                      this.refreshlist(this.activebranchIndex)
+                    }
+                  })
+            },
         changeFilterbranch: function(index){
             const navbranch = document.getElementsByClassName('navbranch')
             for(let x = 0 ; x < navbranch.length ; x++){
@@ -279,7 +313,7 @@ export default {
       this.typedes = this.$route.params.type == 0 ? "Dental Clinic Item" : "Pharmacy Medicine"
        this.$store.dispatch("activenav","settingnav")  
       // this.getList()
-         this.$store.dispatch("branch/getListMedicine",this.type)
+         this.$store.dispatch("branch/getListMedicineByArchive",{type:this.type,archive: this.archiveStatus})
           .then(()=>{
               this.changeFilterbranch(0)
           })

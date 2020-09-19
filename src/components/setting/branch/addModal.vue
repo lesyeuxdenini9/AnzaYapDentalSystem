@@ -19,12 +19,12 @@
                             
                             <div class="row">
                                     <div class="col-md-12">
-                                        <label>Branch</label>
+                                        <label>Branch <span style="color:maroon;">*</span></label>
                                         <input type="text" class="form-control" v-model="branch.branch"/>
                                     </div>
 
                                    <div class="col-md-12">
-                                        <label>Address</label>
+                                        <label>Address <span style="color:maroon;">*</span></label>
                                         <input type="email" class="form-control" v-model="branch.address"/>
                                     </div>
 

@@ -17,10 +17,10 @@
                             </div>
 
                             
-                            <div class="row">
+                            <div class="row" v-if="staff.usertype == 0 || staff.usertype == 1">
                                 <div class="col-md-8">
                                     <div class="form-group">
-                                            <label>Branch Assign</label>
+                                            <label>Branch Assign <span style="color:maroon;">*</span></label>
                                             <select class="form-control" v-model="staff.branchId">
                                                 <option v-for="(branch,index) in branches" :key="index" :value="branch.id">{{branch.branch}}</option>
                                             </select>
@@ -32,7 +32,7 @@
                              <div class="row">
                             <div class="col-md-4">
                                  <div class="form-group">
-                                        <label>First name</label>
+                                        <label>First name <span style="color:maroon;">*</span></label>
                                         <input type="text" class="form-control" v-model="staff.firstname"/>
                                 </div>
                             </div>
@@ -46,7 +46,7 @@
 
                              <div class="col-md-4">
                                  <div class="form-group">
-                                        <label>Last name</label>
+                                        <label>Last name <span style="color:maroon;">*</span></label>
                                         <input type="text" class="form-control" v-model="staff.lastname"/>
                                 </div>
                             </div>
@@ -56,14 +56,14 @@
 
                                <div class="col-md-4">
                                 <div class="form-group">
-                                        <label>Email Address</label>
+                                        <label>Email Address <span style="color:maroon;">*</span></label>
                                         <input type="email" class="form-control" v-model="staff.email"/>
                                 </div>
                             </div>
 
                              <div class="col-md-4">
                                 <div class="form-group">
-                                        <label>Birthday</label>
+                                        <label>Birthday <span style="color:maroon;">*</span></label>
                                         <input type="date" class="form-control" v-model="staff.bday"/>
                                 </div>
                             </div>
