@@ -73,7 +73,7 @@
                                  <table class="table table-condensed">
                                     <thead>
                                         <tr>
-                                            <th style="width:30%">Item</th>
+                                            <th style="width:30%">Item <span style="color:maroon;">*</span></th>
                                             <th>Qty</th>
                                             <th>Unit of Measurement</th>
                                             <th>Expiration Date</th>

@@ -22,13 +22,21 @@
 
 
                      <div class="row">
+                         <div class="col-md-2">
+                       <toggle-button style="margin-top: 5px;" @change="changearchive()" v-model="archiveStatus" :sync="true"
+                                    :labels="{checked: 'Active List', unchecked: 'Inactive List'}"
+                                    :width="200"
+                                    :font-size="18"
+                                    :height="30"
+                          />
+                  </div>
                     <div class="col-md-4">
                       <input v-model="search" type="text" class="form-control" placeholder="Fullname..."/>
                   </div>
                   <div class="col-md-2">
                       <button @click="searchDentist()" class="form-control"><span class="fa fa-search"></span> Search</button>
                   </div>
-                       <div class="col-md-6" style="text-align:right;">
+                       <div class="col-md-4" style="text-align:right;">
                       <!-- <button @click="searchService()" style="margin-right:10px;" class="btn btn-success"><span class="fa fa-file-excel"></span> Excel</button> -->
                       <button @click="printPDF()" class="btn btn-xs btn-danger"><span class="fa fa-file-pdf"></span> PDF</button>
                   </div>
@@ -57,11 +65,14 @@
                      <td>{{dentist.gender}}</td>
                      <td>{{dentist.licence}}</td>
                      <td>{{dentist.ptr}}</td>
-                      <td>
+                      <td v-if="dentist.archive == 0">
 
                             <button @click="edit(index)" style="margin-right:10px;color:green;" title="Update Informations"><span class="fa fa-pen"></span> </button>
                             <button @click="remove(index)" style="color:maroon;" title="Remove from the list"><span class="fa fa-times"></span> </button>
 
+                      </td>
+                         <td v-else>
+                          <a href="javascript:void(0)" @click="retrieve(index)" style="color:green;">Retrieve</a>
                       </td>
                     </tr>
       
@@ -89,12 +100,14 @@ export default {
             showeditModal: false,
             activebranchIndex: 0,
             search: '',
+            archiveStatus: true,
         }
     },
     methods: {
         ...mapActions('dentist',[
           'getList',
           'removeList',
+          'archiveList',
         ]),
                 printPDF: function(){
             
@@ -128,7 +141,9 @@ export default {
             }
             this.$pdfMake.createPdf(docDefinition).open();
         },
-
+        changearchive: function(){
+              this.$store.dispatch("branch/getListDentistbyArchive",this.archiveStatus)
+        },
         searchDentist: function(){
           let data = {
               search: this.search,
@@ -137,14 +152,14 @@ export default {
             }     
 
             if(this.search == ""){
-               this.$store.dispatch("branch/getListDentist")
+               this.$store.dispatch("branch/getListDentistbyArchive",this.archiveStatus)
             } else{
               this.$store.dispatch("dentist/search",data)
             } 
 
         },
          refreshlist: function(index){
-             this.$store.dispatch("branch/getListDentist")
+             this.$store.dispatch("branch/getListDentistbyArchive",this.archiveStatus)
                 .then(()=>{
                     this.changeFilterbranch(index)
                 })
@@ -157,7 +172,7 @@ export default {
             }
             navbranch[index].classList.add('active')
             this.activebranchIndex = index
-            this.$store.dispatch("branch/getListDentist")
+            this.$store.dispatch("branch/getListDentistbyArchive",this.archiveStatus)
         },
 
         closemodal: function(){
@@ -185,7 +200,29 @@ export default {
                 if (result.value) {
                      const dentist = this.branches[this.activebranchIndex].Dentists[index]
                     dentist.index = index
-                    this.removeList(dentist)
+                    dentist.archivestatus = 1
+                    this.archiveList(dentist)
+                    this.refreshlist(this.activebranchIndex)
+                }
+              })
+         
+        },
+
+        retrieve: function(index){
+            this.$swal({
+                title: 'Retrieve from List?',
+                text: "",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+              }).then((result) => {
+                if (result.value) {
+                     const dentist = this.branches[this.activebranchIndex].Dentists[index]
+                    dentist.index = index
+                    dentist.archivestatus = 0
+                    this.archiveList(dentist)
                     this.refreshlist(this.activebranchIndex)
                 }
               })
@@ -201,7 +238,7 @@ export default {
     mounted(){
        this.$store.dispatch("activenav","settingnav")  
       //  this.getList()
-       this.$store.dispatch("branch/getListDentist")
+       this.$store.dispatch("branch/getListDentistbyArchive",this.archiveStatus)
           .then(()=>{
               this.changeFilterbranch(0)
           })

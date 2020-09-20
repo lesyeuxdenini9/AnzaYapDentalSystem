@@ -20,14 +20,23 @@
                             
                             <div class="row">
                                      <div class="col-md-12">
-                                        <label>Branch</label>
+                                        <label>Branch <span style="color:maroon">*</span></label>
                                           <select class="form-control" v-model="service.branchId">
                                             <option v-for="(branch,index) in branches" :key="index" :value="branch.id">{{branch.branch}}</option>
                                         </select>
                                     </div>
 
+                                       <div class="col-md-12">
+                                        <div class="form-group">
+                                                <label>Category</label>
+                                                <select class="form-control" v-model="service.category">
+                                                    <option v-for="(category,index) in categories" :key="index" :value="category">{{category}}</option>
+                                                </select>
+                                        </div>
+                                    </div>
+
                                     <div class="col-md-12">
-                                        <label>Service</label>
+                                        <label>Service & Treatment <span style="color:maroon">*</span></label>
                                         <input type="text" class="form-control" v-model="service.service"/>
                                     </div>
 
@@ -94,7 +103,8 @@ export default {
     },
     computed: {
         ...mapState({
-            branches: state => state.branch.branches
+            branches: state => state.branch.branches,
+            categories: state=> state.service.categories,
         })
     },
     mounted(){

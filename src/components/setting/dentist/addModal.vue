@@ -21,7 +21,7 @@
 
                                  <div class="col-md-12">
                                         <div class="form-group">
-                                                <label>Branch</label>
+                                                <label>Branch <span style="color:maroon;">*</span></label>
                                                 <select class="form-control" v-model="dentist.branch">
                                                     <option v-for="(branch,index) in branches" :key="index" :value="branch.id">{{branch.branch}}</option>
                                                 </select>
@@ -29,7 +29,7 @@
                                     </div>
 
                                     <div class="col-md-12">
-                                        <label>Fullname</label>
+                                        <label>Fullname <span style="color:maroon;">*</span></label>
                                         <input type="text" class="form-control" v-model="dentist.fullname"/>
                                     </div>
 
@@ -42,7 +42,7 @@
                                     </div>
 
                                    <div class="col-md-12">
-                                        <label>Email Address</label>
+                                        <label>Email Address <span style="color:maroon;">*</span></label>
                                         <input type="email" class="form-control" v-model="dentist.email"/>
                                     </div>
 
@@ -50,7 +50,7 @@
 
                             <div class="row">
                                     <div class="col-md-6">
-                                        <label>Birthday</label>
+                                        <label>Birthday <span style="color:maroon;">*</span></label>
                                         <input type="date" class="form-control" v-model="dentist.bday"/>
                                     </div>
 

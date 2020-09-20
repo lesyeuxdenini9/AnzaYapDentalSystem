@@ -19,7 +19,7 @@
                                             
                                                   <div class="input-group mb-3">
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="basic-addon3">Branch</span>
+                                                                <span class="input-group-text" id="basic-addon3">Branch <span style="color:maroon;">*</span></span>
                                                             </div>
                                                         <select class="form-control" v-model="feedback.branch">
                                                             <option v-for="(branch,index) in branches" :key="index" :value="branch.id">{{branch.branch}}</option>

@@ -31,7 +31,7 @@
 
                              <div class="input-group mb-3">
                                       <div class="input-group-prepend">
-                                          <span class="input-group-text" id="basic-addon3">Branch</span>
+                                          <span class="input-group-text" id="basic-addon3">Branch <span style="color:maroon">*</span></span>
                                       </div>
                                     <input type="text" class="form-control" readonly style="background:white" v-model="branchname"/>
 
@@ -40,7 +40,7 @@
 
                             <div class="input-group mb-3">
                                       <div class="input-group-prepend">
-                                          <span class="input-group-text" id="basic-addon3">Type</span>
+                                          <span class="input-group-text" id="basic-addon3">Type <span style="color:maroon">*</span></span>
                                       </div>
 
                                        <select class="form-control" v-model="reservation.type">
@@ -81,7 +81,7 @@
 
                              <div class="input-group mb-3" v-if="reservation.type == '0'">
                                       <div class="input-group-prepend">
-                                          <span class="input-group-text" id="basic-addon3">Dentist</span>
+                                          <span class="input-group-text" id="basic-addon3">Dentist <span style="color:maroon">*</span></span>
                                       </div>
 
                                          <select class="form-control" v-model="reservation.dentist">
@@ -93,7 +93,7 @@
                             
                                   <div class="input-group mb-3" v-if="reservation.dentist != ''">
                                       <div class="input-group-prepend">
-                                          <span class="input-group-text" id="basic-addon3">Time</span>
+                                          <span class="input-group-text" id="basic-addon3">Time <span style="color:maroon">*</span></span>
                                       </div>
                                        <select class="form-control" v-model="reservation.start">
                                     <option :disabled="time.active == 1" v-for="(time,index) in scheduletime" :key="index" :value="time.value">{{time.text}}</option>
@@ -112,6 +112,7 @@
                                          v-model="myValue" 
                                         :options="serviceOptions"
                                         />
+                                        
                                          </div>
                                 </div>
 
@@ -125,7 +126,7 @@
                                     <table class="table table-condensed">
                                         <thead>
                                             <tr>
-                                                <th>Service</th>
+                                                <th>Service <span style="color:maroon">*</span></th>
                                                 <th>Amount</th>
                                                 <th></th>
                                             </tr>
@@ -386,7 +387,8 @@ export default {
                 let x = -1
                 return  this.branches[this.ActiveBranchIndex].Services.map((s)=>{
                       x++
-                    return {id: x , text: `${s.service} ( ${s.description} ) - Estimated Price: P ${s.regularPrice}`} 
+                    // return {id: x , text: `${s.service} ( ${s.description} ) - Estimated Price: P ${s.regularPrice}`} 
+                     return {id: x , text: `${s.service} ( ${s.category} ) - Estimated Price: P ${s.regularPrice}`} 
                   
                 })
             }

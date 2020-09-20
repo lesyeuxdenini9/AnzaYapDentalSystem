@@ -44,6 +44,10 @@ import pharmacydailyComponent from "@/components/reports/sales/pharmacy/daily"
 import pharmacymonthlyComponent from "@/components/reports/sales/pharmacy/monthly"
 import pharmacyyearlyComponent from "@/components/reports/sales/pharmacy/yearly"
 
+import dentaldailyComponent from "@/components/reports/sales/dental/daily"
+import dentalmonthlyComponent from "@/components/reports/sales/dental/monthly"
+import dentalyearlyComponent from "@/components/reports/sales/dental/yearly"
+
 import appointmentdailyComponent from "@/components/reports/sales/appointments/daily"
 import appointmentmonthlyComponent from "@/components/reports/sales/appointments/monthly"
 import appointmentyearlyComponent from "@/components/reports/sales/appointments/yearly"
@@ -101,6 +105,13 @@ const routes = [
 	{path: `/backend/reports/pharmacy/daily`,component: pharmacydailyComponent,beforeEnter: backendmiddleware,name: `pharmacy_daily`},
 	{path: `/backend/reports/pharmacy/monthly`,component: pharmacymonthlyComponent,beforeEnter: backendmiddleware,name: `pharmacy_monthly`},
 	{path: `/backend/reports/pharmacy/yearly`,component: pharmacyyearlyComponent,beforeEnter: backendmiddleware,name: `pharmacy_yearly`},
+
+
+	
+	{path: `/backend/reports/dental/daily`,component: dentaldailyComponent,beforeEnter: backendmiddleware,name: `dentalitem_daily`},
+	{path: `/backend/reports/dental/monthly`,component: dentalmonthlyComponent,beforeEnter: backendmiddleware,name: `dentalitem_monthly`},
+	{path: `/backend/reports/dental/yearly`,component: dentalyearlyComponent,beforeEnter: backendmiddleware,name: `dentalitem_yearly`},
+
 
 	{path: `/backend/reports/appointments/daily`,component: appointmentdailyComponent,beforeEnter: backendmiddleware,name: `appointment_daily`},
 	{path: `/backend/reports/appointments/monthly`,component: appointmentmonthlyComponent,beforeEnter: backendmiddleware,name: `appointment_monthly`},

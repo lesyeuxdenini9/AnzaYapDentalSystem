@@ -180,7 +180,11 @@ export default {
         },
         doneChart: function(){
             let charts = document.getElementsByClassName('chartjs-render-monitor')
+<<<<<<< HEAD
             this.columnimg = charts[2].toDataURL()
+=======
+            this.columnimg = charts[3].toDataURL()
+>>>>>>> version5
         },
         closemodal: function(){
             this.$emit("closemodal")
@@ -221,4 +225,8 @@ export default {
         })
     }
 }
+<<<<<<< HEAD
 </script>
+=======
+</script>
+>>>>>>> version5

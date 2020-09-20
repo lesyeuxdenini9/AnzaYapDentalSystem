@@ -24,6 +24,11 @@ Vue.prototype.$pdfMake = pdfMake
 import { calculateAge, formatBdayDate , formatDate, roundToDecimal , formatHour , format12Hour, limitText , formatraw12Hour , maskspace} from "@/helper/helper"
 Vue.prototype.$helper = { calculateAge, formatBdayDate , formatDate, roundToDecimal , formatHour , format12Hour, limitText , formatraw12Hour , maskspace}
 
+
+import ToggleButton from 'vue-js-toggle-button'
+ 
+Vue.use(ToggleButton)
+
 Vue.config.productionTip = false
 
 new Vue({

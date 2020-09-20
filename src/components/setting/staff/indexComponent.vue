@@ -21,13 +21,21 @@
             
                
                   <div class="row">
+                        <div class="col-md-2">
+                       <toggle-button style="margin-top: 5px;" @change="changearchive()" v-model="archiveStatus" :sync="true"
+                                    :labels="{checked: 'Active List', unchecked: 'Inactive List'}"
+                                    :width="200"
+                                    :font-size="18"
+                                    :height="30"
+                          />
+                  </div>
                     <div class="col-md-4">
                       <input v-model="search" type="text" class="form-control" placeholder="Fullname..."/>
                   </div>
                   <div class="col-md-2">
                       <button @click="searchStaff()" class="form-control"><span class="fa fa-search"></span> Search</button>
                   </div>
-                     <div class="col-md-6" style="text-align:right;">
+                     <div class="col-md-4" style="text-align:right;">
                       <!-- <button @click="searchService()" style="margin-right:10px;" class="btn btn-success"><span class="fa fa-file-excel"></span> Excel</button> -->
                       <button @click="printPDF()" class="btn btn-xs btn-danger"><span class="fa fa-file-pdf"></span> PDF</button>
                   </div>
@@ -55,12 +63,15 @@
                       <td>{{bdayformat(user.bday)}}</td>
                       <td>{{user.gender}}</td>
                       <td>{{user.contact}}</td>
-                      <td>
+                      <td v-if="user.archive == 0">
 
                             <button @click="edit(index)" style="margin-right:10px;color:green;" title="Update Informations"><span class="fa fa-pen"></span> </button>
                             <button @click="changePass(index)" style="margin-right:10px;color: blue;" title="Change Password"><span class="fa fa-key"></span> </button>
                             <button @click="remove(index)" style="color:maroon;" title="Remove from the list"><span class="fa fa-times"></span> </button>
 
+                      </td>
+                      <td v-else>
+                          <a href="javascript:void(0)" @click="retrieve(index)" style="color:green;">Retrieve</a>
                       </td>
                     </tr>
       
@@ -91,13 +102,16 @@ export default {
             changepassData: {},
             activebranchIndex: 0,
             search: '',
+            archiveStatus: true,
         }
     },
     methods: {
         //  ...mapActions('user/staff',[
         //     'getStaffList',
         // ])
-
+         changearchive: function(){
+           this.$store.dispatch("branch/getListUserByArchive",{usertype:1,archive: this.archiveStatus})
+         },
          printPDF: function(){
             
 
@@ -140,7 +154,7 @@ export default {
             }     
 
             if(this.search == ""){
-             this.$store.dispatch("branch/getListUser",1)
+             this.$store.dispatch("branch/getListUserByArchive",{usertype:1,archive: this.archiveStatus})
             } else{
               this.$store.dispatch("user/search",data)
             } 
@@ -149,10 +163,10 @@ export default {
 
         ...mapActions('user',[
           'getUsers',
-          'removeUser'
+          'archiveList',
         ]),
         refreshlist: function(data){
-             this.$store.dispatch("branch/getListUser",1)
+             this.$store.dispatch("branch/getListUserByArchive",{usertype:1,archive: this.archiveStatus})
                 .then(()=>{
                     this.changeFilterbranch(data.index)
                 })
@@ -175,6 +189,25 @@ export default {
             this.showpassModal = true,
             this.changepassData = this.branches[this.activebranchIndex].Users[index]
         },
+        retrieve: function(index){
+          this.$swal({
+                title: 'Retrieve from List?',
+                text: "",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+              }).then((result) => {
+                if (result.value) {
+                  const user = this.branches[this.activebranchIndex].Users[index]
+                  user.index = index
+                  user.archivestatus = 0
+                  this.archiveList(user)
+                  this.refreshlist({index: this.activebranchIndex})
+                }
+              })
+        },
         remove: function(index){
   
              this.$swal({
@@ -189,7 +222,8 @@ export default {
                 if (result.value) {
                   const user = this.branches[this.activebranchIndex].Users[index]
                   user.index = index
-                  this.removeUser(user)
+                  user.archivestatus = 1
+                  this.archiveList(user)
                   this.refreshlist({index: this.activebranchIndex})
                 }
               })
@@ -202,7 +236,7 @@ export default {
             }
             navbranch[index].classList.add('active')
             this.activebranchIndex = index
-             this.$store.dispatch("branch/getListUser",1)
+             this.$store.dispatch("branch/getListUserByArchive",{usertype:1,archive: this.archiveStatus})
         },
     },
     computed: {
@@ -214,7 +248,7 @@ export default {
     mounted(){
        this.$store.dispatch("activenav","settingnav")  
       //  this.getUsers({usertype: 1})
-      this.$store.dispatch("branch/getListUser",1)
+      this.$store.dispatch("branch/getListUserByArchive",{usertype:1,archive: this.archiveStatus})
         .then(()=>{
             this.changeFilterbranch(0)
         })

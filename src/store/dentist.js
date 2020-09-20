@@ -54,6 +54,17 @@ export default {
                 }   
             })
         },
+        archiveList: function(context,data){
+            Axios.patch(`${context.rootState.apiUrl}/api/dentist/archive/${data.id}/${data.archivestatus}`,data,context.rootState.headerconfig)
+            .then((res)=>{
+                if(res.data=="archived") context.commit("removeList",data.index)
+            })  
+            .catch((err)=>{
+                if(err.response.status == 401 && err.response.data == "Unauthorized"){
+                    context.dispatch("refreshtoken",null,{root:true})
+                }   
+            })
+        },
         update: function(context,data){
             return new Promise((resolve,reject)=>{
                 Axios.patch(`${context.rootState.apiUrl}/api/dentist/update/${data.id}`,data,context.rootState.headerconfig)
