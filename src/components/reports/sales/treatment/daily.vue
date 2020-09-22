@@ -71,13 +71,13 @@
                                                 <tbody>
                                                     <tr v-for="(sale,index) in sales.graph" :key="index">
                                                         <td>{{sale.date}}</td>
-                                                        <td>{{sale.totalsales}}</td>
+                                                        <td>{{$helper.roundToDecimal(sale.totalsales,2)}}</td>
                                                     </tr>
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
                                                         <th>Total</th>
-                                                        <th>{{computeTotal}}</th>
+                                                        <th>{{$helper.roundToDecimal(computeTotal,2)}}</th>
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -136,8 +136,12 @@
 <<<<<<< HEAD
 =======
                                                         <td>{{sale.category}}</td>
+<<<<<<< HEAD
 >>>>>>> version5
                                                         <td>{{sale.totalcount}}</td>
+=======
+                                                        <td>{{$helper.roundToDecimal(sale.totalcount,2)}}</td>
+>>>>>>> version5
                                                         <td>
                                                            <a @click="showgenderModal(index)" href="javascript:void(0)">Detailed By Gender</a>
                                                         </td>
@@ -189,7 +193,7 @@
                                                             </ul>
                                                         </td>
                                                         <td style="font-size:11pt;">{{getStatus(transaction.status)}}</td>
-                                                        <td style="font-size:11pt;">{{TotalAmount(transaction.Billings)}}</td>
+                                                        <td style="font-size:11pt;">{{$helper.roundToDecimal(TotalAmount(transaction.Billings),2)}}</td>
                                                     </tr>
                                                 </tbody>
                                                 
@@ -295,7 +299,7 @@ export default {
                             transaction.User.fullname,
                             treatments,
                             this.getStatus(transaction.status),
-                            this.TotalAmount(transaction.Billings),
+                            this.$helper.roundToDecimal(this.TotalAmount(transaction.Billings),2),
                     ])
 
                 })
@@ -332,7 +336,7 @@ export default {
         },
          printpie: function(){
                let data = this.sales.serviceMostavail.map((sale)=>{
-                return [sale.service,sale.category,sale.totalcount]
+                return [sale.service,sale.category,this.$helper.roundToDecimal(sale.totalcount,2)]
             })
 
             data.unshift(['Service & Treatment','Category',''])
@@ -396,12 +400,12 @@ export default {
          printcolumn: function(){
 
             let data = this.sales.graph.map((sale)=>{
-                return [sale.date,sale.totalsales]
+                return [sale.date,this.$helper.roundToDecimal(sale.totalsales,2)]
             })
 
             data.unshift(['PAYMENT DATE','EARNINGS'])
 
-            data.push(['Total',this.computeTotal])
+            data.push(['Total',this.$helper.roundToDecimal(this.computeTotal,2)])
              var docDefinition = {  
                  
                     // header: {text: 'Simple Text', margin: 10 , alignment: 'center'},  
@@ -535,12 +539,12 @@ export default {
                 })
 
                 return [
-                    [this.categories[0],totalcount[0]],
-                    [this.categories[1],totalcount[1]],
-                    [this.categories[2],totalcount[2]],
-                    [this.categories[3],totalcount[3]],
-                    [this.categories[4],totalcount[4]],
-                    [this.categories[5],totalcount[5]],
+                    [this.categories[0],this.$helper.roundToDecimal(totalcount[0],2)],
+                    [this.categories[1],this.$helper.roundToDecimal(totalcount[1],2)],
+                    [this.categories[2],this.$helper.roundToDecimal(totalcount[2],2)],
+                    [this.categories[3],this.$helper.roundToDecimal(totalcount[3],2)],
+                    [this.categories[4],this.$helper.roundToDecimal(totalcount[4],2)],
+                    [this.categories[5],this.$helper.roundToDecimal(totalcount[5],2)],
                 ].sort()
             }
         },
@@ -556,12 +560,16 @@ export default {
  
     },
     mounted(){
+       
         this.$store.dispatch("activenav","reportnav")
           this.$store.dispatch("branch/getList")
             .then(()=>{
                     const datenow = new Date()
                     this.search.start =  this.$helper.formatDate(new Date(datenow.getFullYear(), datenow.getMonth(), 1))
                     this.search.end =   this.$helper.formatDate(new Date(datenow.getFullYear(), datenow.getMonth()+1, 0))
+                     if(this.$route.params.dash){
+                        this.search.start = this.search.end = this.$helper.formatDate(datenow)
+                    }
                     this.search.branch = this.branches[this.activebranchIndex].id
                     this.searchProceed()
                 })

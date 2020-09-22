@@ -161,7 +161,7 @@
                                         <tbody>
                                             <tr v-for="(list,index) in filterData.servicelist" :key="index">
                                                 <td>{{list.service}}</td>
-                                                <td><input class="form-control" type="number" v-model="list.price" readonly style="background:white;"/></td>
+                                                <td>{{$helper.roundToDecimal(list.price,2)}}<input class="form-control" type="number" v-model="list.price" style="background:white;display:none;"/></td>
                                                 <td><button @click="removeserviceList(index)" style="background:transparent;border:none;color:maroon;"><span class="fa fa-minus"></span> </button></td>
                                             </tr>
                                         </tbody>
@@ -486,7 +486,7 @@ export default {
                 let x = -1
                 return  this.branch.Services.map((s)=>{
                       x++
-                    return {id: x , text: `${s.service} - Price: P ${s.regularPrice}`} 
+                    return {id: x , text: `${s.service} - Price: P ${this.$helper.roundToDecimal(s.regularPrice,2)}`} 
                   
                 })
             }

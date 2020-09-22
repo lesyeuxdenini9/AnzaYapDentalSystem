@@ -79,7 +79,7 @@
                                     <td  style="width:10%;">{{stock.invoiceRefno}}</td>
                                     <td style="width:35%;">
                                         <ul>
-                                            <li v-for="(item,index2) in stock.Stockinitems" :key="index2">{{`${item.medicine} ${item.qty} ${item.uom}`}} Expiration Date: {{item.ExpirationDate}}</li>
+                                            <li v-for="(item,index2) in stock.Stockinitems" :key="index2">{{`${item.medicine} ${$helper.roundToDecimal(item.qty,2)} ${item.uom}`}} Expiration Date: {{item.ExpirationDate}}</li>
                                         </ul>
                                     </td>
                                     <td></td>
@@ -148,7 +148,7 @@ export default {
                         let stocksin = this.stocksin.map((stock)=>{
                                     let items = ''
                                     stock.Stockinitems.forEach((item)=>{
-                                        items = items + `* ${item.medicine} ${item.qty} ${item.uom} Expiration Date: ${item.ExpirationDate}\n`
+                                        items = items + `* ${item.medicine} ${this.$helper.roundToDecimal(item.qty,2)} ${item.uom} Expiration Date: ${item.ExpirationDate}\n`
                                     })
                                 return [stock.refno,stock.date,stock.manufacturer,stock.invoiceRefno,items]
                         })

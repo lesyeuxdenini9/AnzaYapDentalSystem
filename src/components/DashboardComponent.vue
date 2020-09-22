@@ -29,9 +29,9 @@
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Earnings (Annual)</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">
-                          <small style="font-weight:bold;cursor:pointer;" @click="redirect('pharmacy_yearly')">Pharmacy: {{data.pyearsales}}</small><br/>
-                         <small style="font-weight:bold;cursor:pointer;" @click="redirect('sale_yearly')">Services & Treatment: {{data.yearsales}}</small><br/>
-                         <small style="font-weight:bold;">Total: {{data.yearsales + data.pyearsales}}</small>   
+                          <small style="font-weight:bold;cursor:pointer;" @click="redirect('pharmacy_yearly',{dash: 1})">Pharmacy: {{$helper.roundToDecimal(data.pyearsales,2)}}</small><br/>
+                         <small style="font-weight:bold;cursor:pointer;" @click="redirect('sale_yearly',{dash: 1})">Services & Treatment: {{$helper.roundToDecimal(data.yearsales,2)}}</small><br/>
+                         <small style="font-weight:bold;">Total: {{$helper.roundToDecimal(data.yearsales + data.pyearsales,2)}}</small>   
                       </div>
                     </div>
                     <div class="col-auto">
@@ -51,9 +51,9 @@
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Earnings (Monthly)</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">
-                         <small style="font-weight:bold;cursor:pointer;" @click="redirect('pharmacy_monthly')">Pharmacy: {{data.pmonthsales}}</small><br/>
-                         <small style="font-weight:bold;cursor:pointer;" @click="redirect('sale_monthly')">Services & Treatment: {{data.monthsales}}</small><br/>
-                         <small style="font-weight:bold;">Total: {{data.monthsales + data.pmonthsales}}</small>   
+                         <small style="font-weight:bold;cursor:pointer;" @click="redirect('pharmacy_monthly',{dash: 1})">Pharmacy: {{$helper.roundToDecimal(data.pmonthsales,2)}}</small><br/>
+                         <small style="font-weight:bold;cursor:pointer;" @click="redirect('sale_monthly',{dash: 1})">Services & Treatment: {{$helper.roundToDecimal(data.monthsales,2)}}</small><br/>
+                         <small style="font-weight:bold;">Total: {{$helper.roundToDecimal(data.monthsales + data.pmonthsales,2)}}</small>   
                       </div>
                     </div>
                     <div class="col-auto">
@@ -74,9 +74,9 @@
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Earnings (Today)</div>
                       <div class="h5 mb-0 font-weight-bold text-gray-800">
-                         <small style="font-weight:bold;cursor:pointer;" @click="redirect('pharmacy_daily')">Pharmacy: {{data.ptodaysales}}</small><br/>
-                         <small style="font-weight:bold;cursor:pointer;" @click="redirect('sale_daily')">Services & Treatment: {{data.todaysales}}</small><br/>
-                         <small style="font-weight:bold;">Total: {{data.todaysales + data.ptodaysales}}</small> 
+                         <small style="font-weight:bold;cursor:pointer;" @click="redirect('pharmacy_daily',{dash: 1})">Pharmacy: {{$helper.roundToDecimal(data.ptodaysales,2)}}</small><br/>
+                         <small style="font-weight:bold;cursor:pointer;" @click="redirect('sale_daily',{dash: 1})">Services & Treatment: {{$helper.roundToDecimal(data.todaysales,2)}}</small><br/>
+                         <small style="font-weight:bold;">Total: {{$helper.roundToDecimal(data.todaysales + data.ptodaysales,2)}}</small> 
                         </div>
                     </div>
                     <div class="col-auto">
@@ -95,7 +95,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Appointments Today</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{data.appointmenttoday}}</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{$helper.roundToDecimal(data.appointmenttoday,2)}}</div>
         
                     </div>
                     <div class="col-auto">
@@ -132,8 +132,8 @@
                   
                   <table class="table table-condensed table-striped">
                        <thead>
-                     <tr style="cursor:pointer"  @click="redirect('medicinelist',0)">
-                        <th colspan="2">     <span>Dental Clinic Items - {{medicinesLow.length}} item(s)</span></th>
+                     <tr style="cursor:pointer"  @click="redirect('medicinelist',{type: 0, stock: 'LOW'})">
+                        <th colspan="2">     <span>Dental Clinic Items - {{$helper.roundToDecimal(medicinesLow.length,2)}} item(s)</span></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -150,8 +150,8 @@
                 
                   <table class="table table-condensed table-striped">
                          <thead>
-                      <tr style="cursor:pointer"  @click="redirect('medicinelist',1)">
-                        <th colspan="2">     <span>Pharmacy Medicines - {{pharmacyLow.length}} item(s)</span></th>
+                      <tr style="cursor:pointer"  @click="redirect('medicinelist',{type: 1,stock: 'LOW'})">
+                        <th colspan="2">     <span>Pharmacy Medicines - {{$helper.roundToDecimal(pharmacyLow.length,2)}} item(s)</span></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -175,8 +175,8 @@
                     
                   <table class="table table-condensed table-striped">
                     <thead>
-                      <tr style="cursor:pointer"  @click="redirect('medicinelist',0)">
-                        <th colspan="2">  <span>Dental Clinic Items - {{medicinesZero.length}} item(s)</span></th>
+                      <tr style="cursor:pointer"  @click="redirect('medicinelist',{type: 0, stock: 'NO STOCKS'})">
+                        <th colspan="2">  <span>Dental Clinic Items - {{$helper.roundToDecimal(medicinesZero.length,2)}} item(s)</span></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -193,8 +193,8 @@
                
                   <table class="table table-condensed table-striped">
                      <thead>
-                      <tr style="cursor:pointer"  @click="redirect('medicinelist',1)">
-                        <th colspan="2">  <span>Pharmacy Medicines - {{pharmacyZero.length}} item(s)</span></th>
+                      <tr style="cursor:pointer"  @click="redirect('medicinelist',{type: 1, stock: 'NO STOCKS'})">
+                        <th colspan="2">  <span>Pharmacy Medicines - {{$helper.roundToDecimal(pharmacyZero.length,2)}} item(s)</span></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -250,8 +250,8 @@ export default {
 
     },
     methods: {
-         redirect: function(route, type=0){
-           this.$router.push({name: route, params: {type: type}})
+         redirect: function(route, params={}){
+           this.$router.push({name: route, params: params})
          },
          initializeStockItems: function(){
 

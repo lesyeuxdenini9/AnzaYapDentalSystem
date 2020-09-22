@@ -70,8 +70,9 @@
                       <th>Scientific Name</th>
                       <th>Remaining Stock</th>
                       <th>Unit</th>
+                      <th>Price</th>
                       <th width="10%">Stock Status</th>
-                      <!-- <th>Price</th> -->
+                      
                       <th width="10%"></th>
                     </tr>
                   </thead>
@@ -84,10 +85,11 @@
                      <td>{{med.description}}</td>
                      <td>{{med.code}}</td>
                      <td>{{med.scientificName}}</td>
-                     <td style="width:10%;">{{med.stocks}}</td>
+                     <td style="width:10%;">{{$helper.roundToDecimal(med.stocks,2)}}</td>
                      <td style="width:10%;">{{med.uom}}</td>
+                      <td>{{$helper.roundToDecimal(med.price,2)}}</td>
                      <td v-html="getStatus(med.stocks,med.limitMin)"></td>
-                     <!-- <td>{{med.price}}</td> -->
+                   
                       <td style="text-align:center;" v-if="med.archive==0">
 
                             <!-- <button @click="edit(index)" style="margin-right:10px;color:green;" title="Update Informations"><span class="fa fa-pen"></span> </button>
@@ -140,11 +142,11 @@ export default {
        printPDF: function(){
 
             let medicineLists = this.medicineLists.map((med)=>{
-              return [med.medicine,med.brand,med.description,med.code,med.scientificName,med.stocks,med.uom,this.getStatus2(med.stocks,med.limitMin)]
+              return [med.medicine,med.brand,med.description,med.code,med.scientificName,this.$helper.roundToDecimal(med.stocks,2),med.uom,this.$helper.roundToDecimal(med.price,2),this.getStatus2(med.stocks,med.limitMin)]
             })
 
             medicineLists.sort()
-            medicineLists.unshift(["ITEM","BRAND","DESCRIPTION","CODE","SCIENTIFIC NAME","REMAINING STOCKS","UOM","STATUS"])
+            medicineLists.unshift(["ITEM","BRAND","DESCRIPTION","CODE","SCIENTIFIC NAME","REMAINING STOCKS","UOM","PRICE","STATUS"])
            
             var docDefinition = {  
               
@@ -160,7 +162,7 @@ export default {
                  },
                {
                  table: {
-                   widths: ['*','*','*','auto','auto','auto','auto',100],
+                   widths: ['*','*','*','auto','auto','auto','auto','auto',100],
                    body: medicineLists
                  }
                }
@@ -310,6 +312,10 @@ export default {
     },
     mounted(){
       this.type = this.$route.params.type
+      if(this.$route.params.stock){
+        let stock = this.$route.params.stock
+        this.stockstatus = stock
+      }
       this.typedes = this.$route.params.type == 0 ? "Dental Clinic Item" : "Pharmacy Medicine"
        this.$store.dispatch("activenav","settingnav")  
       // this.getList()

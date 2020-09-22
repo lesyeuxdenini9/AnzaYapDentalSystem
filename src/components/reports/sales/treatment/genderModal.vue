@@ -28,18 +28,18 @@
                                                             <span v-else>{{data.yearname}}</span>
                                                             
                                                         </td>
-                                                        <td>{{data.MaleCount}}</td>
-                                                        <td>{{data.FemaleCount}}</td>
-                                                        <td>{{data.FemaleCount+data.MaleCount}}</td>
+                                                        <td>{{$helper.roundToDecimal(data.MaleCount,2)}}</td>
+                                                        <td>{{$helper.roundToDecimal(data.FemaleCount,2)}}</td>
+                                                        <td>{{$helper.roundToDecimal(data.FemaleCount+data.MaleCount,2)}}</td>
                                                     </tr>
                                                 </tbody>
 
                                                 <tfoot>
                                                     <tr>
                                                         <td>Total</td>
-                                                        <td>{{totalcount[0]}}</td>
-                                                        <td>{{totalcount[1]}}</td>
-                                                        <td>{{totalcount[2]}}</td>
+                                                        <td>{{$helper.roundToDecimal(totalcount[0],2)}}</td>
+                                                        <td>{{$helper.roundToDecimal(totalcount[1],2)}}</td>
+                                                        <td>{{$helper.roundToDecimal(totalcount[2],2)}}</td>
                                                     </tr>
 
                                                 </tfoot>
@@ -138,15 +138,15 @@ export default {
         printPDF: function(){
             let data = this.byGender.genderData.map((data)=>{
                 if(this.flag == 1){
-                    return [data.transactionDate,data.MaleCount,data.FemaleCount,(data.FemaleCount+data.MaleCount)]
+                    return [data.transactionDate,this.$helper.roundToDecimal(data.MaleCount,2),this.$helper.roundToDecimal(data.FemaleCount,2),this.$helper.roundToDecimal((data.FemaleCount+data.MaleCount),2)]
                 }else if(this.flag == 2){
-                    return [`${this.months[data.monthname-1].des} ${data.yearname}`,data.MaleCount,data.FemaleCount,(data.FemaleCount+data.MaleCount)]
+                    return [`${this.months[data.monthname-1].des} ${data.yearname}`,this.$helper.roundToDecimal(data.MaleCount,2),this.$helper.roundToDecimal(data.FemaleCount,2),this.$helper.roundToDecimal((data.FemaleCount+data.MaleCount),2)]
                 }else{
-                    return [data.yearname,data.MaleCount,data.FemaleCount,(data.FemaleCount+data.MaleCount)]
+                    return [data.yearname,this.$helper.roundToDecimal(data.MaleCount,2),this.$helper.roundToDecimal(data.FemaleCount,2),this.$helper.roundToDecimal((data.FemaleCount+data.MaleCount),2)]
                 }
             })
             data.unshift(['Date','Male','Female','Count'])
-            data.push(['Total',this.totalcount[0],this.totalcount[1],this.totalcount[2]])
+            data.push(['Total',this.$helper.roundToDecimal(this.totalcount[0],2),this.$helper.roundToDecimal(this.totalcount[1],2),this.$helper.roundToDecimal(this.totalcount[2],2)])
             var docDefinition = {  
                  
                     // header: {text: 'Simple Text', margin: 10 , alignment: 'center'},  

@@ -63,24 +63,24 @@
                                           <tr v-for="(item,index) in billinfo.Billitems" :key="index"> 
                                             <td>{{index+1}}</td>
                                             <td>{{item.item}}</td>
-                                            <td>{{item.qty}}</td>
-                                            <td>{{item.price}}</td>
-                                            <td>{{item.amount}}</td>
+                                            <td>{{$helper.roundToDecimal(item.qty,2)}}</td>
+                                            <td>{{$helper.roundToDecimal(item.price,2)}}</td>
+                                            <td>{{$helper.roundToDecimal(item.amount,2)}}</td>
                                           </tr>
                                           <tr>
                                               <td colspan="3"></td>
                                               <td>Subtotal Amount:</td>
-                                              <td>{{totalRawAmount}}</td>
+                                              <td>{{$helper.roundToDecimal(totalRawAmount,2)}}</td>
                                           </tr>
                                            <tr>
                                              <td colspan="3" style="border:none;"></td>
                                               <td style="border:none;padding-top: 0;">Discount:</td>
-                                              <td style="border: none;padding-top: 0;">{{billinfo.discount}}</td>
+                                              <td style="border: none;padding-top: 0;">{{$helper.roundToDecimal(billinfo.discount,2)}}</td>
                                           </tr>
                                             <tr>
                                             <td colspan="3" style="border:none;"></td>
                                               <td style="border:none;padding-top: 0;">Total Amount:</td>
-                                              <td style="border: none;padding-top: 0;">{{totalRawAmount - billinfo.discount}}</td>
+                                              <td style="border: none;padding-top: 0;">{{$helper.roundToDecimal(totalRawAmount - billinfo.discount,2)}}</td>
                                           </tr>
                                           <tr>
                                               <td colspan="3" style="border:none;"></td>
@@ -89,12 +89,12 @@
                                            <tr>
                                               <td colspan="3" style="border:none;"></td>
                                               <td style="border:none;padding-top: 0;">Amount Received:</td>
-                                              <td style="border: none;padding-top: 0;">{{billinfo.payment + billinfo.change}}</td>
+                                              <td style="border: none;padding-top: 0;">{{$helper.roundToDecimal(billinfo.payment + billinfo.change,2)}}</td>
                                           </tr>
                                             <tr>
                                               <td colspan="3" style="border:none;"></td>
                                               <td style="border:none;padding-top: 0;">Changed:</td>
-                                              <td style="border: none;padding-top: 0;">{{billinfo.change}}</td>
+                                              <td style="border: none;padding-top: 0;">{{$helper.roundToDecimal(billinfo.change,2)}}</td>
                                           </tr>
                                       </tbody>
 

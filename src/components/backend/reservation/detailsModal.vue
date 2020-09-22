@@ -74,12 +74,12 @@
                                     <tr v-for="(treatment,index) in reservationInfo.Treatments" :key="index">
                                         <td>{{index+1}}</td>
                                         <td>{{treatment.service}}</td>
-                                        <td>{{treatment.amount}}</td>
+                                        <td>{{$helper.roundToDecimal(treatment.amount,2)}}</td>
                                     </tr>
 
                                         <tr>
                                             <td colspan="2" style="text-align:right;font-weight:bold;">Total Amount</td>
-                                            <td style="background:white;">{{totalamount}}</td>
+                                            <td style="background:white;">{{$helper.roundToDecimal(totalamount,2)}}</td>
                                         </tr>
                                 
                                 </tbody>

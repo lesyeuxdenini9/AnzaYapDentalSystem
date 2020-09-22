@@ -124,7 +124,7 @@
                                       <td>{{index+1}}</td>
                                       <td>{{treatment.Service.service}}</td>
                                         <td>{{treatment.Service.description}}</td>
-                                      <td>{{treatment.amount}}</td>
+                                      <td>{{$helper.roundToDecimal(treatment.amount,2)}}</td>
                          
                                     </tr>
                                 </tbody>

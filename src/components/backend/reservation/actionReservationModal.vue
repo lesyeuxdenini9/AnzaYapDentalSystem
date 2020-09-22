@@ -85,12 +85,12 @@
                                         <td>{{index+1}}</td>
                                         <td>{{treatment.Service.service}}</td>
                                         <td>{{treatment.Service.description}}</td>
-                                        <td>{{treatment.amount}}</td>
+                                        <td>{{$helper.roundToDecimal(treatment.amount,2)}}</td>
                                     </tr>
 
                                         <tr>
                                             <td colspan="3" style="text-align:right;font-weight:bold;">Total Amount</td>
-                                            <td style="background:white;">{{totalamount}}</td>
+                                            <td style="background:white;">{{$helper.roundToDecimal(totalamount,2)}}</td>
                                         </tr>
                                 
                                 </tbody>

@@ -79,7 +79,7 @@
                                 <td>{{bill.date}}</td>
                                 <td>{{bill.Transaction.transactionNo}}</td>
                                 <td>{{bill.User.fullname}}</td>
-                                <td>{{bill.payment}}</td>
+                                <td>{{$helper.roundToDecimal(bill.payment,2)}}</td>
                                 <td>
                                     <span v-if="bill.type == 0">Cash</span>
                                     <span v-else>Healthcard</span>

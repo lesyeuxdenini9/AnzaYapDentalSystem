@@ -96,13 +96,13 @@
                                                 <tbody>
                                                     <tr v-for="(sale,index) in sales.graph" :key="index">
                                                         <td>{{`${months[sale.monthname-1].des} ${sale.yearname}`}}</td>
-                                                        <td>{{sale.totalsales}}</td>
+                                                        <td>{{$helper.roundToDecimal(sale.totalsales,2)}}</td>
                                                     </tr>
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
                                                         <th>Total</th>
-                                                        <th>{{computeTotal}}</th>
+                                                        <th>{{$helper.roundToDecimal(computeTotal,2)}}</th>
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -132,7 +132,7 @@
                                                 <tbody>
                                                     <tr v-for="(sale,index) in sales.serviceMostavail" :key="index">
                                                         <td>{{sale.item}}</td>
-                                                        <td>{{sale.totalcount}} {{sale.uom}}
+                                                        <td>{{$helper.roundToDecimal(sale.totalcount,2)}} {{sale.uom}}
                                                             <!-- <span v-if="sale.totalcount == 1">time</span><span v-else>times</span> -->
                                                         </td>
                                                     </tr>
@@ -210,10 +210,10 @@ export default {
         },
                  printpie: function(){
                let data = this.sales.serviceMostavail.map((sale)=>{
-                return [sale.item,`${sale.totalcount} ${sale.uom}`]
+                return [sale.item,`${this.$helper.roundToDecimal(sale.totalcount,2)} ${sale.uom}`]
             })
 
-            data.unshift(['Service/Treatment',''])
+            data.unshift(['Medicine',''])
 
              var docDefinition = {  
                  
@@ -250,12 +250,12 @@ export default {
          printcolumn: function(){
 
             let data = this.sales.graph.map((sale)=>{
-                return [`${this.months[sale.monthname-1].des} ${sale.yearname}`,sale.totalsales]
+                return [`${this.months[sale.monthname-1].des} ${sale.yearname}`,this.$helper.roundToDecimal(sale.totalsales,2)]
             })
 
             data.unshift(['DATE','EARNINGS'])
 
-            data.push(['Total',this.computeTotal])
+            data.push(['Total',this.$helper.roundToDecimal(this.computeTotal,2)])
              var docDefinition = {  
                  
                     // header: {text: 'Simple Text', margin: 10 , alignment: 'center'},  
@@ -334,6 +334,7 @@ export default {
         }
     },
     mounted(){
+   
         this.$store.dispatch("activenav","reportnav")
           this.$store.dispatch("branch/getList")
             .then(()=>{
@@ -343,6 +344,11 @@ export default {
                     this.search.start =  this.$helper.formatDate(new Date(datenow.getFullYear(), datenow.getMonth(), 1))
                     this.search.end =   this.$helper.formatDate(new Date(datenow.getFullYear(), datenow.getMonth()+1, 0))
                     this.search.branch = this.branches[this.activebranchIndex].id
+                    if(this.$route.params.dash){
+                        const datenow = new Date()
+                        this.search.startyear = this.search.endyear = datenow.getFullYear()
+                        this.search.endmonth = this.search.startmonth = datenow.getMonth()+1
+                    }
                     this.searchProceed()
                 })
             .catch(err=>console.log(err))
