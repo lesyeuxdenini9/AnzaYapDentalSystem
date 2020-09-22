@@ -125,9 +125,14 @@ const limitText = (text)=>{
     return text
 }
 
+const roundToDecimal = (num,decimalplace)=> {   
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?!=\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+    }
 
-const roundToDecimal = (num,decimalplace)=> {    
-    return +(Math.round(num + `e+${decimalplace}`)  + `e-${decimalplace}`);
+    let dec =  +(Math.round(num + `e+${decimalplace}`)  + `e-${decimalplace}`);
+    return numberWithCommas(dec)
+
 }
 
 const maskspace = (mask,varString)=>{

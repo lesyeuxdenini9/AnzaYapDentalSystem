@@ -70,10 +70,10 @@
                                                         <td style="width:25%;text-align:center;" class="itemtitle">HEALTHCARD</td>
                                                     </tr>
                                                     <tr>
-                                                        <td class="itemvalue">{{billinfo.totalAmount}}</td>
-                                                        <td class="itemvalue"><span v-if="billinfo.type == 0">{{billinfo.payment}}</span></td>
-                                                        <td class="itemvalue"><span v-if="billinfo.type == 1">{{billinfo.payment}}</span></td>
-                                                        <td class="itemvalue">{{(billinfo.totalAmount - billinfo.payment)}}</td>
+                                                        <td class="itemvalue">{{$helper.roundToDecimal(billinfo.totalAmount,2)}}</td>
+                                                        <td class="itemvalue"><span v-if="billinfo.type == 0">{{$helper.roundToDecimal(billinfo.payment,2)}}</span></td>
+                                                        <td class="itemvalue"><span v-if="billinfo.type == 1">{{$helper.roundToDecimal(billinfo.payment,2)}}</span></td>
+                                                        <td class="itemvalue">{{$helper.roundToDecimal((billinfo.totalAmount - billinfo.payment),2)}}</td>
                                                     </tr>
                                                 </table>
                                                 
@@ -131,7 +131,7 @@
                                                 <tr v-for="(treatment,index) in billinfo.Transaction.Treatments" :key="index">
                                                     <td>{{index+1}}</td>
                                                     <td>{{treatment.service}}</td>
-                                                    <td>{{treatment.actualAmount}}</td>
+                                                    <td>{{$helper.roundToDecimal(treatment.actualAmount,2)}}</td>
                                                     <td style="width:10%;"><span v-if="treatment.paymentmethod=='healthcard'">{{treatment.paymentmethod}}</span></td>
                                                 </tr>
                                                 <tr>
@@ -144,26 +144,26 @@
                                                 </tr>
                                                 <tr>
                                                     <td colspan="2" style="padding-top:0;padding-bottom:0;text-align:right;font-weight:bold;font-size:16pt;">Gross Transaction Amount: </td>
-                                                    <td colspan="2" style="padding-top:0;padding-bottom:0;font-weight:bold;font-size:16pt;background:#F8F7DA;">{{totalAmount}}</td>
+                                                    <td colspan="2" style="padding-top:0;padding-bottom:0;font-weight:bold;font-size:16pt;background:#F8F7DA;">{{$helper.roundToDecimal(totalAmount,2)}}</td>
                                                 </tr>
                                                  <tr>
                                                     <td colspan="2" style="padding-top:0;padding-bottom:0;text-align:right;font-weight:bold;font-size:16pt;">Discount: </td>
-                                                    <td colspan="2" style="padding-top:0;padding-bottom:0;font-weight:bold;font-size:16pt;background:#F8F7DA;">{{billinfo.Transaction.discount}}</td>
+                                                    <td colspan="2" style="padding-top:0;padding-bottom:0;font-weight:bold;font-size:16pt;background:#F8F7DA;">{{$helper.roundToDecimal(billinfo.Transaction.discount,2)}}</td>
                                                 </tr>
                                                   <tr>
                                                     <td colspan="2" style="padding-top:0;padding-bottom:0;text-align:right;font-weight:bold;font-size:16pt;">Grand Total Amount: </td>
-                                                    <td colspan="2" style="padding-top:0;padding-bottom:0;font-weight:bold;font-size:16pt;background:#F8F7DA;">{{totalAmount - billinfo.Transaction.discount}}</td>
+                                                    <td colspan="2" style="padding-top:0;padding-bottom:0;font-weight:bold;font-size:16pt;background:#F8F7DA;">{{$helper.roundToDecimal(totalAmount - billinfo.Transaction.discount,2)}}</td>
                                                 </tr>
                                                    <tr>
                                                     <td colspan="4"></td>
                                                 </tr>
                                                   <tr>
                                                     <td colspan="2" style="padding-top:0;padding-bottom:0;text-align:right;font-weight:bold;font-size:16pt;">Amount Received: </td>
-                                                    <td colspan="2" style="padding-top:0;padding-bottom:0;font-weight:bold;font-size:16pt;background:#F8F7DA;">{{billinfo.payment+billinfo.change}}</td>
+                                                    <td colspan="2" style="padding-top:0;padding-bottom:0;font-weight:bold;font-size:16pt;background:#F8F7DA;">{{$helper.roundToDecimal(billinfo.payment+billinfo.change,2)}}</td>
                                                 </tr>
                                                   <tr>
                                                     <td colspan="2" style="padding-top:0;padding-bottom:0;text-align:right;font-weight:bold;font-size:16pt;">Change: </td>
-                                                    <td colspan="2" style="padding-top:0;padding-bottom:0;font-weight:bold;font-size:16pt;background:#F8F7DA;">{{billinfo.change}}</td>
+                                                    <td colspan="2" style="padding-top:0;padding-bottom:0;font-weight:bold;font-size:16pt;background:#F8F7DA;">{{$helper.roundToDecimal(billinfo.change,2)}}</td>
                                                 </tr>
                                          
 

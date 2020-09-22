@@ -72,10 +72,10 @@
                                                                 <td style="width: 10%">{{item.code}}</td>
                                                                 <td style="width: 20%">{{item.medicine}} ( {{item.brand}} )</td>
                                                                 <td style="width: 25%">{{item.description}}</td>
-                                                                <td style="width: 10%">{{item.price}}</td>
-                                                                <td style="width: 10%">{{item.stocks}}</td>
+                                                                <td style="width: 10%">{{$helper.roundToDecimal(item.price,2)}}</td>
+                                                                <td style="width: 10%">{{$helper.roundToDecimal(item.stocks,2)}}</td>
                                                                 <td style="width: 10%"><input @change="updateQtyAmount(index)" v-model="item.quantity" type="number" class="form-control"/></td>
-                                                                <td style="width: 10%">{{item.amountvalue}}</td>
+                                                                <td style="width: 10%">{{$helper.roundToDecimal(item.amountvalue,2)}}</td>
                                                                 <td style="width: 5%"><button @click="remove(item)"><span class="fa fa-times"></span></button></td>
                                                             </tr>
                                                         </tbody>
@@ -91,7 +91,7 @@
 
                                <div class="card" style="background:black; color:lime">
                                     <div class="card-body">
-                                            <span style="font-size:20pt;font-weight:bold;" class="float-right">TOTAL AMOUNT: P {{totalAmount}}</span>
+                                            <span style="font-size:20pt;font-weight:bold;" class="float-right">TOTAL AMOUNT: P {{$helper.roundToDecimal(totalAmount,2)}}</span>
                                     </div>
                                 </div>
                                 <hr/>

@@ -98,7 +98,17 @@
                                     </div>
 
                                     
-                                     <div class="col-md-4">
+                                     <div class="col-md-2">
+                                           <div class="input-group mb-3">
+                                      <div class="input-group-prepend">
+                                          <span class="input-group-text" id="basic-addon3">Price</span>
+                                      </div>
+                                      <input type="text" class="form-control" readonly style="background:white;" v-model="medicine.price"/>
+                                  </div>
+
+                                    </div>
+
+                                       <div class="col-md-2">
                                            <div class="input-group mb-3">
                                       <div class="input-group-prepend">
                                           <span class="input-group-text" id="basic-addon3">Limit Stocks</span>
@@ -181,7 +191,7 @@
                                           <td>{{stock.Stockin.date}}</td>
                                           <td>{{stock.Stockin.manufacturer}}</td>
                                           <td>{{stock.Stockin.invoiceRefno}}</td>
-                                          <td>{{stock.qty}}</td>
+                                          <td>{{$helper.roundToDecimal(stock.qty,2)}}</td>
                                           <td>{{stock.uom}}</td>
                                           <td>{{stock.ExpirationDate}}</td>
                                       </tr>
@@ -212,7 +222,7 @@
                                               <span style="font-size: 10pt">Date: {{stock.Action.date}}</span>
                                               
                                           </td>
-                                          <td>{{stock.qty}}</td>
+                                          <td>{{$helper.roundToDecimal(stock.qty,2)}}</td>
                                           <td>{{stock.Medicine.uom}}</td>
                                       </tr>
                                   </tbody>
@@ -232,7 +242,7 @@
                                       <tr v-for="(stock,index) in medicine.Billitems" :key="index">
                                           <td>{{stock.Billing.billrefNo}}</td>
                                           <td>{{dDate(stock.Billing.createdAt)}}</td>
-                                          <td>{{stock.qty}}</td>
+                                          <td>{{$helper.roundToDecimal(stock.qty,2)}}</td>
                                           <td>{{stock.Medicine.uom}}</td>
                                       </tr>
                                   </tbody>
@@ -282,14 +292,14 @@ export default {
 
             if(index == 0 ){
                  stocksout = this.medicine.Stockouts.map((stock)=>{
-                    return [stock.Transaction.transactionNo,this.dDate(stock.createdAt),stock.Transaction.Dentist.fullname,`${stock.Action.Treatment.service}\nDate: ${stock.Action.date}`,stock.qty,stock.Medicine.uom]
+                    return [stock.Transaction.transactionNo,this.dDate(stock.createdAt),stock.Transaction.Dentist.fullname,`${stock.Action.Treatment.service}\nDate: ${stock.Action.date}`,this.$helper.roundToDecimal(stock.qty,2),stock.Medicine.uom]
                 })
                 stocksout.sort()
                 stocksout.unshift(["TRANSACTION REF NO","DATE","DENTIST","TREATMENT","QUANTITY","UOM"])
                 orientation = "landscape"
             }else{
                 stocksout = this.medicine.Billitems.map((stock)=>{
-                    return [stock.Billing.billrefNo,this. dDate(stock.Billing.createdAt),stock.qty,stock.Medicine.uom ]
+                    return [stock.Billing.billrefNo,this. dDate(stock.Billing.createdAt),this.$helper.roundToDecimal(stock.qty,2),stock.Medicine.uom ]
                 })
                 stocksout.sort()
                 stocksout.unshift(["PURCHASE REF NO","DATE","QUANTITY","UOM"])
@@ -323,7 +333,7 @@ export default {
         },
         printStocksIN: function(){
             let stocksin = this.medicine.Stockinitems.map((stock)=>{
-                return [stock.Stockin.refno,stock.Stockin.date,stock.Stockin.manufacturer,stock.Stockin.invoiceRefno,stock.qty,stock.uom,stock.ExpirationDate]
+                return [stock.Stockin.refno,stock.Stockin.date,stock.Stockin.manufacturer,stock.Stockin.invoiceRefno,this.$helper.roundToDecimal(stock.qty,2),stock.uom,stock.ExpirationDate]
             })
 
             stocksin.sort()

@@ -134,7 +134,7 @@
                                         </thead>
                                         <tbody>
                                             <tr v-for="(treatment,index) in transactionInfo.Treatments" :key="index">
-                                                <td>{{treatment.service}}<br/>Estimated Price: P {{treatment.amount}}<br/>
+                                                <td>{{treatment.service}}<br/>Estimated Price: P {{$helper.roundToDecimal(treatment.amount,2)}}<br/>
                                                      <a  v-if="transactionInfo.status!=2 && transactionInfo.Billings.length ==0"  @click="removeTreatment(treatment.id)" style="color:maroon;font-size:8pt" href="javascript:void(0)"><span class="fa fa-pen"> </span> Remove</a>
                                                 </td>
                                                 <td>
@@ -173,7 +173,7 @@
 
                                             </tr>
                                             <tr>
-                                                <td colspan="2" style="font-size:16pt;">Estimated Total Amount: P {{getTotalAmount}}</td>
+                                                <td colspan="2" style="font-size:16pt;">Estimated Total Amount: P {{$helper.roundToDecimal(getTotalAmount,2)}}</td>
                                             </tr>
                                         </tbody>
 

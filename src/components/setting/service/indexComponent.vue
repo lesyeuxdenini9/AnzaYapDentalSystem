@@ -57,7 +57,7 @@
                      <td>{{service.category}}</td>
                      <td>{{service.service}}</td>
                      <td>{{service.description}}</td>
-                     <td>{{service.regularPrice}}</td>
+                     <td>{{$helper.roundToDecimal(service.regularPrice,2)}}</td>
                     <td v-if="service.archive == 0">
 
                             <button @click="edit(index)" style="margin-right:10px;color:green;" title="Update Informations"><span class="fa fa-pen"></span> </button>
@@ -105,7 +105,7 @@ export default {
           let listtitle = this.archiveStatus ? "Active" : "Inactive"
 
           let servicelist = this.branches[this.activebranchIndex].Services.map((service)=>{
-            return [service.category,service.service,service.description,service.regularPrice]
+            return [service.category,service.service,service.description,this.$helper.roundToDecimal(service.regularPrice,2)]
           }) 
           servicelist.sort()
           servicelist.unshift(['CATEGORY','SERVICE & TREATMENT','DESCRIPTION','ESTIMATED PRICE'])

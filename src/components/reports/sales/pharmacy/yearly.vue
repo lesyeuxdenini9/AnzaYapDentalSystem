@@ -75,13 +75,13 @@
                                                 <tbody>
                                                     <tr v-for="(sale,index) in sales.graph" :key="index">
                                                         <td>{{sale.yearname}}</td>
-                                                        <td>{{sale.totalsales}}</td>
+                                                        <td>{{$helper.roundToDecimal(sale.totalsales,2)}}</td>
                                                     </tr>
                                                 </tbody>
                                                 <tfoot>
                                                     <tr>
                                                         <th>Total</th>
-                                                        <th>{{computeTotal}}</th>
+                                                        <th>{{$helper.roundToDecimal(computeTotal,2)}}</th>
                                                     </tr>
                                                 </tfoot>
                                             </table>
@@ -111,7 +111,7 @@
                                                 <tbody>
                                                     <tr v-for="(sale,index) in sales.serviceMostavail" :key="index">
                                                         <td>{{sale.item}}</td>
-                                                        <td>{{sale.totalcount}} {{sale.uom}}
+                                                        <td>{{$helper.roundToDecimal(sale.totalcount,2)}} {{sale.uom}}
                                                             <!-- <span v-if="sale.totalcount == 1">time</span><span v-else>times</span> -->
                                                         </td>
                                                     </tr>
@@ -174,10 +174,10 @@ export default {
         },
          printpie: function(){
                let data = this.sales.serviceMostavail.map((sale)=>{
-                return [sale.item,`${sale.totalcount} ${sale.uom}`]
+                return [sale.item,`${this.$helper.roundToDecimal(sale.totalcount,2)} ${sale.uom}`]
             })
 
-            data.unshift(['Service/Treatment',''])
+            data.unshift(['Medicine',''])
 
              var docDefinition = {  
                  
@@ -214,12 +214,12 @@ export default {
          printcolumn: function(){
 
             let data = this.sales.graph.map((sale)=>{
-                return [sale.yearname,sale.totalsales]
+                return [sale.yearname,this.$helper.roundToDecimal(sale.totalsales,2)]
             })
 
             data.unshift(['DATE','EARNINGS'])
 
-            data.push(['Total',this.computeTotal])
+            data.push(['Total',this.$helper.roundToDecimal(this.computeTotal,2)])
              var docDefinition = {  
                  
                     // header: {text: 'Simple Text', margin: 10 , alignment: 'center'},  

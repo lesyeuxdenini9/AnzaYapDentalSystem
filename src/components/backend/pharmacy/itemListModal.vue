@@ -44,8 +44,8 @@
                                                                 <td style="width: 10%">{{med.code}}</td>
                                                                 <td style="width: 20%">{{med.medicine}} ( {{med.brand}} )</td>
                                                                 <td style="width: 23%">{{med.description}}</td>
-                                                                <td style="width: 10%">{{med.price}}</td>
-                                                                <td style="width: 10%">{{med.stocks}}</td>
+                                                                <td style="width: 10%">{{$helper.roundToDecimal(med.price,2)}}</td>
+                                                                <td style="width: 10%">{{$helper.roundToDecimal(med.stocks,2)}}</td>
                                                                 <td style="width: 10%">{{med.uom}}</td>
                                                                 <td style="text-align:right;width:12%">
                                                                     <button class="form-control" style="margin-bottom:10px;" @click="addtoCart(med)"><span class="fa fa-plus"></span> Add</button>

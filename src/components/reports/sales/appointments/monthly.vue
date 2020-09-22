@@ -99,10 +99,10 @@
                                                 <tbody>
                                                     <tr v-for="(appointment,index) in appointments.data" :key="index">
                                                         <td>{{`${months[appointment.monthname-1].des} ${appointment.yearname}`}}</td>
-                                                        <td>{{appointment.Approved}}</td>
-                                                        <td>{{appointment.Cancelled}}</td>
-                                                        <td>{{appointment.Reschedule}}</td>
-                                                        <td>{{appointment.totalcount}}</td>
+                                                       <td>{{$helper.roundToDecimal(appointment.Approved,2)}}</td>
+                                                       <td>{{$helper.roundToDecimal(appointment.Cancelled,2)}}</td>
+                                                       <td>{{$helper.roundToDecimal(appointment.Reschedule,2)}}</td>
+                                                       <td>{{$helper.roundToDecimal(appointment.totalcount,2)}}</td>
                                                     </tr>
                                                 </tbody>
 
@@ -202,7 +202,12 @@ export default {
                printcolumn: function(){
 
             let data = this.appointments.data.map((appointment)=>{
-                return [`${this.months[appointment.monthname-1].des} ${appointment.yearname}`,appointment.Approved,appointment.Cancelled,appointment.Reschedule,appointment.totalcount]
+                return [`${this.months[appointment.monthname-1].des} ${appointment.yearname}`,
+                    this.$helper.roundToDecimal(appointment.Approved,2),
+                    this.$helper.roundToDecimal(appointment.Cancelled,2),
+                    this.$helper.roundToDecimal(appointment.Reschedule,2),
+                    this.$helper.roundToDecimal(appointment.totalcount,2)
+                    ]
             })
 
             data.unshift(['DATE','APPROVED','CANCELLED','RESCHEDULE','TOTAL'])
@@ -302,7 +307,12 @@ export default {
                  cancelled = cancelled + parseFloat(appointment.Cancelled)
                  reschedule = reschedule + parseFloat(appointment.Reschedule)
              })
-             return [approved,cancelled,reschedule,total]
+              return [
+                 this.$helper.roundToDecimal(approved,2),
+                 this.$helper.roundToDecimal(cancelled,2),
+                 this.$helper.roundToDecimal(reschedule,2),
+                 this.$helper.roundToDecimal(total,2)
+                 ]
             }
         }
     },

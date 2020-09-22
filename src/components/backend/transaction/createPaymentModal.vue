@@ -32,8 +32,11 @@
                                         <tr v-for="(treatment,index) in transactionInfo.Treatments" :key="index">
                                         
                                             <td>{{treatment.service}}</td>
-                                            <td>{{treatment.amount}}</td>
-                                            <td><input readonly @change="changeactualamount(index)" type="number" class="form-control actualamount" v-model="treatment.actualAmount"/></td>
+                                            <td>{{$helper.roundToDecimal(treatment.amount,2)}}</td>
+                                            <td>
+                                                <span v-if="!editprice">{{$helper.roundToDecimal(treatment.actualAmount,2)}}</span>
+                                                <input v-else @change="changeactualamount(index)" type="number" class="form-control actualamount" v-model="treatment.actualAmount"/>
+                                            </td>
                                         </tr>
                                           <tr style="padding:0px;font-size:18pt;font-weight:bold;">
                                             <td colspan="2" style="text-align:right;padding:0px;">Net of Vat:</td>
@@ -45,15 +48,15 @@
                                         </tr>
                                             <tr style="padding:0px;font-size:18pt;font-weight:bold;">
                                             <td colspan="2" style="text-align:right;padding:0px;">Gross Amount:</td>
-                                            <td style="text-align:right;padding:0px;">{{totalrawAmount}}</td>
+                                            <td style="text-align:right;padding:0px;">{{$helper.roundToDecimal(totalrawAmount,2)}}</td>
                                         </tr>
                                          <tr style="padding:0px;font-size:18pt;font-weight:bold;">
                                             <td colspan="2" style="text-align:right;padding:0px;">Discount Amount:</td>
-                                            <td style="text-align:right;padding:0px;">{{transactionInfo.discount}}</td>
+                                            <td style="text-align:right;padding:0px;">{{$helper.roundToDecimal(transactionInfo.discount,2)}}</td>
                                         </tr>
                                         <tr style="padding:0px;font-size:18pt;font-weight:bold;">
                                             <td colspan="2" style="text-align:right;padding:0px;">Grand Total Amount:</td>
-                                            <td style="text-align:right;padding:0px;">{{totalAmountFinal}}</td>
+                                            <td style="text-align:right;padding:0px;">{{$helper.roundToDecimal(totalAmountFinal,2)}}</td>
                                         </tr>
                                     </tbody>
 
@@ -77,7 +80,7 @@
                                     <div class="card">
                                             <div class="card-header bg-default"></div>
                                             <div class="card-body">
-                                                <span style="font-size:18pt;font-weight:bold;color:dimgray;">Amount Paid : {{totalAmountPaid}}</span>
+                                                <span style="font-size:18pt;font-weight:bold;color:dimgray;">Amount Paid : {{$helper.roundToDecimal(totalAmountPaid,2)}}</span>
                                             </div>
                                     </div>
                                     </div>
@@ -86,7 +89,7 @@
                                     <div class="card">
                                             <div class="card-header bg-default"></div>
                                             <div class="card-body">
-                                                <span style="font-size:18pt;font-weight:bold;color:dimgray;">Balance : {{totalAmountBalance}}</span>
+                                                <span style="font-size:18pt;font-weight:bold;color:dimgray;">Balance : {{$helper.roundToDecimal(totalAmountBalance,2)}}</span>
                                             </div>
                                     </div>
                                     </div>
@@ -114,7 +117,7 @@
                                                                 <span v-if="bill.type == 0">Cash</span>
                                                                 <span v-else>HealthCard</span>
                                                             </td>
-                                                            <td>{{bill.payment}}</td>
+                                                            <td>{{$helper.roundToDecimal(bill.payment,2)}}</td>
                                                             <td>{{bill.date}} {{dHour(bill.createdAt)}}</td>
                                                           
                                                         </tr>
@@ -172,6 +175,7 @@ export default {
              editpen: "fa fa-pen",
              check: "fa fa-check",
              showbillpaymentModal: false,
+             editprice: false,
 
         }
     },
@@ -187,20 +191,22 @@ export default {
            
         },
         confirmactualprice: function(){
+            this.editprice = false
             this.$refs.confirmbtn.classList.add("hidden")
             this.$refs.editbtn.classList.remove("hidden")
-            const actualamount = document.getElementsByClassName('actualamount')
-            actualamount.forEach((a)=>{
-                a.setAttribute("readonly",true)
-            })
+            // const actualamount = document.getElementsByClassName('actualamount')
+            // actualamount.forEach((a)=>{
+            //     a.setAttribute("readonly",true)
+            // })
         },
         editactualprice: function(){
+            this.editprice = true
             this.$refs.editbtn.classList.add("hidden")
             this.$refs.confirmbtn.classList.remove("hidden")
-            const actualamount = document.getElementsByClassName('actualamount')
-            actualamount.forEach((a)=>{
-                a.removeAttribute("readonly")
-            })
+            // const actualamount = document.getElementsByClassName('actualamount')
+            // actualamount.forEach((a)=>{
+            //     a.removeAttribute("readonly")
+            // })
         },
         totalAmount: function(){
              let totalamount = 0

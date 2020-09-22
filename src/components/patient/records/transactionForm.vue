@@ -94,7 +94,7 @@
                                         <tbody>
                                             <tr v-for="(treatment,index) in transactionInfo.Treatments" :key="index">
                                                 <td>{{treatment.service}}
-                                                    <br/>Price: P {{treatment.actualAmount}}
+                                                    <br/>Price: P {{$helper.roundToDecimal(treatment.actualAmount,2)}}
                                                 </td>
                                                 <td>
                                                     <table class="table table-condensed">
@@ -130,9 +130,9 @@
                                                <td colspan="2" style="font-size:16pt;">
                                                     Net of Vat: P {{ $helper.roundToDecimal((getTotalAmount/(1+(transactionInfo.Branch.vat/100))),2)}}
                                                     <br/>Vat ({{transactionInfo.Branch.vat}} %): P {{$helper.roundToDecimal((getTotalAmount/(1+(transactionInfo.Branch.vat/100))) * (transactionInfo.Branch.vat/100),2)}}
-                                                    <br/>Gross Amount: P {{getTotalAmount}}
-                                                    <br/>Discount Amount: P {{transactionInfo.discount}}
-                                                    <br/>Grand Total Amount: P {{(getTotalAmount - transactionInfo.discount)}}
+                                                    <br/>Gross Amount: P {{$helper.roundToDecimal(getTotalAmount,2)}}
+                                                    <br/>Discount Amount: P {{$helper.roundToDecimal(transactionInfo.discount,2)}}
+                                                    <br/>Grand Total Amount: P {{$helper.roundToDecimal((getTotalAmount - transactionInfo.discount),2)}}
                                                     
                                                 </td>
                                             </tr>
@@ -162,7 +162,7 @@
                                                                 <span v-if="bill.type == 0">Cash</span>
                                                                 <span v-else>HealthCard</span>
                                                             </td>
-                                                            <td>{{bill.payment}}</td>
+                                                            <td>{{$helper.roundToDecimal(bill.payment,2)}}</td>
                                                            
                                                           
                                                         </tr>
