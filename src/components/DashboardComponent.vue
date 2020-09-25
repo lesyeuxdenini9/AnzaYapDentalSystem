@@ -4,6 +4,8 @@
         <div class="container-fluid">
                   <span class="pageheader"><i class="fa fa-chart-pie"></i> Dashboard</span><hr/>
 
+             
+
                     <ul class="nav nav-tabs">
             
                         <li class="nav-item" v-for="(branch,index) in branches" :key="index">
@@ -107,6 +109,29 @@
             </div>
           </div>
 
+
+          <div class="row">
+              <div class="col-md-4" style="text-align:center;">
+                  <span @click="redirect('sale_yearly',{dash: 1})" style="font-size:14pt; font-weight:bold;color:dimgray;cursor:pointer;">SERVICES DONE COUNT YEARLY BASED ON TRANSACTION DATE</span>
+                  <pie-chart :download="true" width="100%" height="500px" :data="serviceYear"></pie-chart>
+
+              </div>
+
+                 <div class="col-md-4" style="text-align:center;">
+                  <span @click="redirect('sale_monthly',{dash: 1})" style="font-size:14pt; font-weight:bold;color:dimgray;cursor:pointer;">SERVICES DONE COUNT MONTHLY BASED ON TRANSACTION DATE</span>
+                  <pie-chart :download="true" width="100%" height="500px" :data="serviceMonth"></pie-chart>
+
+              </div>
+
+                <div class="col-md-4" style="text-align:center;">
+                  <span @click="redirect('sale_daily',{dash: 1})" style="font-size:14pt; font-weight:bold;color:dimgray;cursor:pointer;">SERVICES DONE COUNT TODAY BASED ON TRANSACTION DATE</span>
+                  <pie-chart :download="true" width="100%" height="500px" :data="serviceToday"></pie-chart>
+               
+
+              </div>
+
+          </div>
+
     
         </div>
 
@@ -139,10 +164,7 @@
                     <tbody>
                       <tr v-for="(med,index) in medicinesLow" :key="index">
                           <td style="font-size:12pt;font-weight:normal;">{{med.medicine}} ( {{med.brand}} )</td>
-<<<<<<< HEAD
-=======
                           <td style="font-size:12pt;font-weight:normal;">{{med.stocks}} {{med.uom}} remaining</td>
->>>>>>> version5
                       </tr>
                     </tbody>
                   </table>
@@ -157,10 +179,7 @@
                     <tbody>
                       <tr v-for="(med,index) in pharmacyLow" :key="index">
                           <td style="font-size:12pt;font-weight:normal;">{{med.medicine}} ( {{med.brand}} )</td>
-<<<<<<< HEAD
-=======
                           <td style="font-size:12pt;font-weight:normal;">{{med.stocks}} {{med.uom}} remaining</td>
->>>>>>> version5
                       </tr>
                     </tbody>
                   </table>
@@ -182,10 +201,7 @@
                     <tbody>
                       <tr v-for="(med,index) in medicinesZero" :key="index">
                           <td style="font-size:12pt;font-weight:normal;">{{med.medicine}} ( {{med.brand}} )</td>
-<<<<<<< HEAD
-=======
                           <td style="font-size:12pt;font-weight:normal;">{{med.stocks}} {{med.uom}} remaining</td>
->>>>>>> version5
                       </tr>
                     </tbody>
                   </table>
@@ -200,10 +216,7 @@
                     <tbody>
                       <tr v-for="(med,index) in pharmacyZero" :key="index">
                           <td style="font-size:12pt;font-weight:normal;">{{med.medicine}} ( {{med.brand}} )</td>
-<<<<<<< HEAD
-=======
                           <td style="font-size:12pt;font-weight:normal;">{{med.stocks}} {{med.uom}} remaining</td>
->>>>>>> version5
                       </tr>
                     </tbody>
                   </table>
@@ -240,12 +253,16 @@ export default {
         medicinesZero: [],
         pharmacyLow: [],
         pharmacyZero: [],
+        serviceToday: [],
+        serviceYear: [],
+        serviceMonth: [],
       }
     },
     computed: {
         ...mapState({
               branches: state => state.branch.branches,
               data: state=>state.dashboard.data,
+              categories: state=>state.service.categories,
         })
 
     },
@@ -308,6 +325,52 @@ export default {
                  this.weekSalesData[1].data[`${sale.day} (${sale.date})`] = sale.treatment
                  this.weekSalesData[2].data[`${sale.day} (${sale.date})`] = parseFloat(sale.treatment) + parseFloat(sale.pharmacy)
             })
+
+            let serviceToday = this.categories.map((category)=>{
+              return [category , 0]
+            })
+            let serviceMonth = this.categories.map((category)=>{
+              return [category , 0]
+            })
+
+            let serviceYear = this.categories.map((category)=>{
+              return [category , 0]
+            })
+
+            this.data.servicetodaycount.forEach((data)=>{
+                if(data.category == "Esthetic Dentistry") serviceToday[0][1] = data.totalcount
+                if(data.category == "Preventive Dentistry") serviceToday[1][1] = data.totalcount
+                if(data.category == "Periodontics & Endodontics") serviceToday[2][1] = data.totalcount
+                if(data.category == "Oral Surgery") serviceToday[3][1] = data.totalcount
+                if(data.category == "Orthodontics") serviceToday[4][1] = data.totalcount
+                if(data.category == "Dental Roentology") serviceToday[5][1] = data.totalcount
+            })
+
+            this.serviceToday = serviceToday
+
+            this.data.servicemonthcount.forEach((data)=>{
+                if(data.category == "Esthetic Dentistry") serviceMonth[0][1] = data.totalcount
+                if(data.category == "Preventive Dentistry") serviceMonth[1][1] = data.totalcount
+                if(data.category == "Periodontics & Endodontics") serviceMonth[2][1] = data.totalcount
+                if(data.category == "Oral Surgery") serviceMonth[3][1] = data.totalcount
+                if(data.category == "Orthodontics") serviceMonth[4][1] = data.totalcount
+                if(data.category == "Dental Roentology") serviceMonth[5][1] = data.totalcount
+            })
+
+            this.serviceMonth = serviceMonth
+
+              this.data.serviceyearcount.forEach((data)=>{
+                if(data.category == "Esthetic Dentistry") serviceYear[0][1] = data.totalcount
+                if(data.category == "Preventive Dentistry") serviceYear[1][1] = data.totalcount
+                if(data.category == "Periodontics & Endodontics") serviceYear[2][1] = data.totalcount
+                if(data.category == "Oral Surgery") serviceYear[3][1] = data.totalcount
+                if(data.category == "Orthodontics") serviceYear[4][1] = data.totalcount
+                if(data.category == "Dental Roentology") serviceYear[5][1] = data.totalcount
+            })
+
+            this.serviceYear = serviceYear
+
+        
          }).catch(err=>console.log(err))
 
           this.initializeStockItems()
